@@ -6,10 +6,10 @@ module.exports = {
   development: {
     client: "pg",
     migrations: {
-      directory: __dirname + '/database/migrations',
+      directory: __dirname + "/database/migrations"
     },
     seeds: {
-      directory: __dirname + '/database/seeds',
+      directory: __dirname + "/database/seeds"
     },
     connection: {
       host: process.DB_HOST,
@@ -18,22 +18,17 @@ module.exports = {
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME || "postgres"
     },
-    ssl: true,
+    ssl: true
   },
-
   production: {
-    client: "postgresql",
-    connection: {
-      database: "my_db",
-      user: "username",
-      password: "password"
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
+    client: "pg",
+    useNullAsDefault: true,
+    connection: process.env.DATABASE_URL,
     migrations: {
-      tableName: "knex_migrations"
+      directory: __dirname + "/database/migrations"
+    },
+    seeds: {
+      directory: __dirname + "/database/seeds"
     }
   }
 };
