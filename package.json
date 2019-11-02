@@ -6,9 +6,10 @@
   "scripts": {
     "start": "node src/index.js",
     "start:dev": "nodemon npm run start",
-    "rev": "npx knex migrate:latest && npx knex seed:run",
-    "kill": "docker-compose down",
-    "prerev": "docker-compose up -d"
+    "migrate:latest": "npx knex migrate:latest",
+    "seed:run": "npx knex seed:run",
+    "res": "npx knex migrate:latest && npx knex seed:run",
+    "psql": "docker exec -it propman psql -h localhost -U postgres -p 5432 -d propman"
   },
   "repository": {
     "type": "git",
