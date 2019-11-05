@@ -32,8 +32,8 @@ exports.up = function(knex) {
     tbl.increments();
     tbl.integer('tenant-id').unsigned()
       .references('id').inTable('users');
-      tbl.integer('property-id').unsigned()
-        .references('id').inTable('properties');
+    tbl.integer('property-id').unsigned()
+      .references('id').inTable('properties');
     tbl.date('history-startdate');
     tbl.date('history-enddate');
   })
