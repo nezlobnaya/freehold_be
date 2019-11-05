@@ -24,14 +24,6 @@ To get the server running locally:
 - `npm start:dev` to start local server in development environment with nodemon
 - `npm test` to start server using testing environment
 
-<!-- moved to the section with this title
-## Contributing
-
-This codebase uses Eslint and Prettier to enforce styling. When you go to commit
-code, Husky will lint and format your code, failing to commit if there is
-something that cannot be automatically fixed.
--->
-
 ---
 
 🚫 [READMEoriginal.md](./READMEoriginal.md) has the original README to reference.
