@@ -4,12 +4,12 @@
 2. `npm install`
 3. Install PostgreSQL
 
-If you're on Mac
+### If you're on Mac
 4. `createdb propman`
 
-If you're on Windows
-4.a. Open pgadmin
-4.b. Create database named `propman`
+### If you're on Windows  
+4. a. Open pgadmin  
+  b. Create database named `propman`
 
 5. Run `npm run res` (which runs `npx knex migrate:latest` and `npx knex
    seed:run` )
