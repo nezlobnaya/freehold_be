@@ -10,7 +10,8 @@
     "seed:run": "npx knex seed:run",
     "res": "npx knex migrate:latest && npx knex seed:run",
     "test": "jest",
-    "test:watch": "jest --watchAll"
+    "test:watch": "jest --watchAll",
+    "migrate:test": "cross-env NODE_ENV=testing npx knex migrate:latest"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
     "cross-env": "^6.0.3",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-jest": "^23.0.2",
     "eslint-plugin-prettier": "^3.1.1",
     "husky": "^3.0.9",
     "jest": "^24.9.0",
