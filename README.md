@@ -14,6 +14,13 @@
 5. Run `npm run res` (which runs `npx knex migrate:latest` and `npx knex
    seed:run` )
 
+
+## Contributing
+
+This codebase uses Eslint and Prettier to enforce styling. When you go to commit
+code, Husky will lint and format your code, failing to commit if there is
+something that cannot be automatically fixed.
+
 ---
 
 🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.
