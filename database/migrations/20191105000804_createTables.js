@@ -19,8 +19,8 @@ exports.up = function(knex) {
     tbl.increments();
     tbl.string('property-name').notNullable();
     tbl.json('property-address').notNullable();
-    tbl.string('property-image').notNullable();
-    tbl.string('property-status').notNullable();
+    tbl.string('property-image');
+    tbl.string('property-status');
     tbl.date('property-startdate');
     tbl.date('property-enddate');
     tbl.integer('landlord-id').unsigned()
