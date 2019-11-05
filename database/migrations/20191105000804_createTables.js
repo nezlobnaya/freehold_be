@@ -56,10 +56,9 @@ exports.up = function(knex) {
     tbl.integer('wo-id').unsigned()
       .references('id').inTable('workorders');
     tbl.string('wo-status');
-    tbl.string('wo-urgency');
-    tbl.string('wo-update');
-    tbl.timestamp('wo-updatedate');
-    tbl.string('wo-assignedto');
+    tbl.integer('wo-urgency');
+    tbl.json('wo-update');
+    tbl.timestamp('wo-updatedate').defaultTo(knex.fn.now());
   });
 };
 
