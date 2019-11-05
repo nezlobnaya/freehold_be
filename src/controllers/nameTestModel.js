@@ -6,5 +6,5 @@ module.exports = {
 
 function getAll() {
     return db.from('test')
-    .select('*');
+    .select('name');
 }
