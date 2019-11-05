@@ -41,11 +41,11 @@ exports.up = function(knex) {
   // workorders
   .createTable("workorders", tbl => {
     tbl.increments();
-    tbl.string('workorder').notNullable().unique();
-    tbl.text("wo-description").notNullable();
-    tbl.string("wo-type").notNullable();
-    tbl.date("wo-startdate").notNullable();
-    tbl.date("wo-enddate");
+    tbl.string('workorder').notNullable();
+    tbl.text('wo-description').notNullable();
+    tbl.string('wo-type').notNullable();
+    tbl.date('wo-startdate').notNullable();
+    tbl.date('wo-enddate');
     tbl.integer('property-id').unsigned()
       .references('id').inTable('properties');
   })
