@@ -9,9 +9,9 @@ exports.up = function(knex) {
     tbl.string('password').notNullable();
     tbl.json("name").notNullable();
     tbl.string('email').notNullable().unique();
-    tbl.json("address").notNullable();
+    tbl.json("address");
     tbl.string('type').notNullable();
-    tbl.string('phone').notNullable();
+    tbl.string('phone');
   })
   
   // properties
