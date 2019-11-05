@@ -1,3 +1,21 @@
+## Getting Started
+
+1. `git clone <REPO>`
+2. `npm install`
+3. Install PostgreSQL
+
+### If you're on Mac
+4. `createdb propman`
+
+### If you're on Windows  
+4. a. Open pgadmin  
+  b. Create database named `propman`
+
+5. Run `npm run res` (which runs `npx knex migrate:latest` and `npx knex
+   seed:run` )
+
+---
+
 🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.
 
 🚫 The numbers 1️⃣ through 3️⃣ next to each item represent the week that part of the docs needs to be comepleted by.  Make sure to delete the numbers by the end of Labs.
