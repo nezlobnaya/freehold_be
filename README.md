@@ -1,31 +1,18 @@
 ## Getting Started
 
-To allow better cross-platform development we are using Docker to handle the
-development environment PostgreSQL database. You will need to [install Docker](https://hub.docker.com/?overlay=onboarding) on
-your system.
-
-You will need to make an account on Docker (it's free). Then you will need to
-make sure that Docker desktop is running when you are working on the project.
-
-Now you're ready to get started.
-
-1. `git clone REPO`
+1. `git clone <REPO>`
 2. `npm install`
-3. `docker-compose up` 
-4. In a separate terminal run `npm run res`, which will run any migrations and
-   seeds for the development environment.
+3. Install PostgreSQL
 
-To stop the `docker-compose` instance, press `CTRL-C` once OR in a seperate window
-run `docker-comopse down` to gracefully shut down.
+If you're on Mac
+4. `createdb propman`
 
-You will need to run the migrations and seeds every time that the Docker
-instance is started and stopped.
+If you're on Windows
+4.a. Open pgadmin
+4.b. Create database named `propman`
 
-
-## Accessing PostgreSQL from the CLI
-
-With the container running, you can simply run `npm run psql` and have access to
-the PostgreSQL CLI. This can be useful when debugging.
+5. Run `npm run res` (which runs `npx knex migrate:latest` and `npx knex
+   seed:run` )
 
 ---
 
