@@ -1,62 +1,58 @@
+# API Documentation
+
+#### Backend delpoyed at [🚫name service here](🚫add URL here) <br>
+
 ## Getting Started
+
+To get the server running locally:
 
 1. `git clone <REPO>`
 2. `npm install`
 3. Install PostgreSQL
 
-### If you're on Mac
+- If you're on Mac:
 4. `createdb propman`
 
-### If you're on Windows  
+- If you're on Windows:
 4. a. Open pgadmin  
-  b. Create database named `propman`
+   b. Create database named `propman`
 
 5. Run `npm run res` (which runs `npx knex migrate:latest` and `npx knex
    seed:run` )
 
+- `npm start` to start the local server
+- `npm start:dev` to start local server in development environment with nodemon
+- `npm test` to start server using testing environment
 
+<!-- moved to the section with this title
 ## Contributing
 
 This codebase uses Eslint and Prettier to enforce styling. When you go to commit
 code, Husky will lint and format your code, failing to commit if there is
 something that cannot be automatically fixed.
+-->
 
 ---
 
-🚫 Note: All lines that start with 🚫 are instructions and should be deleted before this is posted to your portfolio. This is intended to be a guideline. Feel free to add your own flare to it.
+🚫 [READMEoriginal.md](./READMEoriginal.md) has the original README to reference.
 
-🚫 The numbers 1️⃣ through 3️⃣ next to each item represent the week that part of the docs needs to be comepleted by.  Make sure to delete the numbers by the end of Labs.
+🚫 Sections have been commented out that need to be updated.
 
-🚫 Each student has a required minimum number of meaningful PRs each week per the rubric.  Contributing to docs does NOT count as a PR to meet your weekly requirements.
-
-# API Documentation
-
-#### 1️⃣ Backend delpoyed at [🚫name service here](🚫add URL here) <br>
-
-## 1️⃣ Getting started
-
-To get the server running locally:
-
-🚫 adjust these scripts to match your project
-
-- Clone this repo
-- **yarn install** to install all required dependencies
-- **yarn server** to start the local server
-- **yarn test** to start server using testing environment
+--- 
 
 ### Backend framework goes here
 
 🚫 Why did you choose this framework?
-
+<!-- 
 -    Point One
 -    Point Two
 -    Point Three
--    Point Four
+-    Point Four -->
 
 ## 2️⃣ Endpoints
 
 🚫This is a placeholder, replace the endpoints, access controll, and descriptioin to match your project
-
+<!-- 
 #### Organization Routes
 
 | Method | Endpoint                | Access Control | Description                                  |
@@ -74,12 +70,13 @@ To get the server running locally:
 | GET    | `/users/:userId`        | owners, supervisors | Returns info for a single user.                    |
 | POST   | `/users/register/owner` | none                | Creates a new user as owner of a new organization. |
 | PUT    | `/users/:userId`        | owners, supervisors |                                                    |
-| DELETE | `/users/:userId`        | owners, supervisors |                                                    |
+| DELETE | `/users/:userId`        | owners, supervisors |                                                    | 
+-->
 
 # Data Model
 
 🚫This is just an example. Replace this with your data model
-
+<!-- 
 #### 2️⃣ ORGANIZATIONS
 
 ---
@@ -113,12 +110,12 @@ To get the server running locally:
   emailpref: BOOLEAN
   phonepref: BOOLEAN
 }
-```
+``` -->
 
 ## 2️⃣ Actions
 
 🚫 This is an example, replace this with the actions that pertain to your backend
-
+<!-- 
 `getOrgs()` -> Returns all organizations
 
 `getOrg(orgId)` -> Returns a single organization by ID
@@ -135,11 +132,12 @@ To get the server running locally:
 
 `getUser(userId)` -> Returns a single user by user ID
 
-`addUser(user object)` --> Creates a new user and returns that user. Also creates 7 availabilities defaulted to hours of operation for their organization.
+`addUser(user object)` -> Creates a new user and returns that user. Also creates 7 availabilities defaulted to hours of operation for their organization.
 
 `updateUser(userId, changes object)` -> Updates a single user by ID.
 
-`deleteUser(userId)` -> deletes everything dependent on the user
+`deleteUser(userId)` -> deletes everything dependent on the user 
+-->
 
 ## 3️⃣ Environment Variables
 
@@ -148,18 +146,23 @@ In order for the app to function correctly, the user must set up their own envir
 create a .env file that includes the following:
 
 🚫 These are just examples, replace them with the specifics for your app
-    
+<!--     
     *  STAGING_DB - optional development db for using functionality not available in SQLite
     *  NODE_ENV - set to "development" until ready for "production"
     *  JWT_SECRET - you can generate this by using a python shell and running import random''.join([random.SystemRandom().choice('abcdefghijklmnopqrstuvwxyz0123456789!@#\$%^&amp;*(-*=+)') for i in range(50)])
     *  SENDGRID_API_KEY - this is generated in your Sendgrid account
-    *  stripe_secret - this is generated in the Stripe dashboard
+    *  stripe_secret - this is generated in the Stripe dashboard 
+-->
     
 ## Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
 
 Please note we have a [code of conduct](./code_of_conduct.md). Please follow it in all your interactions with the project.
+
+**This codebase uses Eslint and Prettier to enforce styling.** When you go to commit
+code, Husky will lint and format your code, failing to commit if there is
+something that cannot be automatically fixed.
 
 ### Issue/Bug Request
 
@@ -193,5 +196,5 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 
 ## Documentation
 
-See [Frontend Documentation](🚫link to your frontend readme here) for details on the fronend of our project.
-🚫 Add DS iOS and/or Andriod links here if applicable.
+See [Frontend Documentation](https://github.com/Lambda-School-Labs/property-manager-fe/blob/master/README.md) for details on the fronend of our project.
+<!-- Add DS iOS and/or Andriod links here if applicable. (Currently not applicable. An iOS and/or Andriod app would be a good future feature.) -->
