@@ -121,6 +121,46 @@
         <a href="https://trello.com/b/llCWH1QF/property-manager-retrospective">Property Manager Retrospective</a>
       </div>
 
+    <h1 onclick="{showContent('developmentBE')}"><button>v</button> Development Back End</h1>
+    <div id="developmentBE" class="show">
+
+      <h2 class="moreInfo" onclick="{showContent('models')}">Models</h2>
+      <div id="models" class="hid">
+        <ul>
+          <li class="moreInfo" onclick="{showContent('modelsUsers')}">User</li>
+        </ul>
+      </div>
+
+      <h2 class="moreInfo" onclick="{showContent('endpoints')}">Endpoints</h2>
+      <div id="endpoints" class="hid">
+
+        <h3 class="moreInfo" onclick="{showContent('userEndpoints')}">User Endpoints</h3>
+        <div id="userEndpoints" class="hid">
+          <ul>
+            <li class="moreInfo" onclick="{showContent('signup')}">Sign Up</li>
+            <li class="moreInfo" onclick="{showContent('login')}">Login</li>
+            <li class="moreInfo" onclick="{showContent('updateUser')}">Update User</li>
+            <li class="moreInfo" onclick="{showContent('deleteUser')}">Delete User</li>
+          </ul>
+        </div>
+
+        <h3 class="moreInfo" onclick="{showContent('propertyEndpoints')}">Property Endpoints</h3>
+        <div id="propertyEndpoints" class="hid">
+          <ul>
+            <li class="moreInfo" onclick="{showContent('getAllProperties')}">Get All Properties</li>
+          </ul>
+        </div>
+        
+      </div>
+      
+      <h2 class="moreInfo" onclick="{showContent('database')}">Database Structure</h2>
+      <div id="database" class="hid">
+        <ul>
+          <li class="moreInfo" onclick="{showContent('dbUsers')}">User</li>
+        </ul>
+      </div>
+
+    </div>
   </div>
 </body>
 </html>
