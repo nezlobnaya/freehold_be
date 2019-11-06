@@ -343,6 +343,22 @@
     </div>
     <!-- #endregion - Property Endpoints -->
 
+    <!-- #region - Database Structure -->  
+    <!-- User Table --> 
+    <div id="dbUsers" class="hid">
+        <h3 onclick="{showContent('dbUsers')}">Database Structure - User Table</h3>
+          <h4>users</h4>
+          <code>
+            { <br />
+            <div class="ident1">
+              "id": 1, <span class="comment">// auto increments (no input required, will auto populate) </span> <br />
+              "username": "user", <span class="comment">// Cannot be null, Unique </span> <br />
+              "password": "examplepass", <span class="comment">// Cannot be null </span> <br />
+            </div>
+            }
+          </code>
+      </div>
+    <!-- #endregion - Database Structure --> 
   </div>
   
   <script>
