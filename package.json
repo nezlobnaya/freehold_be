@@ -8,10 +8,10 @@
     "start:dev": "nodemon npm run start",
     "migrate:latest": "npx knex migrate:latest",
     "seed:run": "npx knex seed:run",
-    "res": "npx knex migrate:latest && npx knex seed:run",
+    "migrate:test": "cross-env NODE_ENV=testing npx knex migrate:latest",
+    "res": "npm run migrate:latest && npm run seed:run && npm run migrate:test",
     "test": "jest",
-    "test:watch": "jest --watchAll",
-    "migrate:test": "cross-env NODE_ENV=testing npx knex migrate:latest"
+    "test:watch": "jest --watchAll"
   },
   "repository": {
     "type": "git",
