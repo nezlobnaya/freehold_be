@@ -11,18 +11,25 @@ To get the server running locally:
 3. Install PostgreSQL
 
 - If you're on Mac:
-4. `createdb propman`
+4. `createdb propman` this creates the development database
+5. `createdb propman-test` this creates the test database
 
 - If you're on Windows:
-4. a. Open pgadmin  
+5. a. Open pgadmin  
    b. Create database named `propman`
 
-5. Run `npm run res` (which runs `npx knex migrate:latest` and `npx knex
+6. Run `npm run res` (which runs `npx knex migrate:latest` and `npx knex
    seed:run` )
+
+## Available Scripts
 
 - `npm start` to start the local server
 - `npm start:dev` to start local server in development environment with nodemon
-- `npm test` to start server using testing environment
+- `npm test` to run test suite once
+- `npm run test:watch` to run test suite in watch mode
+- `npm run migrate:latest` a convenient wrapper around knex
+- `npm run seed:run` a convenient wrapper around knex
+- `npm run migrate:test` runs migrations against the test database
 
 ---
 
@@ -148,6 +155,12 @@ create a .env file that includes the following:
   DB_USER=postgres  // THIS IS YOUR LOCAL DB USER NAME (probably postgres)
   DB_PASSWORD=pass  // THIS IS YOUR LOCAL DATABASE/PSQL PASSWORD
   DB_NAME=propman   // THIS IS YOUR LOCAL DATABASE NAME
+
+  TEST_DB_HOST=localhost
+  TEST_DB_PORT=5432
+  TEST_DB_USER=postgres
+  TEST_DB_PASSWORD=postgres
+  TEST_DB_NAME=propman-test
 
   JWT_SECRET="Your Secret." // you can generate this by using a python shell or add in a temporary secret.
   ```
