@@ -90,5 +90,37 @@
 
 <div id="main">
 
+  <!-- Left Side Menu -->
+  <div id="leftMenu">
+
+    <h1 onclick="{showContent('pitch')}"><button>v</button> Pitch</h1>
+    <p id='pitch' class="hid"></p>
+
+    <h1 onclick="{showContent('product_canvas')}"><button>v</button> Product Canvas</h1>
+      <div id="product_canvas" class="hid">
+      <h2 onclick="{showContent('proposal')}"><button>v</button> Proposal</h2>
+        <div id="proposal" class="hid">
+        <h3>What problem does your app solve?</h3>
+          <p> </p>
+
+        <h3>Be as specific as possible; how does your app solve the problem?</h3>
+          <p>This app will allow:</p>
+          <ul>
+            <li>The user to login</li>
+          </ul>
+        </div>
+      </div>
+
+    <h1 onclick="{showContent('planning')}"><button>v</button> Planning</h1>
+      <div id="planning" class="hid">
+        <h2>Notion Product Board</h2>
+        <a href="https://www.notion.so/Property-Manager-bd4c33b5c8974b8aa938512b993f9108">Property Manager</a>
+
+        <h2>Trello Boards</h2>
+        <a href="https://trello.com/b/mKfgx81y/property-manager">Property Manager</a>
+        <a href="https://trello.com/b/llCWH1QF/property-manager-retrospective">Property Manager Retrospective</a>
+      </div>
+
+  </div>
 </body>
 </html>
