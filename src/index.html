@@ -192,6 +192,151 @@
       </div>
     <!-- #endregion - Models -->
 
+    <!-- #region - User Endpoints --> 
+    <!-- User Endpoint - SignUp --> 
+    <div id="signup" class="hid">
+      <h2>Example need to Edit</h2>
+      <h2>TODO - this is not active yet</h2>
+      <h3 onclick="{showContent('signup')}">User Endpoints - Signup</h3>
+      <p><strong>Endpoint:</strong> `/api/auth/register`</p>
+      <p><strong>Type:</strong> `POST`</p>
+      <p><strong>Description:</strong> </p>
+      <code>
+        Sign up a new user
+      </code>
+      <p><strong>Expected Input:</strong> </p>
+      <code>
+          // username and email must be unique <br />
+          // username, password, and email are required <br />
+          <br />
+          "username": "testuser", <br />
+          "password": "password", <br />
+      </code>
+      <p><strong>Sample Request:</strong> </p>
+      <code>
+        <br />
+      </code>
+      <p><strong>Expected Return:</strong> </p>
+      <code>
+          <br />
+      </code>
+      <p><strong>Expected Return if Fails:</strong> </p>
+      <code>
+          <br />
+      </code>
+    </div>
+    
+    <!-- User Endpoint - Login --> 
+    <div id="login" class="hid">
+      <h2>Example need to Edit</h2>
+      <h2>TODO - this is not active yet</h2>
+      <h3 onclick="{showContent('login')}">User Endpoints - Login</h3>
+      <p><strong>Endpoint:</strong> `/api/auth/login`</p>
+      <p><strong>Type:</strong> `POST`</p>
+      <p><strong>Description:</strong> </p>
+      <code>
+        Gets authentication token for user with given credentials
+      </code>
+      <p><strong>Expected Input:</strong> </p>
+      <code>
+        "username": "SomeUser",  <br />
+        "password": "TheirPassword"  <br />
+      </code>
+      <p><strong>Sample Request:</strong> </p>
+      <code>
+        const body = {  <br />
+          "username": "SomeUser",  <br />
+          "password": "TheirPassword"  <br />
+        };  <br />
+        <br />
+        axios.post(`${BASE_URL}/api/auth/login`, body);
+      </code>
+      <p><strong>Expected Return:</strong> </p>
+      <code>
+        status = 200   <br />
+        <br />
+        {
+          message: `Welcome SomeUser!`,
+          token
+        }
+      </code>
+      <p><strong>Expected Return if Fails:</strong> </p>
+      <code>
+        status = 401  <br />
+        <br />
+        { message: 'Invalid Request. Please check the username and password submitted.' }
+      </code>
+    </div>
+  
+    <!-- User Endpoint - Update --> 
+    <div id="updateUser" class="hid">
+      <h2>Example need to Edit</h2>
+      <h2>TODO - this is not active yet</h2>
+      <h3 onclick="{showContent('updateUser')}">User Endpoints - Update User</h3>
+      <p><strong>Endpoint:</strong> `/api/auth/user/{id}`</p>
+      <p><strong>Type:</strong> `PUT`</p>
+      <p><strong>Description:</strong> </p>
+      <code>
+          Update user with given id
+      </code>
+      <p><strong>Expected Input:</strong> </p>
+      <code>
+        {
+          "username": "testuser", <br />
+          "password": "password", <br />
+          "email": "user@email.com", <br />
+          "firstname": "Johnathan", <br />
+          "lastname": "Doe", <br />
+          "preferredname": "John", <br />
+          "group_id": null <br />
+        }
+      </code>
+      <p><strong>Sample Request:</strong> </p>
+      <code>
+        <br />
+      </code>
+      <p><strong>Expected Return:</strong> </p>
+      <code>
+          <br />
+      </code>
+      <p><strong>Expected Return if Fails:</strong> </p>
+      <code>
+          <br />
+      </code>
+    </div>
+  
+    <!-- User Endpoint - Delete --> 
+    <div id="deleteUser" class="hid">
+      <h2>Example need to Edit</h2>
+      <h2>TODO - this is not active yet</h2>
+      <h3 onclick="{showContent('deleteUser')}">User Endpoints - Delete User</h3>
+      <p><strong>Endpoint:</strong> `/api/auth/user/{id}`</p>
+      <p><strong>Type:</strong> `DELETE`</p>
+      <p><strong>Description:</strong> </p>
+      <code>
+          Delete user with given id
+      </code>
+      <p><strong>Expected Input:</strong> </p>
+      <code>
+        {
+          "id": 1 <br />
+        }
+      </code>
+      <p><strong>Sample Request:</strong> </p>
+      <code>
+        <br />
+      </code>
+      <p><strong>Expected Return:</strong> </p>
+      <code>
+          <br />
+      </code>
+      <p><strong>Expected Return if Fails:</strong> </p>
+      <code>
+          <br />
+      </code>
+    </div>
+    <!-- #endregion - User Endpoints -->
+
   </div>
   
   <script>
