@@ -17,8 +17,23 @@ module.exports = {
       user: process.env.DB_USER || "postgres",
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME || "postgres"
+    }
+  },
+  test: {
+    client: "pg",
+    migrations: {
+      directory: __dirname + "/database/migrations"
     },
-    ssl: true
+    seeds: {
+      directory: __dirname + "/database/seeds"
+    },
+    connection: {
+      host: process.TEST_DB_HOST,
+      port: process.env.TEST_DB_PORT || 5432,
+      user: process.env.TEST_DB_USER || "postgres",
+      password: process.env.TEST_DB_PASSWORD,
+      database: process.env.TEST_DB_NAME || "postgres"
+    }
   },
   production: {
     client: "pg",
