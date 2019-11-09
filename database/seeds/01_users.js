@@ -4,7 +4,8 @@ exports.seed = function(knex) {
     {
       // id: 1, (auto)
       username: "landlord",
-      password: "examplepass",
+      // (no password?) password: "examplepass",
+      email: "landlord@email.com",
       name: {
         title: "Title",
         firstname: "Firstname",
@@ -13,7 +14,6 @@ exports.seed = function(knex) {
         suffix: "Suffix",
         preferredname: "Preferred"
       },
-      email: "landlord@email.com",
       address: {
         street: "1 First St",
         street2: "Suite 2",
@@ -28,7 +28,7 @@ exports.seed = function(knex) {
     {
       // id: 2, (auto)
       username: "dev",
-      password: "pass",
+      // (no password?) password: "pass",
       name: {
         firstname: "Web",
         lastname: "Dev"
@@ -39,7 +39,7 @@ exports.seed = function(knex) {
     {
       // id: 3, (auto)
       username: "tenant",
-      password: "pass",
+      // (no password?) password: "pass",
       name: {
         firstname: "Tenant"
       },

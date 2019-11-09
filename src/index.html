@@ -11,26 +11,6 @@
       color: #ebebeb; 
       margin: 30px 80px;
     }
-    a {
-      color: #d4d4d4;
-    }
-    h1, h2, h3 {
-      position:relative;
-      cursor: pointer;
-    }
-    h1 {
-      left: -40px;
-    }
-    h2 {
-      left: -30px;
-    }
-    h3 {
-      left: -5px;
-      text-decoration: underline;
-    }
-    h4 {
-      left: 20px;
-    }
     button {
       background-color: #202020;
       border: 2px darkgray solid;
@@ -47,42 +27,37 @@
       left: -5px;
     }
     button:hover { background-color: darkgray; }
+    a { color: antiquewhite; }
+    h1, h2, h3 { position:relative; cursor: pointer; }
+    h1 { left: -40px; }
+    h2 { left: -30px; }
+    h3 { left: -5px; text-decoration: underline; }
+    h4 { left: 20px; }
     .show { display: block; }
     .hid { display: none; } 
-    .moreInfo {
-      position:relative;
-      left: 5px;
-    }
-    .moreInfo:hover {
-      color: lightskyblue;
-    }
-    h2.moreInfo:hover {
-      text-decoration: underline wavy;
-    }
-    li.moreInfo {
-      position:relative;
-      left: -20px;
-      cursor: pointer;
-    }
-    #main {
-      max-width: 400px;
-      padding-bottom: 100px;
-    }
+    .moreInfo { position:relative; left: 5px; }
+    .moreInfo:hover { color: lightskyblue; }
+    h2.moreInfo:hover { text-decoration: underline wavy; }
+    li.moreInfo { position:relative; left: -20px; cursor: pointer; }
+    #main { min-width: 400px; padding-bottom: 100px; }
     .moreContent {
+      min-width: 500px;
+      width: 50%;
       position: absolute;
       left: 500px;
       top: 20px;
       padding-bottom: 100px;
     }
-    code {
-      color: #d7eaf6;
-    }
-    .ident1 {
-      padding-left: 20px;
-    }
-    .comment {
-      color: lightgreen;
-    }
+    pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; color: lightgreen;}
+    code { color: lime; }
+    code p { margin: 0; }
+    .ident { padding-left: 15px; }
+    .ident2 { padding-left: 40px; }
+    .codesnip { color: lightgreen; }
+    .alert { color: red; font-weight: bold; }
+    .todo {  color: yellow; }
+    .comment { color: lightseagreen; }
+
   </style>
 </head>
 
@@ -165,11 +140,21 @@
   
   <!-- Right Side Content -->
   <div id="#content" class="moreContent">
+
+    <!-- Color Key -->
+    <div style="float: right;">
+      Color Key: <br />
+      <span class="codesnip">Code - lightgreen</span> <br />
+      <span class="todo">ToDo - Yellow</span> <br />
+      <span class="alert">Alert - red</span> <br />
+      <span class="comment">Commnet - lightseagreen</span>
+    </div>
+    
     <div style="color: lightgoldenrodyellow; text-align: center">
       Click on the list items to the left to open and close sections. <br />
       Click on the Header below to close a section. <br /><br />
     </div>
-    <div style="color: lightgreen;">
+    <div class="comment">
       <strong>Latest changes include: </strong>
       <ul>
         <li>Knex Setup for Database</li>
@@ -177,17 +162,44 @@
     </div>
     
     <!-- #region - Models -->
+      <script> var model = {}; </script>
     <!-- User Model --> 
-    <div id="modelsUsers" class="hid">
+    <div id="modelsUsers" class="show">
         <h2>Example need to Edit</h2>
         <h3 onclick="{showContent('modelsUsers')}">User Model</h3>
           <code>
-            {
-              "userid": 1, <br />
-              "username": "user", <br />
-              "password": "examplepass", <br />
-              ... more to add, example
-            }
+              <pre id="userModel"></pre>
+            <script>
+              model = { 
+                // id: 1, (auto)
+                username: "landlord",
+                // (no password?) password: "examplepass",
+                email: "landlord@email.com",
+                name: {
+                  title: "Title",
+                  firstname: "Firstname",
+                  middlename: "Middlename",
+                  lastname: "Lastname",
+                  suffix: "Suffix",
+                  preferredname: "Preferred"
+                },
+                address: {
+                  street: "1 First St",
+                  street2: "Suite 2",
+                  city: "Salt Lake City",
+                  state: "Utah",
+                  zip: "84101",
+                  country: "USA"
+                },
+                type: "landlord",
+                phone: "123-456-7890"
+              }
+              jsonModel = JSON.stringify(model, undefined, 4); 
+              document.getElementById("userModel").innerHTML = jsonModel
+              //output(model, document.getElementById("userModel"));
+              
+            </script>
+            
           </code>
       </div>
     <!-- #endregion - Models -->
@@ -395,6 +407,10 @@
       const select = document.getElementById(e);
       select.classList.toggle("show");
       select.classList.toggle("hid");
+    }
+    function output(obj, e) {
+      var jsonModel = JSON.stringify(obj, undefined, 2);
+      var element = e.innerHTML
     }
   </script>
   
