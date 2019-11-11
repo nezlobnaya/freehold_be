@@ -594,11 +594,11 @@
     // Tenant History Table
     function dbTenantHistory() {
       let tenantHistoryDb = {
-        id: 1,
-        'tenant-id': 3,
-        'property-id': 1,
-        'history-startdate': "01-01-2001",
-        'history-enddate': null
+        'id': "integer -> increment number assigned by database", 
+        'tenant-id': "integer -> references id in table \'users\'",
+        'property-id': "integer -> references id in table \'properties\'",
+        'history-startdate': "date, can be 'null'",
+        'history-enddate': "date, can be 'null'"
       }
 
       outputContent = models("Tenant History Model", "", tenantHistoryDb);
