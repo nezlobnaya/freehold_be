@@ -607,26 +607,15 @@
 
     // Work Order Table
     function dbWorkOrders() {
-      let woDb = [
-        {
-          id: 1,
-          'workorder': "Work Order Title",
-          'wo-description': "Tub is leaking.",
-          'wo-type': "plumbing",
-          'wo-startdate': "10-31-2018",
-          'wo-enddate': "11-05-2018",
-          'property-id': 1
-        },
-        {
-          id: 2,
-          'workorder': "Work Order Title",
-          'wo-description': "Lights not working in the living room.",
-          'wo-type': "electrical",
-          'wo-startdate': "11-03-2019",
-          'wo-enddate': null,
-          'property-id': 1
-        }
-      ]
+      let woDb = {
+        'id': "integer -> increment number assigned by database", 
+        'workorder': "string -> Work Order Title",
+        'wo-description': "text -> Description of the issue.",
+        'wo-type': "string -> type like: plumbing or electrical",
+        'wo-startdate': "date -> from a timestamp or date selection?",
+        'wo-enddate': "date, can be 'null'",
+        'property-id': "integer -> references id in table \'properties\'",
+      }
 
       outputContent = models("Work Order Table", "", woDb);
       output(outputContent);
