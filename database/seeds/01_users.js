@@ -4,7 +4,7 @@ exports.seed = function(knex) {
     {
       // id: 1, (auto)
       username: "landlord",
-      password: "examplepass",
+      // password: "examplepass", -- not needed if using Firebase
       name: {
         title: "Title",
         firstname: "Firstname",
@@ -28,7 +28,7 @@ exports.seed = function(knex) {
     {
       // id: 2, (auto)
       username: "dev",
-      password: "pass",
+      // password: "pass", -- not needed if using Firebase
       name: {
         firstname: "Web",
         lastname: "Dev"
@@ -39,7 +39,7 @@ exports.seed = function(knex) {
     {
       // id: 3, (auto)
       username: "tenant",
-      password: "pass",
+      // password: "pass", -- not needed if using Firebase
       name: {
         firstname: "Tenant"
       },
