@@ -499,95 +499,64 @@
     // #region - Database Structures
     function dbStructures(header, comment, model) {
       var jsonDB = JSON.stringify(model, undefined, 2);
-      return "<h3>" + header + "</h3> " + comment +
+      return "<h2> Database Structures </h2> " +
+      "<h3>" + header + "</h3> " + comment +
       "<pre>" + jsonDB + "</pre>";
     }
     
     // User Table
     function dbUsers() {
-      let landlordDb = { 
-        id: 1,
-        username: "landlord",
-        email: "landlord@email.com",
+      let userDb = { 
+        'id': "integer -> increment number assigned by database", 
+        username: "string, notNullable, unique",
+        email: "string, notNullable, unique",
         name: {
-          title: "Title",
-          firstname: "Firstname",
-          middlename: "Middlename",
-          lastname: "Lastname",
-          suffix: "Suffix",
-          preferredname: "Preferred"
+          title: "string",
+          firstname: "string",
+          middlename: "string",
+          lastname: "string",
+          suffix: "string",
+          preferredname: "string"
         },
         address: {
-          street: "1 First St",
-          street2: "Suite 2",
-          city: "Salt Lake City",
-          state: "Utah",
-          zip: "84101",
-          country: "USA"
+          street: "string",
+          street2: "string",
+          city: "string",
+          state: "string",
+          zip: "integer",
+          country: "string"
         },
-        type: "landlord",
-        phone: "123-456-7890"
+        type: "string, notNullable -> landlord, tenant, dev",
+        phone: "string"
       }
-      let devDb = { 
-        id: 2,
-        username: "dev",
-        name: {
-          firstname: "Web",
-          lastname: "Dev"
-        },
-        email: "dev@email.com",
-        type: "dev"
-      }
-      let tenantDb = { 
-        id: 3,
-        username: "tenant",
-        name: {
-          firstname: "Tenant"
-        },
-        email: "tenant@email.com",
-        type: "tenant"
-      }
-      let landlordComment = "<p class='todo'>Reviewing using JSON for name.</p>";
-      let devComment = "<p class='todo'></p>";
-      let tenantComment = "<p class='todo'></p>";
+      let comment = "<p class='todo'>Reviewing using JSON for name.</p>";
 
-      header = "<h2> Database Structures </h2> ";
-      outputContent = header + dbStructures("Landlord User", landlordComment, landlordDb) + dbStructures("Dev User", devComment, devDb) + dbStructures("Tenant User", tenantComment, tenantDb);
+      outputContent = dbStructures("Landlord User", comment, userDb);
       output(outputContent);
     }
   
     // Properties Table
     function dbProperty() {
       let propertyDb = {
-        id: 1,
-        'property-name': "Name for the Property",
+        'id': "integer -> increment number assigned by database", 
+        'property-name': "string -> Name for the Property",
         'property-address': {
-          street: "1 First St",
-          street2: "Suite 2",
-          city: "Salt Lake City",
-          state: "Utah",
-          zip: "84101",
-          country: "USA"
+          street: "string",
+          street2: "string",
+          city: "string",
+          state: "string",
+          zip: "integer",
+          country: "string"
         },
-        'property-image': "property.jpg",
-        'property-status': "occupied", // open, closed, occupied, forRent, forSale
-        'property-startdate': "01-01-2001",
-        'property-enddate': null,
-        'landlord-id': 1
+        'property-image': "string -> can be null",
+        'property-status': "string -> can be null", 
+        'property-startdate': "date -> can be null",
+        'property-enddate': "date -> can be null",
+        'landlord-id': "integer -> references id in table \'users\'"
       };
-      let propertyDb2 = {
-        id: 2,
-        'property-name': "Sample",
-        'property-address': {},
-        'property-status': "closed", // closed - no longer an active property
-        'property-startdate': "01-01-2001",
-        'property-enddate': "05-01-2018",
-        'landlord-id': 1
-      }
-      let propertyComment = "<p class='todo'></p>";
+      let propertyComment = "<p class='comment'>Status options may include: open, closed, occupied, forRent, or forSale.</p>";
 
-      header = "<h2> Database Structures </h2> ";
-      outputContent = header + dbStructures("Property Model 1", propertyComment, propertyDb) + dbStructures("Property Model 2", propertyComment, propertyDb2);
+      outputContent = dbStructures("Properties Table", propertyComment, propertyDb);
       output(outputContent);
     }
 
@@ -601,7 +570,7 @@
         'history-enddate': "date, can be 'null'"
       }
 
-      outputContent = models("Tenant History Model", "", tenantHistoryDb);
+      outputContent = dbStructures("Tenant History Table", "", tenantHistoryDb);
       output(outputContent);
     }
 
@@ -617,7 +586,7 @@
         'property-id': "integer -> references id in table \'properties\'",
       }
 
-      outputContent = models("Work Order Table", "", woDb);
+      outputContent = dbStructures("Work Order Table", "", woDb);
       output(outputContent);
     }
 
@@ -638,7 +607,7 @@
       comment = "<p class='comment'>Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent</p>" + 
         "<p class='todo'>Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed' </p>";
 
-      outputContent = models("Work Order Table", comment, woHistoryDb);
+      outputContent = dbStructures("Work Order Table", comment, woHistoryDb);
       output(outputContent);
     }
 
