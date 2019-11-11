@@ -9,7 +9,7 @@
     body { 
       background-color: #202020; 
       color: #ebebeb; 
-      margin: 30px 80px;
+      margin: 30px 20px;
     }
     button {
       background-color: #202020;
@@ -20,19 +20,15 @@
       text-decoration: none;
       display: inline-block;
       font-size: 10px;
-      margin: 4px 2px;
+      margin: 4px 10px;
       cursor: pointer;
       position:relative;
       top: -5px;
-      left: -5px;
     }
     button:hover { background-color: darkgray; }
     a { color: antiquewhite; }
-    h1, h2, h3 { position:relative; cursor: pointer; }
-    h1 { left: -40px; }
-    h2 { left: -30px; }
-    h3 { left: -5px; text-decoration: underline; }
-    h4 { left: 20px; }
+    h1, h2, h3 { position:relative; cursor: pointer;  }
+    h3 { padding-left: 45px; }
     .show { display: block; }
     .hid { display: none; } 
     .moreInfo { position:relative; left: 5px; }
@@ -40,11 +36,13 @@
     h2.moreInfo:hover { text-decoration: underline wavy; }
     li.moreInfo { position:relative; left: -20px; cursor: pointer; }
     #main { min-width: 400px; padding-bottom: 100px; }
+    #leftMenu { left: 5px; }
+    #leftMenu ul { padding-left: 85px; }
     .moreContent {
       min-width: 500px;
       width: 50%;
       position: absolute;
-      left: 500px;
+      left: 400px;
       top: 20px;
       padding-bottom: 100px;
     }
@@ -380,7 +378,8 @@
     }
 
     function output(content) { 
-      document.getElementById("planning").classList.toggle("hid");
+      document.getElementById("planning").classList.remove("show");
+      document.getElementById("planning").classList.add("hid");
       document.getElementById("contentContainer").innerHTML = content; 
     }
     
@@ -394,12 +393,11 @@
         "<pre>" + jsonModel + "</pre>";
     }
 
-    // User Model
+    // User Models
     function modelsUsers() {
-      model = { 
-        // id: 1, (auto)
+      let landlordModel = { 
+        id: 1,
         username: "landlord",
-        // (no password?) password: "examplepass",
         email: "landlord@email.com",
         name: {
           title: "Title",
@@ -420,10 +418,31 @@
         type: "landlord",
         phone: "123-456-7890"
       }
+      let devModel = { 
+        id: 2,
+        username: "dev",
+        name: {
+          firstname: "Web",
+          lastname: "Dev"
+        },
+        email: "dev@email.com",
+        type: "dev"
+      }
+      let tenantModel = { 
+        id: 3,
+        username: "tenant",
+        name: {
+          firstname: "Tenant"
+        },
+        email: "tenant@email.com",
+        type: "tenant"
+      }
 
-      outputContent = models("User Model", model);
+      outputContent = models("Landlord User Model", landlordModel) + models("Dev Model", devModel) + models("Tenant Model", tenantModel) ;
       output(outputContent);
     }
+    
+
   // #endregion - Models
     
   </script>
