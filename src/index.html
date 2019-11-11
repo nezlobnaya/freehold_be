@@ -59,6 +59,9 @@
     .comment { color: lightseagreen; }
 
   </style>
+  <script> 
+    var obj = {}; 
+  </script>
 </head>
 
 <body>
@@ -67,7 +70,7 @@
 
   <!-- Left Side Menu -->
   <div id="leftMenu">
-<!-- Not sure this is needed.
+  <!-- Not sure this is needed.
     <h1 onclick="{showContent('pitch')}"><button>v</button> Pitch</h1>
     <p id='pitch' class="hid">Add pitch here.</p>
 
@@ -87,27 +90,19 @@
       </div> 
   -->
 
-    <h1 onclick="{showContent('planning')}"><button>v</button> Planning</h1>
-      <div id="planning" class="hid">
-        <h2>Notion Product Board</h2>
-        <a href="https://www.notion.so/Property-Manager-bd4c33b5c8974b8aa938512b993f9108">Property Manager</a>
+    <h1 onclick="{showContent('planning')}">Planning</h1>
 
-        <h2>Trello Boards</h2>
-        <a href="https://trello.com/b/mKfgx81y/property-manager">Property Manager</a> <br />
-        <a href="https://trello.com/b/llCWH1QF/property-manager-retrospective">Property Manager Retrospective</a>
-      </div>
-
-    <h1 onclick="{showContent('developmentBE')}"><button>v</button> Development Back End</h1>
+    <h1 onclick="{showContent('developmentBE')}">Development Back End</h1>
     <div id="developmentBE" class="show">
 
-      <h2 class="moreInfo" onclick="{showContent('models')}">Models</h2>
+      <h2 class="moreInfo" onclick="{showContent('models')}"><button>v</button> Models</h2>
       <div id="models" class="hid">
         <ul>
-          <li class="moreInfo" onclick="{showContent('modelsUsers')}">User</li>
+          <li class="moreInfo" onclick="{modelsUsers()}">User</li>
         </ul>
       </div>
 
-      <h2 class="moreInfo" onclick="{showContent('endpoints')}">Endpoints</h2>
+      <h2 class="moreInfo" onclick="{showContent('endpoints')}"><button>v</button> Endpoints</h2>
       <div id="endpoints" class="hid">
 
         <h3 class="moreInfo" onclick="{showContent('userEndpoints')}">User Endpoints</h3>
@@ -129,7 +124,7 @@
         
       </div>
       
-      <h2 class="moreInfo" onclick="{showContent('database')}">Database Structure</h2>
+      <h2 class="moreInfo" onclick="{showContent('database')}"><button>v</button> Database Structure</h2>
       <div id="database" class="hid">
         <ul>
           <li class="moreInfo" onclick="{showContent('dbUsers')}">User</li>
@@ -151,59 +146,32 @@
       <span class="comment">Commnet - lightseagreen</span>
     </div>
     
+    <!-- How to Use this resource. -->
     <div style="color: lightgoldenrodyellow; text-align: center">
       Click on the list items to the left to open and close sections. <br />
       Click on the Header below to close a section. <br /><br />
     </div>
+
+    <!-- Latest Changes -->
     <div class="comment">
       <strong>Latest changes include: </strong>
       <ul>
         <li>Knex Setup for Database</li>
       </ul>
     </div>
-    
-    <!-- #region - Models -->
-      <script> var model = {}; </script>
-    <!-- User Model --> 
-    <div id="modelsUsers" class="show">
-        <h2>Example need to Edit</h2>
-        <h3 onclick="{showContent('modelsUsers')}">User Model</h3>
-          <code>
-              <pre id="userModel"></pre>
-            <script>
-              model = { 
-                // id: 1, (auto)
-                username: "landlord",
-                // (no password?) password: "examplepass",
-                email: "landlord@email.com",
-                name: {
-                  title: "Title",
-                  firstname: "Firstname",
-                  middlename: "Middlename",
-                  lastname: "Lastname",
-                  suffix: "Suffix",
-                  preferredname: "Preferred"
-                },
-                address: {
-                  street: "1 First St",
-                  street2: "Suite 2",
-                  city: "Salt Lake City",
-                  state: "Utah",
-                  zip: "84101",
-                  country: "USA"
-                },
-                type: "landlord",
-                phone: "123-456-7890"
-              }
-              jsonModel = JSON.stringify(model, undefined, 4); 
-              document.getElementById("userModel").innerHTML = jsonModel
-              //output(model, document.getElementById("userModel"));
-              
-            </script>
-            
-          </code>
-      </div>
-    <!-- #endregion - Models -->
+
+    <!-- Planning -->
+    <div id="planning" class="show">
+      <h2>Notion Product Board</h2>
+      <a href="https://www.notion.so/Property-Manager-bd4c33b5c8974b8aa938512b993f9108">Property Manager</a>
+
+      <h2>Trello Boards</h2>
+      <a href="https://trello.com/b/mKfgx81y/property-manager">Property Manager</a> <br />
+      <a href="https://trello.com/b/llCWH1QF/property-manager-retrospective">Property Manager Retrospective</a>
+    </div>
+
+    <!-- Content Container -->
+    <div id="contentContainer"></div>
 
     <!-- #region - User Endpoints --> 
     <!-- User Endpoint - SignUp --> 
@@ -404,15 +372,60 @@
   </div>
   
   <script>
+
     function showContent(e) {
       const select = document.getElementById(e);
       select.classList.toggle("show");
       select.classList.toggle("hid");
     }
-    function output(obj, e) {
-      var jsonModel = JSON.stringify(obj, undefined, 2);
-      var element = e.innerHTML
+
+    function output(content) { 
+      document.getElementById("planning").classList.toggle("hid");
+      document.getElementById("contentContainer").innerHTML = content; 
     }
+    
+    // Initial Display Setup
+    var outputContent = "<h3>Content</h3>";
+    
+    // #region - Models
+    function models(header, model) {
+      var jsonModel = JSON.stringify(model, undefined, 2);
+      return "<h3>" + header + "</h3> " + 
+        "<pre>" + jsonModel + "</pre>";
+    }
+
+    // User Model
+    function modelsUsers() {
+      model = { 
+        // id: 1, (auto)
+        username: "landlord",
+        // (no password?) password: "examplepass",
+        email: "landlord@email.com",
+        name: {
+          title: "Title",
+          firstname: "Firstname",
+          middlename: "Middlename",
+          lastname: "Lastname",
+          suffix: "Suffix",
+          preferredname: "Preferred"
+        },
+        address: {
+          street: "1 First St",
+          street2: "Suite 2",
+          city: "Salt Lake City",
+          state: "Utah",
+          zip: "84101",
+          country: "USA"
+        },
+        type: "landlord",
+        phone: "123-456-7890"
+      }
+
+      outputContent = models("User Model", model);
+      output(outputContent);
+    }
+  // #endregion - Models
+    
   </script>
   
 </body>
