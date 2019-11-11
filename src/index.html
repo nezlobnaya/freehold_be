@@ -428,7 +428,8 @@
       let devComment = "<p class='todo'>Still updating</p>";
       let tenantComment = "<p class='todo'>Still updating</p>";
 
-      outputContent = models("Landlord User Model", landlordComment, landlordModel) + models("Dev Model", devComment, devModel) + models("Tenant Model", tenantComment, tenantModel) ;
+      header = "<h2>User Models</h2> ";
+      outputContent = header + models("Landlord User Model", landlordComment, landlordModel) + models("Dev Model", devComment, devModel) + models("Tenant Model", tenantComment, tenantModel) ;
       output(outputContent);
     }
     
@@ -462,7 +463,8 @@
       }
       let propertyComment = "<p class='todo'>Still updating</p>";
 
-      outputContent = models("Property Model 1", propertyComment, propertyModel) + models("Property Model 2", propertyComment, propertyModel2);
+      header = "<h2>Property Models</h2> ";
+      outputContent = header + models("Property Model 1", propertyComment, propertyModel) + models("Property Model 2", propertyComment, propertyModel2);
       output(outputContent);
     }
     
@@ -477,7 +479,8 @@
       }
       let tenantHistoryComment = "<p class='todo'>Still updating - This is from Database Structure.</p>";
 
-      outputContent = models("Tenant History Model", tenantHistoryComment, tenantHistoryModel);
+      header = "<h2>Tenant History Model</h2> ";
+      outputContent = header + models("", tenantHistoryComment, tenantHistoryModel);
       output(outputContent);
     }
 
@@ -486,8 +489,7 @@
   // #region - Database Structures
   function dbStructures(header, comment, model) {
     var jsonDB = JSON.stringify(model, undefined, 2);
-    return "<h2> Database Structures </h2> " + 
-    "<h3>" + header + "</h3> " + comment +
+    return "<h3>" + header + "</h3> " + comment +
     "<pre>" + jsonDB + "</pre>";
   }
   
@@ -539,11 +541,12 @@
     let devComment = "<p class='todo'>Still updating</p>";
     let tenantComment = "<p class='todo'>Still updating</p>";
 
-    outputContent = dbStructures("Landlord User", landlordComment, landlordDb) + dbStructures("Dev User", devComment, devDb) + dbStructures("Tenant User", tenantComment, tenantDb);
+    header = "<h2> Database Structures </h2> ";
+    outputContent = header + dbStructures("Landlord User", landlordComment, landlordDb) + dbStructures("Dev User", devComment, devDb) + dbStructures("Tenant User", tenantComment, tenantDb);
     output(outputContent);
   }
  
-  // Property Table
+  // Properties Table
   function dbProperty() {
     let propertyDb = {
       id: 1,
@@ -573,7 +576,8 @@
     }
     let propertyComment = "<p class='todo'>Still updating</p>";
 
-    outputContent = dbStructures("Property Model 1", propertyComment, propertyDb) + dbStructures("Property Model 2", propertyComment, propertyDb2);
+    header = "<h2> Database Structures </h2> ";
+    outputContent = header + dbStructures("Property Model 1", propertyComment, propertyDb) + dbStructures("Property Model 2", propertyComment, propertyDb2);
     output(outputContent);
   }
   </script>
