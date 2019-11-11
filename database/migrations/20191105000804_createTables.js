@@ -6,8 +6,8 @@ exports.up = function(knex) {
   .createTable("users", tbl => {
     tbl.increments();
     tbl.string('username').notNullable().unique();
-    tbl.string('password').notNullable();
-    tbl.json("name").notNullable();
+    // tbl.string('password').notNullable(); -- password not needed if using Firebase
+    tbl.json("name").notNullable(); // currently going to try as a json ... this is still under review depending on how tests turn out.
     tbl.string('email').notNullable().unique();
     tbl.json("address");
     tbl.string('type').notNullable();
@@ -24,7 +24,8 @@ exports.up = function(knex) {
     tbl.date('property-startdate');
     tbl.date('property-enddate');
     tbl.integer('landlord-id').unsigned()
-      .references('id').inTable('users');
+      .references('id').inTable('users')
+      .onUpdate('CASCADE').onDelete('CASCADE');
   })
   
   // tenanthistory
@@ -47,14 +48,16 @@ exports.up = function(knex) {
     tbl.date('wo-startdate').notNullable();
     tbl.date('wo-enddate');
     tbl.integer('property-id').unsigned()
-      .references('id').inTable('properties');
+      .references('id').inTable('properties')
+      .onUpdate('CASCADE').onDelete('CASCADE');
   })
   
   // wohistory
   .createTable("wohistory", tbl => {
     tbl.increments();
     tbl.integer('wo-id').unsigned()
-      .references('id').inTable('workorders');
+      .references('id').inTable('workorders')
+      .onUpdate('CASCADE').onDelete('CASCADE');
     tbl.string('wo-status');
     tbl.integer('wo-urgency');
     tbl.json('wo-update');
