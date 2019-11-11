@@ -62,7 +62,7 @@
     .ident { padding-left: 15px; }
     .ident2 { padding-left: 40px; }
     .codesnip { color: lightgreen; }
-    .alert { color: red; font-weight: bold; }
+    .alert { color: red; }
     .todo {  color: yellow; }
     .comment { color: lightseagreen; }
 
@@ -138,6 +138,7 @@
           <li class="moreInfo" onclick="{dbProperty()}">Properties Table</li>
           <li class="moreInfo" onclick="{dbTenantHistory()}">Tenant History Table</li> 
           <li class="moreInfo" onclick="{dbWorkOrders()}">Work Order Table</li>
+          <li class="moreInfo" onclick="{dbWorkOrderHistory()}">Work Order History Table</li>
         </ul>
       </div>
 
@@ -628,6 +629,27 @@
       ]
 
       outputContent = models("Work Order Table", "", woDb);
+      output(outputContent);
+    }
+
+    // Work Order History Table
+    function dbWorkOrderHistory() {
+      let woHistoryDb = {
+        'id': "integer -> increment number assigned by database", 
+        'wo-id': "integer -> references id in table \'workorders\'",
+        'wo-status': 'string -> status of work order', 
+        'wo-urgency': "integer -> Scale of 1 to 5",
+        'wo-update': { 
+          assignedTo: "string -> Name of Company task assigned to",
+          comment: "string -> optional comment"
+        },
+        'wo-updatedate': "timestamp"
+      }
+
+      comment = "<p class='comment'>Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent</p>" + 
+        "<p class='todo'>Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed' </p>";
+
+      outputContent = models("Work Order Table", comment, woHistoryDb);
       output(outputContent);
     }
 
