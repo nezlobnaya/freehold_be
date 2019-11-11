@@ -98,6 +98,7 @@
         <ul>
           <li class="moreInfo" onclick="{modelsUsers()}">User Models</li>
           <li class="moreInfo" onclick="{modelsProperty()}">Property Models</li>
+          <li class="moreInfo" onclick="{modelsTenantHistory()}">Tenant History Model</li>
         </ul>
       </div>
 
@@ -127,6 +128,9 @@
       <div id="database" class="hid">
         <ul>
           <li class="moreInfo" onclick="{showContent('dbUsers')}">User</li>
+          <li class="moreInfo" onclick="{modelsUsers()}">User Models</li>
+          <li class="moreInfo" onclick="{modelsProperty()}">Property Models</li>
+          <li class="moreInfo" onclick="{modelsTenantHistory()}">Tenant History Model</li>
         </ul>
       </div>
 
@@ -388,10 +392,10 @@
     var outputContent = "<h3>Content</h3>";
     
     // #region - Models
-    function models(header, model) {
+    function models(header, comment, model) {
       var jsonModel = JSON.stringify(model, undefined, 2);
-      return "<h3>" + header + "</h3> " + 
-        "<pre>" + jsonModel + "</pre>";
+      return "<h3>" + header + "</h3> " + comment +
+      "<pre>" + jsonModel + "</pre>";
     }
 
     // User Models
@@ -438,8 +442,11 @@
         email: "tenant@email.com",
         type: "tenant"
       }
+      let landlordComment = "<p class='todo'>Still updating</p>";
+      let devComment = "<p class='todo'>Still updating</p>";
+      let tenantComment = "<p class='todo'>Still updating</p>";
 
-      outputContent = models("Landlord User Model", landlordModel) + models("Dev Model", devModel) + models("Tenant Model", tenantModel) ;
+      outputContent = models("Landlord User Model", landlordComment, landlordModel) + models("Dev Model", devComment, devModel) + models("Tenant Model", tenantComment, tenantModel) ;
       output(outputContent);
     }
     
@@ -471,8 +478,24 @@
         'property-enddate': "05-01-2018",
         'landlord-id': 1
       }
+      let propertyComment = "<p class='todo'>Still updating</p>";
 
-      outputContent = models("Property Model 1", propertyModel) + models("Property Model 2", propertyModel2);
+      outputContent = models("Property Model 1", propertyComment, propertyModel) + models("Property Model 2", propertyComment, propertyModel2);
+      output(outputContent);
+    }
+    
+    // Tenant History Model
+    function modelsTenantHistory() {
+      let tenantHistoryModel = {
+        id: 1,
+        'tenant-id': 3,
+        'property-id': 1,
+        'history-startdate': "01-01-2001",
+        'history-enddate': null
+      }
+      let tenantHistoryComment = "<p class='todo'>Still updating - This is from Database Structure.</p>";
+
+      outputContent = models("Tenant History Model", tenantHistoryComment, tenantHistoryModel);
       output(outputContent);
     }
 
