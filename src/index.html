@@ -28,7 +28,6 @@
     button:hover { background-color: darkgray; }
     a { color: antiquewhite; }
     h1, h2, h3 { position:relative; cursor: pointer;  }
-    h3 { padding-left: 45px; }
     .show { display: block; }
     .hid { display: none; } 
     .moreInfo { position:relative; left: 5px; }
@@ -37,6 +36,7 @@
     li.moreInfo { position:relative; left: -20px; cursor: pointer; }
     #main { min-width: 400px; padding-bottom: 100px; }
     #leftMenu { left: 5px; }
+    #leftMenu h3 { padding-left: 45px; }
     #leftMenu ul { padding-left: 85px; }
     .moreContent {
       min-width: 500px;
@@ -57,9 +57,9 @@
     .comment { color: lightseagreen; }
 
   </style>
-  <script> 
+  <!-- <script> 
     var obj = {}; 
-  </script>
+  </script> -->
 </head>
 
 <body>
@@ -96,7 +96,8 @@
       <h2 class="moreInfo" onclick="{showContent('models')}"><button>v</button> Models</h2>
       <div id="models" class="hid">
         <ul>
-          <li class="moreInfo" onclick="{modelsUsers()}">User</li>
+          <li class="moreInfo" onclick="{modelsUsers()}">User Models</li>
+          <li class="moreInfo" onclick="{modelsProperty()}">Property Models</li>
         </ul>
       </div>
 
@@ -442,6 +443,38 @@
       output(outputContent);
     }
     
+    // Property Models
+    function modelsProperty() {
+      let propertyModel = {
+        id: 1,
+        'property-name': "Name for the Property",
+        'property-address': {
+          street: "1 First St",
+          street2: "Suite 2",
+          city: "Salt Lake City",
+          state: "Utah",
+          zip: "84101",
+          country: "USA"
+        },
+        'property-image': "property.jpg",
+        'property-status': "occupied", // open, closed, occupied, forRent, forSale
+        'property-startdate': "01-01-2001",
+        'property-enddate': null,
+        'landlord-id': 1
+      };
+      let propertyModel2 = {
+        id: 2,
+        'property-name': "Sample",
+        'property-address': {},
+        'property-status': "closed", // closed - no longer an active property
+        'property-startdate': "01-01-2001",
+        'property-enddate': "05-01-2018",
+        'landlord-id': 1
+      }
+
+      outputContent = models("Property Model 1", propertyModel) + models("Property Model 2", propertyModel2);
+      output(outputContent);
+    }
 
   // #endregion - Models
     
