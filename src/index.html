@@ -129,7 +129,8 @@
         <ul>
           <li class="moreInfo" onclick="{dbUsers()}">Users Table</li> 
           <li class="moreInfo" onclick="{dbProperty()}">Properties Table</li>
-          <li class="moreInfo" onclick="{dbTenantHistory()}">Tenant History Table</li>
+          <li class="moreInfo" onclick="{dbTenantHistory()}">Tenant History Table</li> 
+          <li class="moreInfo" onclick="{dbWorkOrders()}">Work Order Table</li>
         </ul>
       </div>
 
@@ -593,6 +594,33 @@
       }
 
       outputContent = models("Tenant History Model", "", tenantHistoryDb);
+      output(outputContent);
+    }
+
+    // Work Order Table
+    function dbWorkOrders() {
+      let woDb = [
+        {
+          id: 1,
+          'workorder': "Work Order Title",
+          'wo-description': "Description of the issue. For example: Tub is leaking.",
+          'wo-type': "plumbing",
+          'wo-startdate': "10-31-2018",
+          'wo-enddate': "11-05-2018",
+          'property-id': 1
+        },
+        {
+          id: 2,
+          'workorder': "Work Order Title",
+          'wo-description': "Description of the issue. For example: Lights not working in the living room.",
+          'wo-type': "electrical",
+          'wo-startdate': "11-03-2019",
+          'wo-enddate': null,
+          'property-id': 1
+        }
+      ]
+
+      outputContent = models("Work Order Table", "", woDb);
       output(outputContent);
     }
 
