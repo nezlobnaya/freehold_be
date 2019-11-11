@@ -127,7 +127,8 @@
       <h2 class="moreInfo" onclick="{showContent('database')}"><button>v</button> Database Structure</h2>
       <div id="database" class="hid">
         <ul>
-          <li class="moreInfo" onclick="{dbUsers()}">Users Table</li>
+          <li class="moreInfo" onclick="{dbUsers()}">Users Table</li> 
+          <li class="moreInfo" onclick="{dbProperty()}">Properties Table</li>
         </ul>
       </div>
 
@@ -490,7 +491,7 @@
     "<pre>" + jsonDB + "</pre>";
   }
   
-  // User Models
+  // User Table
   function dbUsers() {
     let landlordDb = { 
       id: 1,
@@ -539,6 +540,40 @@
     let tenantComment = "<p class='todo'>Still updating</p>";
 
     outputContent = dbStructures("Landlord User", landlordComment, landlordDb) + dbStructures("Dev User", devComment, devDb) + dbStructures("Tenant User", tenantComment, tenantDb);
+    output(outputContent);
+  }
+ 
+  // Property Table
+  function dbProperty() {
+    let propertyDb = {
+      id: 1,
+      'property-name': "Name for the Property",
+      'property-address': {
+        street: "1 First St",
+        street2: "Suite 2",
+        city: "Salt Lake City",
+        state: "Utah",
+        zip: "84101",
+        country: "USA"
+      },
+      'property-image': "property.jpg",
+      'property-status': "occupied", // open, closed, occupied, forRent, forSale
+      'property-startdate': "01-01-2001",
+      'property-enddate': null,
+      'landlord-id': 1
+    };
+    let propertyDb2 = {
+      id: 2,
+      'property-name': "Sample",
+      'property-address': {},
+      'property-status': "closed", // closed - no longer an active property
+      'property-startdate': "01-01-2001",
+      'property-enddate': "05-01-2018",
+      'landlord-id': 1
+    }
+    let propertyComment = "<p class='todo'>Still updating</p>";
+
+    outputContent = dbStructures("Property Model 1", propertyComment, propertyDb) + dbStructures("Property Model 2", propertyComment, propertyDb2);
     output(outputContent);
   }
   </script>
