@@ -4,12 +4,27 @@ const firebase = require("../../lib/firebase");
 async function createUser(req, res) {
   const { email, password } = req.body;
 
-  const user = await admin.auth().createUser({
-    email,
-    password
-  });
+  try {
+    // Create the user
+    const user = await admin.auth().createUser({
+      email,
+      password
+    });
 
-  res.status(201).send(user);
+    if (!user) {
+      return res.status(400).json({ message: "Account not created" });
+    }
+
+    // Generate a JWT that can be used for future requests
+    const token = await admin.auth().createCustomToken(user.uid);
+
+    res.status(201).json({ token });
+  } catch (err) {
+    console.error(err);
+
+    // TODO: Come back and address additional issues from firebase
+    res.status(500).json({})
+  }
 }
 
 async function login(req, res) {
@@ -25,9 +40,6 @@ async function login(req, res) {
     await firebase.auth().signInWithEmailAndPassword(email, password);
 
     const token = await firebase.auth().currentUser.getIdToken();
-
-    const blah = await admin.auth().verifyIdToken(token);
-    console.log(blah);
 
     res.status(200).json({ token });
   } catch (err) {
