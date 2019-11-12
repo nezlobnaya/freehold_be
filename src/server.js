@@ -1,10 +1,12 @@
 const express = require("express");
 const path = require('path');
 
-const app = express();
-
 // require router files
-const propertyRouter = require('./api/properties/property-router.js');
+// const authRouter = require("./routes/auth/");
+const propertyRouter = require('./routes/properties/property-router.js');
+
+const app = express();
+app.use(express.json());
 
 // Base Route
 app.get('/', (req, res) => {
@@ -12,9 +14,15 @@ app.get('/', (req, res) => {
 });
 
 // Routes
+// app.use("/api/auth", authRouter);
+app.use('/api/properties', propertyRouter);
+
 app.get("/hello", (_req, res) => {
   res.send("Hello, world");
 });
-app.use('/api/properties', propertyRouter);
+
+// app.get("/protected", bearerAuth, (_req, res) => {
+//   res.send("Yay");
+// });
 
 module.exports = app;
