@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Property Manager Backend</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+  <style>
+    body { 
+      background-color: #202020; 
+      color: #ebebeb; 
+      margin: 30px 20px;
+    }
+    button {
+      background-color: #202020;
+      border: 2px darkgray solid;
+      color: white;
+      padding: 5px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 10px;
+      margin: 4px 10px;
+      cursor: pointer;
+      position:relative;
+      top: -5px;
+    }
+    button:hover { background-color: darkgray; }
+    a { color: antiquewhite; }
+    h1, h2, h3 { position:relative; cursor: pointer;  }
+    .show { display: block; }
+    .hid { display: none; } 
+    .moreInfo { position:relative; left: 5px; }
+    .moreInfo:hover { color: lightskyblue; }
+    h2.moreInfo:hover { text-decoration: underline wavy; }
+    li.moreInfo { position:relative; left: -20px; cursor: pointer; }
+    #main { min-width: 400px; padding-bottom: 100px; }
+    #leftMenu { left: 5px; }
+    #leftMenu h3 { padding-left: 45px; }
+    #leftMenu ul { padding-left: 85px; }
+    .moreContent {
+      min-width: 500px;
+      width: 50%;
+      position: absolute;
+      left: 400px;
+      top: 20px;
+      padding-bottom: 100px;
+    }
+    pre { 
+      outline: 1px solid #ccc; 
+      padding: 5px; 
+      margin: 5px; 
+      color: lightgreen; 
+      max-width: 600px;
+      white-space: pre-wrap;       /* css-3 */
+      white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+      white-space: -pre-wrap;      /* Opera 4-6 */
+      white-space: -o-pre-wrap;    /* Opera 7 */
+      word-wrap: break-word;       /* Internet Explorer 5.5+ */}
+    code { color: lime; }
+    code p { margin: 0; }
+    .ident { padding-left: 15px; }
+    .ident2 { padding-left: 40px; }
+    .codesnip { color: lightgreen; }
+    .alert { color: red; }
+    .todo {  color: yellow; }
+    .comment { color: lightseagreen; }
+
+  </style>
+</head>
+
+<body>
+
+<div id="main">
+
+  <!-- Left Side Menu -->
+  <div id="leftMenu">
+  <!-- Not sure this is needed.
+    <h1 onclick="{showContent('pitch')}"><button>v</button> Pitch</h1>
+    <p id='pitch' class="hid">Add pitch here.</p>
+
+    <h1 onclick="{showContent('product_canvas')}"><button>v</button> Product Canvas</h1>
+      <div id="product_canvas" class="hid">
+      <h2 onclick="{showContent('proposal')}"><button>v</button> Proposal</h2>
+        <div id="proposal" class="hid">
+        <h3>What problem does your app solve?</h3>
+          <p> </p>
+
+        <h3>Be as specific as possible; how does your app solve the problem?</h3>
+          <p>This app will allow:</p>
+          <ul>
+            <li>The user to login</li>
+          </ul>
+        </div>
+      </div> 
+  -->
+
+    <h1 onclick="{showContent('planning')}">Planning</h1>
+
+    <h1 onclick="{showContent('developmentBE')}">Development Back End</h1>
+    <div id="developmentBE" class="show">
+
+      <h2 class="moreInfo" onclick="{showContent('models')}"><button>v</button> Models</h2>
+      <div id="models" class="hid">
+        <ul>
+          <li class="moreInfo" onclick="{modelsUsers()}">User Models</li>
+          <li class="moreInfo" onclick="{modelsProperty()}">Property Models</li>
+          <li class="moreInfo" onclick="{modelsTenantHistory()}">Tenant History Model</li>
+        </ul>
+      </div>
+
+    <!-- Working on Endpoints
+      <h2 class="moreInfo" onclick="{showContent('endpoints')}"><button>v</button> Endpoints</h2>
+      <div id="endpoints" class="hid">
+
+        <h3 class="moreInfo" onclick="{showContent('userEndpoints')}">User Endpoints</h3>
+        <div id="userEndpoints" class="hid">
+          <ul>
+            <li class="moreInfo" onclick="{showContent('signup')}">Sign Up</li>
+            <li class="moreInfo" onclick="{showContent('login')}">Login</li>
+            <li class="moreInfo" onclick="{showContent('updateUser')}">Update User</li>
+            <li class="moreInfo" onclick="{showContent('deleteUser')}">Delete User</li>
+          </ul>
+        </div>
+
+        <h3 class="moreInfo" onclick="{showContent('propertyEndpoints')}">Property Endpoints</h3>
+        <div id="propertyEndpoints" class="hid">
+          <ul>
+            <li class="moreInfo" onclick="{showContent('getAllProperties')}">Get All Properties</li>
+          </ul>
+        </div>
+        
+      </div> 
+    -->
+      
+      <h2 class="moreInfo" onclick="{showContent('database')}"><button>v</button> Database Structure</h2>
+      <div id="database" class="hid">
+        <ul>
+          <li class="moreInfo" onclick="{dbUsers()}">Users Table</li> 
+          <li class="moreInfo" onclick="{dbProperty()}">Properties Table</li>
+          <li class="moreInfo" onclick="{dbTenantHistory()}">Tenant History Table</li> 
+          <li class="moreInfo" onclick="{dbWorkOrders()}">Work Order Table</li>
+          <li class="moreInfo" onclick="{dbWorkOrderHistory()}">Work Order History Table</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+  
+  <!-- Right Side Content -->
+  <div id="#content" class="moreContent">
+
+    <!-- Color Key -->
+    <div style="float: right;">
+      Color Key: <br />
+      <span class="codesnip">Code - lightgreen</span> <br />
+      <span class="todo">ToDo - Yellow</span> <br />
+      <span class="alert">Alert - red</span> <br />
+      <span class="comment">Commnet - lightseagreen</span>
+    </div>
+    
+    <!-- How to Use this resource. -->
+    <div style="color: lightgoldenrodyellow; text-align: center">
+      Click on the list items to the left to open and close sections. <br />
+      Click on the Header below to close a section. <br /><br />
+    </div>
+
+    <!-- Latest Changes -->
+    <div class="comment">
+      <strong>Latest changes include: </strong>
+      <ul>
+        <li>Knex Setup for Database</li>
+        <li>Updating Index to setup Schemas</li>
+        <li>Database Structures updated on the index page.</li>
+      </ul>
+    </div>
+
+    <!-- Planning -->
+    <div id="planning" class="show">
+      <h2>Notion Product Board</h2>
+      <a href="https://www.notion.so/Property-Manager-bd4c33b5c8974b8aa938512b993f9108">Property Manager</a>
+
+      <h2>Trello Boards</h2>
+      <a href="https://trello.com/b/mKfgx81y/property-manager">Property Manager</a> <br />
+      <a href="https://trello.com/b/llCWH1QF/property-manager-retrospective">Property Manager Retrospective</a>
+    </div>
+
+    <!-- Content Container -->
+    <div id="contentContainer"></div>
+
+  </div>
+  
+  <script>
+
+    function showContent(e) {
+      const select = document.getElementById(e);
+      select.classList.toggle("show");
+      select.classList.toggle("hid");
+    }
+
+    function output(content) { 
+      document.getElementById("planning").classList.remove("show");
+      document.getElementById("planning").classList.add("hid");
+      document.getElementById("contentContainer").innerHTML = content; 
+    }
+    
+    // Initial Display Setup
+    var outputContent = "<h3>Content</h3>";
+    
+    // #region - Models
+    function models(header, comment, model) {
+      var jsonModel = JSON.stringify(model, undefined, 2);
+      return "<h3>" + header + "</h3> " + comment +
+      "<pre>" + jsonModel + "</pre>";
+    }
+
+    // User Models
+    function modelsUsers() {
+      let landlordModel = { 
+        id: 1,
+        username: "landlord",
+        email: "landlord@email.com",
+        name: {
+          title: "Title",
+          firstname: "Firstname",
+          middlename: "Middlename",
+          lastname: "Lastname",
+          suffix: "Suffix",
+          preferredname: "Preferred"
+        },
+        address: {
+          street: "1 First St",
+          street2: "Suite 2",
+          city: "Salt Lake City",
+          state: "Utah",
+          zip: "84101",
+          country: "USA"
+        },
+        type: "landlord",
+        phone: "123-456-7890"
+      }
+      let devModel = { 
+        id: 2,
+        username: "dev",
+        name: {
+          firstname: "Web",
+          lastname: "Dev"
+        },
+        email: "dev@email.com",
+        type: "dev"
+      }
+      let tenantModel = { 
+        id: 3,
+        username: "tenant",
+        name: {
+          firstname: "Tenant"
+        },
+        email: "tenant@email.com",
+        type: "tenant"
+      }
+      let landlordComment = "<p class='todo'>Still updating</p>";
+      let devComment = "<p class='todo'>Still updating</p>";
+      let tenantComment = "<p class='todo'>Still updating</p>";
+
+      header = "<h2>User Models</h2> ";
+      outputContent = header + models("Landlord User Model", landlordComment, landlordModel) + models("Dev Model", devComment, devModel) + models("Tenant Model", tenantComment, tenantModel) ;
+      output(outputContent);
+    }
+    
+    // Property Models
+    function modelsProperty() {
+      let propertyModel = {
+        id: 1,
+        'property-name': "Name for the Property",
+        'property-address': {
+          street: "1 First St",
+          street2: "Suite 2",
+          city: "Salt Lake City",
+          state: "Utah",
+          zip: "84101",
+          country: "USA"
+        },
+        'property-image': "property.jpg",
+        'property-status': "occupied", // open, closed, occupied, forRent, forSale
+        'property-startdate': "01-01-2001",
+        'property-enddate': null,
+        'landlord-id': 1
+      };
+      let propertyModel2 = {
+        id: 2,
+        'property-name': "Sample",
+        'property-address': {},
+        'property-status': "closed", // closed - no longer an active property
+        'property-startdate': "01-01-2001",
+        'property-enddate': "05-01-2018",
+        'landlord-id': 1
+      }
+      let propertyComment = "<p class='todo'>Still updating</p>";
+
+      header = "<h2>Property Models</h2> ";
+      outputContent = header + models("Property Model 1", propertyComment, propertyModel) + models("Property Model 2", propertyComment, propertyModel2);
+      output(outputContent);
+    }
+    
+    // Tenant History Model
+    function modelsTenantHistory() {
+      let tenantHistoryModel = {
+        id: 1,
+        'tenant-id': 3,
+        'property-id': 1,
+        'history-startdate': "01-01-2001",
+        'history-enddate': null
+      }
+      let tenantHistoryComment = "<p class='todo'>Still updating - This is from Database Structure.</p>";
+
+      header = "<h2>Tenant History Model</h2> ";
+      outputContent = header + models("", tenantHistoryComment, tenantHistoryModel);
+      output(outputContent);
+    }
+
+  // #endregion - Models
+
+    // #region - Database Structures
+    function dbStructures(header, comment, model) {
+      var jsonDB = JSON.stringify(model, undefined, 2);
+      return "<h2> Database Structures </h2> " +
+      "<h3>" + header + "</h3> " + comment +
+      "<pre>" + jsonDB + "</pre>";
+    }
+    
+    // User Table
+    function dbUsers() {
+      let userDb = { 
+        'id': "integer -> increment number assigned by database", 
+        username: "string, notNullable, unique",
+        email: "string, notNullable, unique",
+        name: {
+          title: "string",
+          firstname: "string",
+          middlename: "string",
+          lastname: "string",
+          suffix: "string",
+          preferredname: "string"
+        },
+        address: {
+          street: "string",
+          street2: "string",
+          city: "string",
+          state: "string",
+          zip: "integer",
+          country: "string"
+        },
+        type: "string, notNullable -> landlord, tenant, dev",
+        phone: "string"
+      }
+      let comment = "<p class='todo'>Reviewing using JSON for name.</p>";
+
+      outputContent = dbStructures("Landlord User", comment, userDb);
+      output(outputContent);
+    }
+  
+    // Properties Table
+    function dbProperty() {
+      let propertyDb = {
+        'id': "integer -> increment number assigned by database", 
+        'property-name': "string -> Name for the Property",
+        'property-address': {
+          street: "string",
+          street2: "string",
+          city: "string",
+          state: "string",
+          zip: "integer",
+          country: "string"
+        },
+        'property-image': "string -> can be null",
+        'property-status': "string -> can be null", 
+        'property-startdate': "date -> can be null",
+        'property-enddate': "date -> can be null",
+        'landlord-id': "integer -> references id in table \'users\'"
+      };
+      let propertyComment = "<p class='comment'>Status options may include: open, closed, occupied, forRent, or forSale.</p>";
+
+      outputContent = dbStructures("Properties Table", propertyComment, propertyDb);
+      output(outputContent);
+    }
+
+    // Tenant History Table
+    function dbTenantHistory() {
+      let tenantHistoryDb = {
+        'id': "integer -> increment number assigned by database", 
+        'tenant-id': "integer -> references id in table \'users\'",
+        'property-id': "integer -> references id in table \'properties\'",
+        'history-startdate': "date, can be 'null'",
+        'history-enddate': "date, can be 'null'"
+      }
+
+      outputContent = dbStructures("Tenant History Table", "", tenantHistoryDb);
+      output(outputContent);
+    }
+
+    // Work Order Table
+    function dbWorkOrders() {
+      let woDb = {
+        'id': "integer -> increment number assigned by database", 
+        'workorder': "string -> Work Order Title",
+        'wo-description': "text -> Description of the issue.",
+        'wo-type': "string -> type like: plumbing or electrical",
+        'wo-startdate': "date -> from a timestamp or date selection?",
+        'wo-enddate': "date, can be 'null'",
+        'property-id': "integer -> references id in table \'properties\'",
+      }
+
+      outputContent = dbStructures("Work Order Table", "", woDb);
+      output(outputContent);
+    }
+
+    // Work Order History Table
+    function dbWorkOrderHistory() {
+      let woHistoryDb = {
+        'id': "integer -> increment number assigned by database", 
+        'wo-id': "integer -> references id in table \'workorders\'",
+        'wo-status': 'string -> status of work order', 
+        'wo-urgency': "integer -> Scale of 1 to 5",
+        'wo-update': { 
+          assignedTo: "string -> Name of Company task assigned to",
+          comment: "string -> optional comment"
+        },
+        'wo-updatedate': "timestamp"
+      }
+
+      comment = "<p class='comment'>Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent</p>" + 
+        "<p class='todo'>Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed' </p>";
+
+      outputContent = dbStructures("Work Order Table", comment, woHistoryDb);
+      output(outputContent);
+    }
+
+    // #endregion - Database Structures
+    // 
+  </script>
+  
+</body>
+</html>
