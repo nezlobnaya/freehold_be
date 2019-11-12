@@ -203,117 +203,119 @@
     var outputContent = "<h3>Content</h3>";
     
     // #region - Models
-    function models(header, comment, model) {
-      var jsonModel = JSON.stringify(model, undefined, 2);
-      return "<h3>" + header + "</h3> " + comment +
-      "<pre>" + jsonModel + "</pre>";
-    }
-
-    // User Models
-    function modelsUsers() {
-      let landlordModel = { 
-        id: 1,
-        username: "landlord",
-        email: "landlord@email.com",
-        name: {
-          title: "Title",
-          firstname: "Firstname",
-          middlename: "Middlename",
-          lastname: "Lastname",
-          suffix: "Suffix",
-          preferredname: "Preferred"
-        },
-        address: {
-          street: "1 First St",
-          street2: "Suite 2",
-          city: "Salt Lake City",
-          state: "Utah",
-          zip: "84101",
-          country: "USA"
-        },
-        type: "landlord",
-        phone: "123-456-7890"
+      function models(header, comment, model) {
+        var jsonModel = JSON.stringify(model, undefined, 2);
+        return "<h3>" + header + "</h3> " + comment +
+        "<pre>" + jsonModel + "</pre>";
       }
-      let devModel = { 
-        id: 2,
-        username: "dev",
-        name: {
-          firstname: "Web",
-          lastname: "Dev"
-        },
-        email: "dev@email.com",
-        type: "dev"
-      }
-      let tenantModel = { 
-        id: 3,
-        username: "tenant",
-        name: {
-          firstname: "Tenant"
-        },
-        email: "tenant@email.com",
-        type: "tenant"
-      }
-      let landlordComment = "<p class='todo'>Still updating</p>";
-      let devComment = "<p class='todo'>Still updating</p>";
-      let tenantComment = "<p class='todo'>Still updating</p>";
 
-      header = "<h2>User Models</h2> ";
-      outputContent = header + models("Landlord User Model", landlordComment, landlordModel) + models("Dev Model", devComment, devModel) + models("Tenant Model", tenantComment, tenantModel) ;
-      output(outputContent);
-    }
-    
-    // Property Models
-    function modelsProperty() {
-      let propertyModel = {
-        id: 1,
-        'property-name': "Name for the Property",
-        'property-address': {
-          street: "1 First St",
-          street2: "Suite 2",
-          city: "Salt Lake City",
-          state: "Utah",
-          zip: "84101",
-          country: "USA"
-        },
-        'property-image': "property.jpg",
-        'property-status': "occupied", // open, closed, occupied, forRent, forSale
-        'property-startdate': "01-01-2001",
-        'property-enddate': null,
-        'landlord-id': 1
-      };
-      let propertyModel2 = {
-        id: 2,
-        'property-name': "Sample",
-        'property-address': {},
-        'property-status': "closed", // closed - no longer an active property
-        'property-startdate': "01-01-2001",
-        'property-enddate': "05-01-2018",
-        'landlord-id': 1
+      // User Models
+      function modelsUsers() {
+        let landlordModel = { 
+          id: 1,
+          username: "landlord",
+          email: "landlord@email.com",
+          name: {
+            title: "Title",
+            firstname: "Firstname",
+            middlename: "Middlename",
+            lastname: "Lastname",
+            suffix: "Suffix",
+            preferredname: "Preferred"
+          },
+          address: {
+            street: "1 First St",
+            street2: "Suite 2",
+            city: "Salt Lake City",
+            state: "Utah",
+            zip: "84101",
+            country: "USA"
+          },
+          type: "landlord",
+          phone: "123-456-7890"
+        }
+        let devModel = { 
+          id: 2,
+          username: "dev",
+          name: {
+            firstname: "Web",
+            lastname: "Dev"
+          },
+          email: "dev@email.com",
+          type: "dev"
+        }
+        let tenantModel = { 
+          id: 3,
+          username: "tenant",
+          name: {
+            firstname: "Tenant"
+          },
+          email: "tenant@email.com",
+          type: "tenant"
+        }
+        let landlordComment = "<p class='todo'>Still updating</p>";
+        let devComment = "<p class='todo'>Still updating</p>";
+        let tenantComment = "<p class='todo'>Still updating</p>";
+
+        header = "<h2>User Models</h2> ";
+        outputContent = header + models("Landlord User Model", landlordComment, landlordModel) + models("Dev Model", devComment, devModel) + models("Tenant Model", tenantComment, tenantModel) ;
+        output(outputContent);
       }
-      let propertyComment = "<p class='todo'>Still updating</p>";
+      
+      // Property Models
+      function modelsProperty() {
+        let propertyModel = {
+          id: 1,
+          'property-name': "Name for the Property",
+          'property-address': {
+            street: "1 First St",
+            street2: "Suite 2",
+            city: "Salt Lake City",
+            state: "Utah",
+            zip: "84101",
+            country: "USA"
+          },
+          'property-image': "property.jpg",
+          'property-status': "occupied", // open, closed, occupied, forRent, forSale
+          'property-startdate': "01-01-2001",
+          'property-enddate': null,
+          'landlord-id': 1
+        };
+        let propertyModel2 = {
+          id: 2,
+          'property-name': "Sample",
+          'property-address': {},
+          'property-status': "closed", // closed - no longer an active property
+          'property-startdate': "01-01-2001",
+          'property-enddate': "05-01-2018",
+          'landlord-id': 1
+        }
+        let propertyComment = "<p class='todo'>Still updating</p>";
 
-      header = "<h2>Property Models</h2> ";
-      outputContent = header + models("Property Model 1", propertyComment, propertyModel) + models("Property Model 2", propertyComment, propertyModel2);
-      output(outputContent);
-    }
-    
-    // Tenant History Model
-    function modelsTenantHistory() {
-      let tenantHistoryModel = {
-        id: 1,
-        'tenant-id': 3,
-        'property-id': 1,
-        'history-startdate': "01-01-2001",
-        'history-enddate': null
+        header = "<h2>Property Models</h2> ";
+        outputContent = header + models("Property Model 1", propertyComment, propertyModel) + models("Property Model 2", propertyComment, propertyModel2);
+        output(outputContent);
       }
-      let tenantHistoryComment = "<p class='todo'>Still updating - This is from Database Structure.</p>";
+      
+      // Tenant History Model
+      function modelsTenantHistory() {
+        let tenantHistoryModel = {
+          id: 1,
+          'tenant-id': 3,
+          'property-id': 1,
+          'history-startdate': "01-01-2001",
+          'history-enddate': null
+        }
+        let tenantHistoryComment = "<p class='todo'>Still updating - This is from Database Structure.</p>";
 
-      header = "<h2>Tenant History Model</h2> ";
-      outputContent = header + models("", tenantHistoryComment, tenantHistoryModel);
-      output(outputContent);
-    }
+        header = "<h2>Tenant History Model</h2> ";
+        outputContent = header + models("", tenantHistoryComment, tenantHistoryModel);
+        output(outputContent);
+      }
+    // #endregion - Models
 
-  // #endregion - Models
+    // #region - End Points
+    // #endregion - End Points
 
     // #region - Database Structures
     function dbStructures(header, comment, model) {

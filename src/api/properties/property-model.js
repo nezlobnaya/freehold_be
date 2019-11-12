@@ -24,7 +24,9 @@ function addProperty(input) {}
 function getProperty(id) {}
 
 // getAllProperties() - return all properties
-function getAllProperties() {}
+function getAllProperties() {
+  return db('properties');
+}
 
 //#endregion - Get
 
