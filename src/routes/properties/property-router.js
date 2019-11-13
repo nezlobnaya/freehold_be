@@ -16,6 +16,18 @@ router.get('/all', async (req, res) => {
   }
 });
 
+// GET property by id
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const results = await Properties.getProperty(id);
+    res.json(results);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to get results.' });
+  }
+});
+
 //#endregion
 
 module.exports = router; 
