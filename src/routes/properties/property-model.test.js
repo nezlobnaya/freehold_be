@@ -60,6 +60,23 @@ describe('Property Model', () => {
         console.log(err)
       }
     })
+
+    it('Should return "Sample" for the property with id=2', async () => {
+
+      // Expected Input
+      const id = 2;
+      
+      // call function
+      try {
+        const results = await Properties.getProperty(id);
+
+        // expected results
+        expect(results["property-name"]).toBe("Sample");
+
+      } catch(err) {
+        console.log(err)
+      }
+    })
   })
   // #endregion
 
