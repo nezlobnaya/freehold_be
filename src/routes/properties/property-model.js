@@ -21,7 +21,11 @@ function addProperty(input) {}
 //#region - READ 
 
 // getProperty() - return results for a property by id
-function getProperty(id) {}
+function getProperty(id) {
+  return db('properties')
+  .where({ id })
+  .first();
+}
 
 // getAllProperties() - return all properties
 function getAllProperties() {
