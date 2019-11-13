@@ -1,10 +1,7 @@
-// Testing for events model
 const request = require('supertest');
 const db = require('../../../database/db-config.js');
 const Reset = require('../dbReset.js');
 const Properties = require('./property-model.js');
-
-// Mostly setting up to look for glitches. Or see if something needs touching up to prevent errors.
 
 describe('Property Model', () => {
 
@@ -29,10 +26,26 @@ describe('Property Model', () => {
       } catch(err) {
         console.log(err)
       }
+    })
 
+    it('Should return an array', async () => {
+
+      // Expected Input
+      
+      // call function
+      try {
+        const results = await Properties.getAllProperties();
+
+        // expected results
+        expect(Array.isArray(results)).toBe(true);
+
+      } catch(err) {
+        console.log(err)
+      }
     })
 
   })
+
   // #endregion
 
 })
