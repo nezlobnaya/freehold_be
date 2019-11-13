@@ -60,16 +60,12 @@ To get the server running locally:
 | PUT    | `/organizatoins/:orgId` | owners         | Modify an existing organization.             |
 | DELETE | `/organizations/:orgId` | owners         | Delete an organization.                      |
 
-#### User Routes
+#### Auth Routes
 
-| Method | Endpoint                | Access Control      | Description                                        |
-| ------ | ----------------------- | ------------------- | -------------------------------------------------- |
-| GET    | `/users/current`        | all users           | Returns info for the logged in user.               |
-| GET    | `/users/org/:userId`    | owners, supervisors | Returns all users for an organization.             |
-| GET    | `/users/:userId`        | owners, supervisors | Returns info for a single user.                    |
-| POST   | `/users/register/owner` | none                | Creates a new user as owner of a new organization. |
-| PUT    | `/users/:userId`        | owners, supervisors |                                                    |
-| DELETE | `/users/:userId`        | owners, supervisors |                                                    | 
+| Method | Endpoint                | Access Control      | Description               |
+| ------ | ----------------------- | ------------------- | ------------------------- |
+| POST   | `/api/auth/register`    | all users           | Registers a new landlord  |
+| POST   | `/api/auth/login`       | owners, supervisors | Logs in an existing user  |
 -->
 
 # Data Model
@@ -161,6 +157,17 @@ create a .env file that includes the following:
   TEST_DB_USER=postgres
   TEST_DB_PASSWORD=postgres
   TEST_DB_NAME=propman-test
+
+  GOOGLE_APPLICATION_CREDENTIALS=./firebase/admin.json
+  FIREBASE_URL=example-url
+  FIREBASE_API_KEY=examplekey
+  FIREBASE_AUTH_DOMAIN=exampleapp.firebaseapp.com
+  FIREBASE_DATABASE_URL=exampledb.firebaseio.com
+  FIREBASE_PROJECT_ID=example-project
+  FIREBASE_STORAGE_BUCKET=exmaple.appspot.com
+  FIREBASE_MESSAGING_SENDER_ID=1234
+  FIREBASE_APP_ID=1234
+  FIREABASE_MEASUREMENT_ID=example-g-id
 
   JWT_SECRET="Your Secret." // you can generate this by using a python shell or add in a temporary secret.
   ```
