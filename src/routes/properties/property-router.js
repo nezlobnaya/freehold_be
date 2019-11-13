@@ -7,7 +7,7 @@ const router = express.Router();
 //#region - READ
 
 // GET all properties
-router.get('/all', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const results = await Properties.getAllProperties();
     res.json(results);
