@@ -14,11 +14,11 @@ const bearerAuth = async (req, res, next) => {
   if (type === "Bearer") {
     try {
       const user = await admin.auth().verifyIdToken(payload);
-      console.log(user);
 
-      res.status(200).json({
-        token: user
-      });
+      /* eslint-disable-next-line */
+      req.user = user.email;
+
+      next();
     } catch (err) {
       console.error(err);
       return res.status(401).send({ error: "You are not authorized" });
