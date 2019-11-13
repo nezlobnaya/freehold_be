@@ -14,7 +14,7 @@
     button {
       background-color: #202020;
       border: 2px darkgray solid;
-      color: white;
+      color: cornflowerblue;
       padding: 5px;
       text-align: center;
       text-decoration: none;
@@ -25,7 +25,7 @@
       position:relative;
       top: -5px;
     }
-    button:hover { background-color: darkgray; }
+    button:hover { color: #202020; background-color: cornflowerblue; border: 1px #202020 solid; }
     a { color: antiquewhite; }
     h1, h2, h3 { position:relative; cursor: pointer;  }
     .show { display: block; }
@@ -35,7 +35,8 @@
     h2.moreInfo:hover { text-decoration: underline wavy; }
     li.moreInfo { position:relative; left: -20px; cursor: pointer; }
     #main { min-width: 400px; padding-bottom: 100px; }
-    #leftMenu { left: 5px; }
+    #leftMenu { left: 5px; color: cornflowerblue; }
+    #leftMenu h1, h2, h3 { font-weight: normal;}
     #leftMenu h3 { padding-left: 45px; }
     #leftMenu ul { padding-left: 85px; }
     .moreContent {
@@ -43,7 +44,7 @@
       width: 50%;
       position: absolute;
       left: 400px;
-      top: 20px;
+      top: 5px;
       padding-bottom: 100px;
     }
     pre { 
@@ -150,6 +151,8 @@
   <!-- Right Side Content -->
   <div id="#content" class="moreContent">
 
+    <h1>Property Manager Backend</h1>
+
     <!-- Color Key -->
     <div style="float: right;">
       Color Key: <br />
@@ -158,20 +161,12 @@
       <span class="alert">Alert - red</span> <br />
       <span class="comment">Commnet - lightseagreen</span>
     </div>
-    
-    <!-- How to Use this resource. -->
-    <div style="color: lightgoldenrodyellow; text-align: center">
-      Click on the list items to the left to open and close sections. <br />
-      Click on the Header below to close a section. <br /><br />
-    </div>
 
     <!-- Latest Changes -->
     <div class="comment">
       <strong>Latest changes include: </strong>
       <ul>
-        <li>Knex Setup for Database</li>
-        <li>Updating Index to setup Schemas</li>
-        <li>Database Structures updated on the index page.</li>
+        <li></li>
       </ul>
     </div>
 
