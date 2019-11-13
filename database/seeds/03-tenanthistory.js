@@ -3,10 +3,10 @@ exports.seed = function(knex) {
   return knex.from("tenanthistory").insert([
     {
       // id: 1, (auto)
-      'tenant-id': 3,
-      'property-id': 1,
-      'history-startdate': "01-01-2001",
-      'history-enddate': null
+      'tenantId': 3,
+      'propertyId': 1,
+      'historyStartdate': "01-01-2001",
+      'historyEnddate': null
     }
   ]);
 };

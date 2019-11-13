@@ -4,20 +4,20 @@ exports.seed = function(knex) {
     {
       // id: 1, (auto)
       'workorder': "Work Order Title",
-      'wo-description': "Description of the issue. For example: Tub is leaking.",
-      'wo-type': "plumbing",
-      'wo-startdate': "10-31-2018",
-      'wo-enddate': "11-05-2018",
-      'property-id': 1
+      'woDescription': "Description of the issue. For example: Tub is leaking.",
+      'woType': "plumbing",
+      'woStartdate': "10-31-2018",
+      'woEnddate': "11-05-2018",
+      'propertyId': 1
     },
     {
       // id: 2, (auto)
       'workorder': "Work Order Title",
-      'wo-description': "Description of the issue. For example: Lights not working in the living room.",
-      'wo-type': "electrical",
-      'wo-startdate': "11-03-2019",
-      'wo-enddate': null,
-      'property-id': 1
+      'woDescription': "Description of the issue. For example: Lights not working in the living room.",
+      'woType': "electrical",
+      'woStartdate': "11-03-2019",
+      'woEnddate': null,
+      'propertyId': 1
     }
   ]);
 };

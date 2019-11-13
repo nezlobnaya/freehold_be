@@ -17,13 +17,13 @@ exports.up = function(knex) {
   // properties
   .createTable("properties", tbl => {
     tbl.increments();
-    tbl.string('property-name').notNullable();
-    tbl.json('property-address').notNullable();
-    tbl.string('property-image');
-    tbl.string('property-status');
-    tbl.date('property-startdate');
-    tbl.date('property-enddate');
-    tbl.integer('landlord-id').unsigned()
+    tbl.string('propertyName').notNullable();
+    tbl.json('propertyAddress').notNullable();
+    tbl.string('propertyImage');
+    tbl.string('propertyStatus');
+    tbl.date('propertyStartdate');
+    tbl.date('propertyEnddate');
+    tbl.integer('landlordId').unsigned()
       .references('id').inTable('users')
       .onUpdate('CASCADE').onDelete('CASCADE');
   })
@@ -31,23 +31,23 @@ exports.up = function(knex) {
   // tenanthistory
   .createTable("tenanthistory", tbl => {
     tbl.increments();
-    tbl.integer('tenant-id').unsigned()
+    tbl.integer('tenantId').unsigned()
       .references('id').inTable('users');
-    tbl.integer('property-id').unsigned()
+    tbl.integer('propertyId').unsigned()
       .references('id').inTable('properties');
-    tbl.date('history-startdate');
-    tbl.date('history-enddate');
+    tbl.date('historyStartdate');
+    tbl.date('historyEnddate');
   })
   
   // workorders
   .createTable("workorders", tbl => {
     tbl.increments();
     tbl.string('workorder').notNullable();
-    tbl.text('wo-description').notNullable();
-    tbl.string('wo-type').notNullable();
-    tbl.date('wo-startdate').notNullable();
-    tbl.date('wo-enddate');
-    tbl.integer('property-id').unsigned()
+    tbl.text('woDescription').notNullable();
+    tbl.string('woType').notNullable();
+    tbl.date('woStartdate').notNullable();
+    tbl.date('woEnddate');
+    tbl.integer('propertyId').unsigned()
       .references('id').inTable('properties')
       .onUpdate('CASCADE').onDelete('CASCADE');
   })
@@ -55,13 +55,13 @@ exports.up = function(knex) {
   // wohistory
   .createTable("wohistory", tbl => {
     tbl.increments();
-    tbl.integer('wo-id').unsigned()
+    tbl.integer('woId').unsigned()
       .references('id').inTable('workorders')
       .onUpdate('CASCADE').onDelete('CASCADE');
-    tbl.string('wo-status');
-    tbl.integer('wo-urgency');
-    tbl.json('wo-update');
-    tbl.timestamp('wo-updatedate').defaultTo(knex.fn.now());
+    tbl.string('woStatus');
+    tbl.integer('woUrgency');
+    tbl.json('woUpdate');
+    tbl.timestamp('woUpdatedate').defaultTo(knex.fn.now());
   });
 };
 
