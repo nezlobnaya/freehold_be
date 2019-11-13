@@ -60,8 +60,8 @@
       word-wrap: break-word;       /* Internet Explorer 5.5+ */}
     code { color: lime; }
     code p { margin: 0; }
-    .ident { padding-left: 15px; }
-    .ident2 { padding-left: 40px; }
+    .indent { padding-left: 15px; }
+    .indent2 { padding-left: 40px; }
     .codesnip { color: lightgreen; }
     .alert { color: red; }
     .todo {  color: yellow; }
@@ -110,17 +110,17 @@
         </ul>
       </div>
 
-    <!-- Working on Endpoints
+    <!-- Working on Endpoints -->
       <h2 class="moreInfo" onclick="{showContent('endpoints')}"><button>v</button> Endpoints</h2>
       <div id="endpoints" class="hid">
 
         <h3 class="moreInfo" onclick="{showContent('userEndpoints')}">User Endpoints</h3>
         <div id="userEndpoints" class="hid">
           <ul>
-            <li class="moreInfo" onclick="{showContent('signup')}">Sign Up</li>
-            <li class="moreInfo" onclick="{showContent('login')}">Login</li>
-            <li class="moreInfo" onclick="{showContent('updateUser')}">Update User</li>
-            <li class="moreInfo" onclick="{showContent('deleteUser')}">Delete User</li>
+            <li class="moreInfo" onclick="{epUserRegister()}">Register</li>
+            <li class="moreInfo" onclick="{}">Login - <span class="todo">in Progress</span></li>
+            <li class="moreInfo" onclick="{}">Update User - <span class="todo">in Progress</span></li>
+            <li class="moreInfo" onclick="{}">Delete User - <span class="todo">in Progress</span></li>
           </ul>
         </div>
 
@@ -132,7 +132,7 @@
         </div>
         
       </div> 
-    -->
+    
       
       <h2 class="moreInfo" onclick="{showContent('database')}"><button>v</button> Database Structure</h2>
       <div id="database" class="hid">
@@ -166,7 +166,7 @@
     <div class="comment">
       <strong>Latest changes include: </strong>
       <ul>
-        <li></li>
+        <li>User Endpoint - Register</li>
       </ul>
     </div>
 
@@ -315,122 +315,167 @@
     // #endregion - Models
 
     // #region - End Points
+      function endPoints(header, todo, comment, endpoint, type, description, input, sampleRequest, expectedReturn, expectedFailedReturn) {
+        var expectedInput = JSON.stringify(input, undefined, 2);
+        return "<h3>" + header + "</h3> " + 
+          "<p class='todo'>" + todo + "</p>" +
+          "<p class='comment'>" + comment + "</p>" +
+          "<p><strong>Endpoint:</strong> `" + endpoint + "`</p>" +
+          "<p><strong>Type:</strong> `" + type + "`</p>" + 
+          "<p><strong>Description:</strong> <code>" + description + "</code></p>" +
+          "<p><strong>Expected Input:</strong> </p>" +
+          "<pre>" + expectedInput + "</pre>" + 
+          "<p><strong>Sample Request:</strong> </p>" +
+          "<pre>" + sampleRequest + "</pre>" + 
+          "<p><strong>Expected Return:</strong> </p>" +
+          "<pre>" + expectedReturn + "</pre>" + 
+          "<p><strong>Expected Return if Fails:</strong> </p>" +
+          "<pre>" + expectedFailedReturn + "</pre>";
+      }
+
+      // User Endpoint - Register
+      function epUserRegister() {
+        let header = "User Endpoints - Register";
+        let todo = "";
+        let comment = "";
+        let endpoint = "/api/auth/register";
+        let type = "POST";
+        let description = "Register a new user";
+        let input = {
+          "email": "example@gmail.com",
+          "password": "badpassword",
+        }
+        let sampleRequest = "axios.post('example.com/api/auth/register', { <br />" + 
+          "<div class='indent'>email: 'example@gmail.com', <br />" + 
+          "password: 'badpassword', <br />" + 
+          "})<br />" + 
+          ".then(token => console.log(token) <br />" + 
+          ".catch(err => <br />" + 
+          "<div class='indent'>console.error(err) </div>" + 
+          "); </div>";
+        let expectedReturn = "";
+        let expectedFailedReturn = "";
+
+        outputContent = endPoints(header, todo, comment, endpoint, type, description, input, sampleRequest, expectedReturn, expectedFailedReturn);
+        output(outputContent);
+      };
+
     // #endregion - End Points
 
     // #region - Database Structures
-    function dbStructures(header, comment, model) {
-      var jsonDB = JSON.stringify(model, undefined, 2);
-      return "<h2> Database Structures </h2> " +
-      "<h3>" + header + "</h3> " + comment +
-      "<pre>" + jsonDB + "</pre>";
-    }
+      function dbStructures(header, comment, model) {
+        var jsonDB = JSON.stringify(model, undefined, 2);
+        return "<h2> Database Structures </h2> " +
+        "<h3>" + header + "</h3> " + comment +
+        "<pre>" + jsonDB + "</pre>";
+      }
+      
+      // User Table
+      function dbUsers() {
+        let userDb = { 
+          'id': "integer -> increment number assigned by database", 
+          username: "string, notNullable, unique",
+          email: "string, notNullable, unique",
+          name: {
+            title: "string",
+            firstname: "string",
+            middlename: "string",
+            lastname: "string",
+            suffix: "string",
+            preferredname: "string"
+          },
+          address: {
+            street: "string",
+            street2: "string",
+            city: "string",
+            state: "string",
+            zip: "integer",
+            country: "string"
+          },
+          type: "string, notNullable -> landlord, tenant, dev",
+          phone: "string"
+        }
+        let comment = "<p class='todo'>Reviewing using JSON for name.</p>";
+
+        outputContent = dbStructures("Landlord User", comment, userDb);
+        output(outputContent);
+      }
     
-    // User Table
-    function dbUsers() {
-      let userDb = { 
-        'id': "integer -> increment number assigned by database", 
-        username: "string, notNullable, unique",
-        email: "string, notNullable, unique",
-        name: {
-          title: "string",
-          firstname: "string",
-          middlename: "string",
-          lastname: "string",
-          suffix: "string",
-          preferredname: "string"
-        },
-        address: {
-          street: "string",
-          street2: "string",
-          city: "string",
-          state: "string",
-          zip: "integer",
-          country: "string"
-        },
-        type: "string, notNullable -> landlord, tenant, dev",
-        phone: "string"
-      }
-      let comment = "<p class='todo'>Reviewing using JSON for name.</p>";
+      // Properties Table
+      function dbProperty() {
+        let propertyDb = {
+          'id': "integer -> increment number assigned by database", 
+          'property-name': "string -> Name for the Property",
+          'property-address': {
+            street: "string",
+            street2: "string",
+            city: "string",
+            state: "string",
+            zip: "integer",
+            country: "string"
+          },
+          'property-image': "string -> can be null",
+          'property-status': "string -> can be null", 
+          'property-startdate': "date -> can be null",
+          'property-enddate': "date -> can be null",
+          'landlord-id': "integer -> references id in table \'users\'"
+        };
+        let propertyComment = "<p class='comment'>Status options may include: open, closed, occupied, forRent, or forSale.</p>";
 
-      outputContent = dbStructures("Landlord User", comment, userDb);
-      output(outputContent);
-    }
-  
-    // Properties Table
-    function dbProperty() {
-      let propertyDb = {
-        'id': "integer -> increment number assigned by database", 
-        'property-name': "string -> Name for the Property",
-        'property-address': {
-          street: "string",
-          street2: "string",
-          city: "string",
-          state: "string",
-          zip: "integer",
-          country: "string"
-        },
-        'property-image': "string -> can be null",
-        'property-status': "string -> can be null", 
-        'property-startdate': "date -> can be null",
-        'property-enddate': "date -> can be null",
-        'landlord-id': "integer -> references id in table \'users\'"
-      };
-      let propertyComment = "<p class='comment'>Status options may include: open, closed, occupied, forRent, or forSale.</p>";
-
-      outputContent = dbStructures("Properties Table", propertyComment, propertyDb);
-      output(outputContent);
-    }
-
-    // Tenant History Table
-    function dbTenantHistory() {
-      let tenantHistoryDb = {
-        'id': "integer -> increment number assigned by database", 
-        'tenant-id': "integer -> references id in table \'users\'",
-        'property-id': "integer -> references id in table \'properties\'",
-        'history-startdate': "date, can be 'null'",
-        'history-enddate': "date, can be 'null'"
+        outputContent = dbStructures("Properties Table", propertyComment, propertyDb);
+        output(outputContent);
       }
 
-      outputContent = dbStructures("Tenant History Table", "", tenantHistoryDb);
-      output(outputContent);
-    }
+      // Tenant History Table
+      function dbTenantHistory() {
+        let tenantHistoryDb = {
+          'id': "integer -> increment number assigned by database", 
+          'tenant-id': "integer -> references id in table \'users\'",
+          'property-id': "integer -> references id in table \'properties\'",
+          'history-startdate': "date, can be 'null'",
+          'history-enddate': "date, can be 'null'"
+        }
 
-    // Work Order Table
-    function dbWorkOrders() {
-      let woDb = {
-        'id': "integer -> increment number assigned by database", 
-        'workorder': "string -> Work Order Title",
-        'wo-description': "text -> Description of the issue.",
-        'wo-type': "string -> type like: plumbing or electrical",
-        'wo-startdate': "date -> from a timestamp or date selection?",
-        'wo-enddate': "date, can be 'null'",
-        'property-id': "integer -> references id in table \'properties\'",
+        outputContent = dbStructures("Tenant History Table", "", tenantHistoryDb);
+        output(outputContent);
       }
 
-      outputContent = dbStructures("Work Order Table", "", woDb);
-      output(outputContent);
-    }
+      // Work Order Table
+      function dbWorkOrders() {
+        let woDb = {
+          'id': "integer -> increment number assigned by database", 
+          'workorder': "string -> Work Order Title",
+          'wo-description': "text -> Description of the issue.",
+          'wo-type': "string -> type like: plumbing or electrical",
+          'wo-startdate': "date -> from a timestamp or date selection?",
+          'wo-enddate': "date, can be 'null'",
+          'property-id': "integer -> references id in table \'properties\'",
+        }
 
-    // Work Order History Table
-    function dbWorkOrderHistory() {
-      let woHistoryDb = {
-        'id': "integer -> increment number assigned by database", 
-        'wo-id': "integer -> references id in table \'workorders\'",
-        'wo-status': 'string -> status of work order', 
-        'wo-urgency': "integer -> Scale of 1 to 5",
-        'wo-update': { 
-          assignedTo: "string -> Name of Company task assigned to",
-          comment: "string -> optional comment"
-        },
-        'wo-updatedate': "timestamp"
+        outputContent = dbStructures("Work Order Table", "", woDb);
+        output(outputContent);
       }
 
-      comment = "<p class='comment'>Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent</p>" + 
-        "<p class='todo'>Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed' </p>";
+      // Work Order History Table
+      function dbWorkOrderHistory() {
+        let woHistoryDb = {
+          'id': "integer -> increment number assigned by database", 
+          'wo-id': "integer -> references id in table \'workorders\'",
+          'wo-status': 'string -> status of work order', 
+          'wo-urgency': "integer -> Scale of 1 to 5",
+          'wo-update': { 
+            assignedTo: "string -> Name of Company task assigned to",
+            comment: "string -> optional comment"
+          },
+          'wo-updatedate': "timestamp"
+        }
 
-      outputContent = dbStructures("Work Order Table", comment, woHistoryDb);
-      output(outputContent);
-    }
+        comment = "<p class='comment'>Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent</p>" + 
+          "<p class='todo'>Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed' </p>";
+
+        outputContent = dbStructures("Work Order Table", comment, woHistoryDb);
+        output(outputContent);
+      }
 
     // #endregion - Database Structures
     // 
