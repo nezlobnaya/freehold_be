@@ -13,8 +13,6 @@ describe('Property Model', () => {
   describe('function getAllProperties', () => {
 
     it('Should return 2 results', async () => {
-
-      // Expected Input
       
       // call function
       try {
@@ -29,8 +27,6 @@ describe('Property Model', () => {
     })
 
     it('Should return an array', async () => {
-
-      // Expected Input
       
       // call function
       try {
@@ -46,6 +42,25 @@ describe('Property Model', () => {
 
   })
 
+  describe('function getProperty(id)', () => {
+
+    it('Should return an object', async () => {
+
+      // Expected Input
+      const id = 1;
+      
+      // call function
+      try {
+        const results = await Properties.getProperty(id);
+
+        // expected results
+        expect(typeof results).toBe('object');
+
+      } catch(err) {
+        console.log(err)
+      }
+    })
+  })
   // #endregion
 
 })
