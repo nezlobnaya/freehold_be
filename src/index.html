@@ -112,7 +112,7 @@
 
     <!-- Working on Endpoints -->
       <h2 class="moreInfo" onclick="{showContent('endpoints')}"><button>v</button> Endpoints</h2>
-      <div id="endpoints" class="hid">
+      <div id="endpoints" class="show">
 
         <h3 class="moreInfo" onclick="{showContent('userEndpoints')}">User Endpoints</h3>
         <div id="userEndpoints" class="hid">
@@ -125,9 +125,9 @@
         </div>
 
         <h3 class="moreInfo" onclick="{showContent('propertyEndpoints')}">Property Endpoints</h3>
-        <div id="propertyEndpoints" class="hid">
+        <div id="propertyEndpoints" class="show">
           <ul>
-            <li class="moreInfo" onclick="{showContent('getAllProperties')}">Get All Properties</li>
+            <li class="moreInfo" onclick="{epPropertyGetAll()}">Get All Properties</li>
           </ul>
         </div>
         
@@ -198,9 +198,61 @@
       document.getElementById("planning").classList.add("hid");
       document.getElementById("contentContainer").innerHTML = content; 
     }
+
+    function fromJSON(obj) {
+      return JSON.stringify(obj, undefined, 2);
+    }
     
     // Initial Display Setup
     var outputContent = "<h3>Content</h3>";
+
+    //#region - variables for models
+    const property1 = {
+      propertiesId: 1,
+      propertyName: "Name for the Property",
+      propertyAddress: {
+        street: "1 First St",
+        street2: "Suite 2",
+        city: "Salt Lake City",
+        state: "Utah",
+        zip: "84101",
+        country: "USA"
+      },
+      propertyImage: "property.jpg",
+      propertyStatus: "occupied",
+      propertyStartdate: "2001-01-01T05:00:00.000Z",
+      propertyEnddate: null,
+      name: {
+        title: "Title",
+        firstname: "Firstname",
+        middlename: "Middlename",
+        lastname: "Lastname",
+        suffix: "Suffix",
+        preferredname: "Preferred"
+      },
+      email: "landlord@email.com"
+    };
+    const property2 = {
+      propertiesId: 2,
+      propertyName: "Sample",
+      propertyAddress: { },
+      propertyImage: null,
+      propertyStatus: "closed",
+      propertyStartdate: "2001-01-01T05:00:00.000Z",
+      propertyEnddate: "2018-05-01T04:00:00.000Z",
+      name: {
+        title: "Title",
+        firstname: "Firstname",
+        middlename: "Middlename",
+        lastname: "Lastname",
+        suffix: "Suffix",
+        preferredname: "Preferred"
+      },
+      email: "landlord@email.com"
+    };
+
+
+    //#endregion
     
     // #region - Models
       function models(header, comment, model) {
@@ -315,33 +367,42 @@
     // #endregion - Models
 
     // #region - End Points
-      function endPoints(header, todo, comment, endpoint, type, description, input, sampleRequest, expectedReturn, expectedFailedReturn) {
-        var expectedInput = JSON.stringify(input, undefined, 2);
-        return "<h3>" + header + "</h3> " + 
-          "<p class='todo'>" + todo + "</p>" +
-          "<p class='comment'>" + comment + "</p>" +
+      function endPoints(header, todo, comment, endpoint, type, description, expectedInput, sampleRequest, expectedReturn, expectedFailedReturn) {
+
+        // If type == GET, make header a link with the endpoint
+        header = (type == "GET") ? "<a href='" + endpoint + "'>" + header + "</a>" : header;
+
+        // If input exists, convert to JSON string
+        var expectedInput = (input) ? JSON.stringify(input, undefined, 2) : null;
+
+        // If variable exists, display
+        todo = (todo) ? "<p class='todo'>" + todo + "</p>" : "";
+        comment = (comment) ? "<p class='comment'>" + comment + "</p>" : "";
+        expectedInput = (expectedInput) ? "<p><strong>Expected Input:</strong> </p> <pre>" + expectedInput + "</pre>" : "";
+        sampleRequest = (sampleRequest) ? "<p><strong>Sample Request:</strong> </p> <pre>" + sampleRequest + "</pre>" : "";
+        expectedReturn = (expectedReturn) ? "<p><strong>Expected Return:</strong> </p> <pre>" + expectedReturn + "</pre>" : "";
+        expectedFailedReturn = (expectedFailedReturn) ? "<p><strong>Expected Return if Fails:</strong> </p> <pre>" + expectedFailedReturn + "</pre>" : "";
+
+        return "<h3>" + header + "</h3>" + 
+          todo + comment +
           "<p><strong>Endpoint:</strong> `" + endpoint + "`</p>" +
           "<p><strong>Type:</strong> `" + type + "`</p>" + 
           "<p><strong>Description:</strong> <code>" + description + "</code></p>" +
-          "<p><strong>Expected Input:</strong> </p>" +
-          "<pre>" + expectedInput + "</pre>" + 
-          "<p><strong>Sample Request:</strong> </p>" +
-          "<pre>" + sampleRequest + "</pre>" + 
-          "<p><strong>Expected Return:</strong> </p>" +
-          "<pre>" + expectedReturn + "</pre>" + 
-          "<p><strong>Expected Return if Fails:</strong> </p>" +
-          "<pre>" + expectedFailedReturn + "</pre>";
+          expectedInput + sampleRequest + expectedReturn + expectedFailedReturn ;
       }
-
+// TODO Change to a object for input
       // User Endpoint - Register
       function epUserRegister() {
-        let header = "User Endpoints - Register";
+        let input = {
+          header: "User Endpoints - Register",
+          todo: ""
+        }
         let todo = "";
         let comment = "";
         let endpoint = "/api/auth/register";
         let type = "POST";
         let description = "Register a new user";
-        let input = {
+        let expectedInput = {
           "email": "example@gmail.com",
           "password": "badpassword",
         }
@@ -353,10 +414,29 @@
           ".catch(err => <br />" + 
           "<div class='indent'>console.error(err) </div>" + 
           "); </div>";
-        let expectedReturn = "";
+        let expectedReturn = "{" + 
+          "\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c\"" +
+          "}";
         let expectedFailedReturn = "";
 
-        outputContent = endPoints(header, todo, comment, endpoint, type, description, input, sampleRequest, expectedReturn, expectedFailedReturn);
+        outputContent = endPoints(header, todo, comment, endpoint, type, description, expectedInput, sampleRequest, expectedReturn, expectedFailedReturn);
+        output(outputContent);
+      };
+
+      // Property Endpoint - Get All
+      function epPropertyGetAll() {
+        let header = "Property Endpoint - Get All";
+        let todo = "";
+        let comment = "";
+        let endpoint = "/api/properties/";
+        let type = "GET";
+        let description = "Get All Properties";
+        let expectedInput = "";
+        let sampleRequest = "";
+        let expectedReturn = "[ <br /><div class='indent'>" + fromJSON(property1) + ", <br />" + "</div>";
+        let expectedFailedReturn = "";
+
+        outputContent = endPoints(header, todo, comment, endpoint, type, description, expectedInput, sampleRequest, expectedReturn, expectedFailedReturn);
         output(outputContent);
       }
 
@@ -374,7 +454,6 @@
       function dbUsers() {
         let userDb = { 
           'id': "integer -> increment number assigned by database", 
-          username: "string, notNullable, unique",
           email: "string, notNullable, unique",
           name: {
             title: "string",
@@ -392,7 +471,7 @@
             zip: "integer",
             country: "string"
           },
-          type: "string, notNullable -> landlord, tenant, dev",
+          type: "string, notNullable -> (expects one of these:) landlord, tenant, dev",
           phone: "string"
         }
         let comment = "<p class='todo'>Reviewing using JSON for name.</p>";
