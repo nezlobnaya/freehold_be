@@ -3,7 +3,7 @@ exports.seed = function(knex) {
   return knex.from("users").insert([
     {
       // id: 1, (auto)
-      username: "landlord",
+      // username: "landlord",
       // password: "examplepass", -- not needed if using Firebase
       name: {
         title: "Title",
@@ -27,7 +27,7 @@ exports.seed = function(knex) {
     },
     {
       // id: 2, (auto)
-      username: "dev",
+      // username: "dev",
       // password: "pass", -- not needed if using Firebase
       name: {
         firstname: "Web",
@@ -38,7 +38,7 @@ exports.seed = function(knex) {
     },
     {
       // id: 3, (auto)
-      username: "tenant",
+      // username: "tenant",
       // password: "pass", -- not needed if using Firebase
       name: {
         firstname: "Tenant"

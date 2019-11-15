@@ -5,12 +5,12 @@ exports.up = function(knex) {
   // users
   .createTable("users", tbl => {
     tbl.increments();
-    tbl.string('username').notNullable().unique();
+    // tbl.string('username').notNullable().unique(); -- use email as username
     // tbl.string('password').notNullable(); -- password not needed if using Firebase
     tbl.json("name").notNullable(); // currently going to try as a json ... this is still under review depending on how tests turn out.
     tbl.string('email').notNullable().unique();
     tbl.json("address");
-    tbl.string('type').notNullable();
+    tbl.enu('type', ['landlord', 'tenant', 'dev']).notNullable();
     tbl.string('phone');
   })
   
