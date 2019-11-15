@@ -71,7 +71,7 @@ describe('Property Model', () => {
         const results = await Properties.getProperty(id);
 
         // expected results
-        expect(results["property-name"]).toBe("Sample");
+        expect(results["propertyName"]).toBe("Sample");
 
       } catch(err) {
         console.log(err)

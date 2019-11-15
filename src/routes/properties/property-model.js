@@ -28,8 +28,21 @@ function getProperty(id) {
 }
 
 // getAllProperties() - return all properties
-function getAllProperties() {
-  return db('properties');
+function getAllProperties() {	
+  return db('properties')
+    .join('users', 'users.id', 'properties.landlordId')
+    .select(
+      'properties.id as propertiesId',
+      'propertyName',
+      'propertyAddress',
+      'propertyImage',
+      'propertyStatus',
+      'propertyStartdate',
+      'propertyEnddate',
+      'propertyName',
+      'users.name', 
+      'users.email'
+    )
 }
 
 //#endregion - Get
