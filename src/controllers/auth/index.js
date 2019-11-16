@@ -9,13 +9,15 @@ async function createUser(req, res) {
     const user = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password);
+    
+    console.log(user);
 
     if (!user) {
       return res.status(400).json({ message: "Account not created" });
     }
 
     // Generate a JWT that can be used for future requests
-    const token = await firebase.auth().createCustomToken(user.uid);
+    const token = 'yay';
 
     res.status(201).json({ token });
   } catch (err) {
