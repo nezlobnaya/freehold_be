@@ -23,7 +23,7 @@ async function createUser(req, res) {
     console.error(err);
 
     // TODO: Come back and address additional issues from firebase
-    res.status(500).json({})
+    res.status(500).json(err);
   }
 }
 
