@@ -17,11 +17,15 @@ async function createUser(req, res) {
     }
 
     // Generate a JWT that can be used for future requests
-    const token = 'yay';
+    const token = "yay";
 
     res.status(201).json({ token });
   } catch (err) {
     console.error(err);
+
+    if (err.code === "auth/email-already-in-use") {
+      return res.status(400).json({ message: "Account not created" });
+    }
 
     // TODO: Come back and address additional issues from firebase
     res.status(500).json(err);
