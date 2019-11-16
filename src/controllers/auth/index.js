@@ -1,4 +1,4 @@
-const admin = require("../../lib/admin");
+// const admin = require("../../lib/admin");
 const firebase = require("../../lib/firebase");
 
 async function createUser(req, res) {
@@ -6,7 +6,7 @@ async function createUser(req, res) {
 
   try {
     // Create the user
-    const user = await admin.auth().createUser({
+    const user = await firebase.auth().createUser({
       email,
       password
     });
@@ -16,7 +16,7 @@ async function createUser(req, res) {
     }
 
     // Generate a JWT that can be used for future requests
-    const token = await admin.auth().createCustomToken(user.uid);
+    const token = await firebase.auth().createCustomToken(user.uid);
 
     res.status(201).json({ token });
   } catch (err) {
