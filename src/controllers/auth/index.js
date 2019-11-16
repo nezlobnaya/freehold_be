@@ -6,10 +6,9 @@ async function createUser(req, res) {
 
   try {
     // Create the user
-    const user = await firebase.auth().createUserWithEmailAndPassword({
-      email,
-      password
-    });
+    const user = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password);
 
     if (!user) {
       return res.status(400).json({ message: "Account not created" });
