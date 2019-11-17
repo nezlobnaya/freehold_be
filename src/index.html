@@ -388,13 +388,17 @@
       function endPoints(input) {
 
         let { header, todo, comment, endpoint, type, description, expectedInput, sampleRequest, expectedReturn, expectedFailedReturn } = input
+        sampleRequest = { 
+          type: type.toLowerCase(),
+          address: "example.com" + endpoint,
+          input: expectedInput,
+        }
 
         // If type == GET, make header a link with the endpoint
         header = (type == "GET") ? "<a href='" + endpoint + "'>" + header + "</a>" : header;
 
         // If variable is an object, convert to JSON string
         expectedInput = (typeof expectedInput == "object") ? fromJSON(expectedInput) : expectedInput ;
-        sampleRequest = (typeof sampleRequest == "object") ? fromJSON(sampleRequest) : sampleRequest ;
         expectedReturn = (typeof expectedReturn == "object") ? fromJSON(expectedReturn) : expectedReturn ;
         expectedFailedReturn = (typeof expectedFailedReturn == "object") ? fromJSON(expectedFailedReturn) : expectedFailedReturn ;
 
@@ -408,7 +412,7 @@
           ? "<p><strong>Expected Input:</strong> </p> <pre>" + expectedInput + "</pre>" 
           : "";
         sampleRequest = (sampleRequest != "")
-          ? "<p><strong>Sample Request:</strong> </p> <pre>" + sampleRequest + "</pre>" 
+          ? "<p><strong>Sample Request:</strong> </p> <pre>" + displayAxios(sampleRequest) + "</pre>" 
           : "";
         expectedReturn = (expectedReturn != "") 
           ? "<p><strong>Expected Return:</strong> </p> <pre>" + expectedReturn + "</pre>" 
@@ -422,6 +426,28 @@
           expectedInput + sampleRequest + expectedReturn + expectedFailedReturn ;
       }
 
+      function displayAxios(sampleRequest) {
+        // if sampleRequest is an object, display
+        if (typeof sampleRequest == "object") {
+          let { type, address, input, axiosThen, axiosCatch } = sampleRequest;
+
+
+          // if input is an object, display
+          input = (typeof input == "object") 
+            ? ", <div class='indent'>" + fromJSON(input)  + "&rpar; <br />"
+            : "&rpar; <div class='indent'>";
+
+          return "axios." + 
+            type + "&lpar;\'" + 
+            address + "\'" + 
+            input + 
+            ".then&lpar;" + axiosThen + "&rpar;<br />" + 
+            ".catch&lpar;" + axiosCatch + "&rpar;</div>";
+          } else {
+            return sampleRequest;
+          }
+      }
+
       // User Endpoint - Register
       function epUserRegister() {
 
@@ -429,7 +455,9 @@
           "email": "example@gmail.com",
           "password": "badpassword",
         };
-
+        let expectedReturn = {
+          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        };
         let input = {
           header: "User Endpoints - Register",
           todo: "Add expected returns",
@@ -438,19 +466,13 @@
           type: "POST",
           description: "Register a new user",
           expectedInput: expectedInput,
-          sampleRequest: "axios.post&lpar;'example.com/api/auth/register', <br />" + 
-          "<div class='indent'>" +
-          fromJSON(expectedInput) +
-          "<br />" +
-          ".then&lpar;token => console.log&lpar;token&rpar; <br />" + 
-          ".catch&lpar;err => <br />" + 
-          "<div class='indent'>console.error&lpar;err&rpar; </div>" + 
-          "&rpar; </div>",
-          expectedReturn: {
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          sampleRequest: {
+            axiosThen: "token => console.log&lpar;token&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
           },
+          expectedReturn: expectedReturn,
           expectedFailedReturn: "" // TODO: if Fails
-        }
+        };
 
         outputContent = endPoints(input);
         output(outputContent);
@@ -458,6 +480,8 @@
 
       // Property Endpoint - Get All
       function epPropertyGetAll() {
+        let expectedInput = "";
+        let expectedReturn = [property1, property2]
 
         let input = {
           header: "Property Endpoint - Get All",
@@ -466,11 +490,15 @@
           endpoint: "/api/properties/",
           type: "GET",
           description: "Get All Properties",
-          expectedInput: "",
-          sampleRequest: "Sample Request", // TODO:
-          expectedReturn: "[ <br /><div class='indent'>" + 
-            fromJSON(property1) + ", <br />" +
-            fromJSON(property2) + "<br /></div>]",
+          expectedInput: expectedInput,
+          sampleRequest: {
+            type: "get",
+            address: "example.com/api/auth/register",
+            input: expectedInput,
+            axiosThen: "token => console.log&lpar;token&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
+          expectedReturn: fromJSON(expectedReturn),
           expectedFailedReturn: "" // TODO: if Fails
         }
 
@@ -542,7 +570,7 @@
         let todo = "Reviewing using JSON for name."
         let comment = "";
 
-        outputContent = dbStructures("Landlord User", todo, comment, userDb);
+        outputContent = dbStructures("User Table", todo, comment, userDb);
         output(outputContent);
       }
     
