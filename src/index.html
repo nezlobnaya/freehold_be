@@ -127,6 +127,7 @@
         <h3 class="moreInfo" onclick="{showContent('propertyEndpoints')}">Property Endpoints</h3>
         <div id="propertyEndpoints" class="show">
           <ul>
+            <li class="moreInfo" onclick="{epPropertyGet()}">Get a Property</li>
             <li class="moreInfo" onclick="{epPropertyGetAll()}">Get All Properties</li>
           </ul>
         </div>
@@ -388,11 +389,11 @@
       function endPoints(input) {
 
         let { header, todo, comment, endpoint, type, description, expectedInput, sampleRequest, expectedReturn, expectedFailedReturn } = input
-        sampleRequest = { 
-          type: type.toLowerCase(),
-          address: "example.com" + endpoint,
-          input: expectedInput,
-        }
+        
+        // sample request
+        sampleRequest.type = type.toLowerCase();
+        sampleRequest.address = "example.com" + endpoint;
+        sampleRequest.input = expectedInput;
 
         // If type == GET, make header a link with the endpoint
         header = (type == "GET") ? "<a href='" + endpoint + "'>" + header + "</a>" : header;
@@ -409,7 +410,7 @@
         type = "<p><strong>Type:</strong> <code>`" + type + "`</code></p>";
         description = "<p><strong>Description:</strong> <code>" + description + "</code></p>";
         expectedInput = (expectedInput != "") 
-          ? "<p><strong>Expected Input:</strong> </p> <pre>" + expectedInput + "</pre>" 
+          ? "<p><strong>Expected Input Sample:</strong> </p> <pre>" + expectedInput + "</pre>" 
           : "";
         sampleRequest = (sampleRequest != "")
           ? "<p><strong>Sample Request:</strong> </p> <pre>" + displayAxios(sampleRequest) + "</pre>" 
@@ -478,34 +479,49 @@
         output(outputContent);
       };
 
-      // Property Endpoint - Get All
-      function epPropertyGetAll() {
-        let expectedInput = "";
-        let expectedReturn = [property1, property2]
-
+      // Get a Property
+      function epPropertyGet() {
         let input = {
-          header: "Property Endpoint - Get All",
-          todo: "In Review, need to add Sample Request and Expected Return if Fails to documentation.",
+          header: "Property Endpoint - Get",
+          todo: "In Review, need to add Expected Return if Fails to documentation.",
           comment: "",
-          endpoint: "/api/properties/",
-          type: "GET",
-          description: "Get All Properties",
-          expectedInput: expectedInput,
+          endpoint: "/api/properties/:id",
+          type: "get",
+          description: "Returns an object based on the Property id.",
+          expectedInput: "",
           sampleRequest: {
-            type: "get",
-            address: "example.com/api/auth/register",
-            input: expectedInput,
-            axiosThen: "token => console.log&lpar;token&rpar;",
+            axiosThen: "response => console.log&lpar;response&rpar;",
             axiosCatch: "err => console.error&lpar;err&rpar;",
           }, 
-          expectedReturn: fromJSON(expectedReturn),
-          expectedFailedReturn: "" // TODO: if Fails
+          expectedReturn: property1,
+          expectedFailedReturn: { message: 'Failed to get results.' }
         }
 
         outputContent = endPoints(input);
         output(outputContent);
       };
 
+      // Property Endpoint - Get All
+      function epPropertyGetAll() {
+        let input = {
+          header: "Property Endpoint - Get All",
+          todo: "In Review, need to add Expected Return if Fails to documentation.",
+          comment: "",
+          endpoint: "/api/properties/",
+          type: "GET",
+          description: "Returns an array of all Properties in the database.",
+          expectedInput: "",
+          sampleRequest: {
+            axiosThen: "token => console.log&lpar;token&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
+          expectedReturn: fromJSON([property1, property2]),
+          expectedFailedReturn: { message: 'Failed to get results.' }
+        }
+
+        outputContent = endPoints(input);
+        output(outputContent);
+      };
       
       // Sample Endpoint
       function epSample() {
@@ -514,7 +530,7 @@
           todo: "This is still Todo.",
           comment: "This is a comment.",
           endpoint: "/api/sample/",
-          type: "GET",
+          type: "post",
           description: "Description of the Endpoint",
           expectedInput: {
             "sample": "this is a sample object",
@@ -522,7 +538,10 @@
               "can": "can have an object inside an object.",
             }
           },
-          sampleRequest: "Sample Request",
+          sampleRequest: {
+            axiosThen: "response => console.log&lpar;response&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
           expectedReturn: "Expected Return",
           expectedFailedReturn: "Expected Return if Fails."
         }
