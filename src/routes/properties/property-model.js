@@ -23,7 +23,20 @@ function addProperty(input) {}
 // getProperty() - return results for a property by id
 function getProperty(id) {
   return db('properties')
-  .where({ id })
+  .join('users', 'users.id', 'properties.landlordId')
+  .select(
+    'properties.id as propertiesId',
+    'propertyName',
+    'propertyAddress',
+    'propertyImage',
+    'propertyStatus',
+    'propertyStartdate',
+    'propertyEnddate',
+    'propertyName',
+    'users.name', 
+    'users.email'
+  )
+  .where({ 'properties.id': id })
   .first();
 }
 
