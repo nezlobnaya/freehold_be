@@ -127,7 +127,9 @@
         <h3 class="moreInfo" onclick="{showContent('propertyEndpoints')}">Property Endpoints</h3>
         <div id="propertyEndpoints" class="show">
           <ul>
+            <li class="moreInfo" onclick="{epPropertyGet()}">Get a Property</li>
             <li class="moreInfo" onclick="{epPropertyGetAll()}">Get All Properties</li>
+            <li class="moreInfo" onclick="{epPropertyGetAllforUser()}">Get All Properties for User</li>
           </ul>
         </div>
 
@@ -388,13 +390,17 @@
       function endPoints(input) {
 
         let { header, todo, comment, endpoint, type, description, expectedInput, sampleRequest, expectedReturn, expectedFailedReturn } = input
+        
+        // sample request
+        sampleRequest.type = type.toLowerCase();
+        sampleRequest.address = "example.com" + endpoint;
+        sampleRequest.input = expectedInput;
 
         // If type == GET, make header a link with the endpoint
         header = (type == "GET") ? "<a href='" + endpoint + "'>" + header + "</a>" : header;
 
         // If variable is an object, convert to JSON string
         expectedInput = (typeof expectedInput == "object") ? fromJSON(expectedInput) : expectedInput ;
-        sampleRequest = (typeof sampleRequest == "object") ? fromJSON(sampleRequest) : sampleRequest ;
         expectedReturn = (typeof expectedReturn == "object") ? fromJSON(expectedReturn) : expectedReturn ;
         expectedFailedReturn = (typeof expectedFailedReturn == "object") ? fromJSON(expectedFailedReturn) : expectedFailedReturn ;
 
@@ -405,10 +411,10 @@
         type = "<p><strong>Type:</strong> <code>`" + type + "`</code></p>";
         description = "<p><strong>Description:</strong> <code>" + description + "</code></p>";
         expectedInput = (expectedInput != "") 
-          ? "<p><strong>Expected Input:</strong> </p> <pre>" + expectedInput + "</pre>" 
+          ? "<p><strong>Expected Input Sample:</strong> </p> <pre>" + expectedInput + "</pre>" 
           : "";
         sampleRequest = (sampleRequest != "")
-          ? "<p><strong>Sample Request:</strong> </p> <pre>" + sampleRequest + "</pre>" 
+          ? "<p><strong>Sample Request:</strong> </p> <pre>" + displayAxios(sampleRequest) + "</pre>" 
           : "";
         expectedReturn = (expectedReturn != "") 
           ? "<p><strong>Expected Return:</strong> </p> <pre>" + expectedReturn + "</pre>" 
@@ -422,6 +428,28 @@
           expectedInput + sampleRequest + expectedReturn + expectedFailedReturn ;
       }
 
+      function displayAxios(sampleRequest) {
+        // if sampleRequest is an object, display
+        if (typeof sampleRequest == "object") {
+          let { type, address, input, axiosThen, axiosCatch } = sampleRequest;
+
+
+          // if input is an object, display
+          input = (typeof input == "object") 
+            ? ", <div class='indent'>" + fromJSON(input)  + "&rpar; <br />"
+            : "&rpar; <div class='indent'>";
+
+          return "axios." + 
+            type + "&lpar;\'" + 
+            address + "\'" + 
+            input + 
+            ".then&lpar;" + axiosThen + "&rpar;<br />" + 
+            ".catch&lpar;" + axiosCatch + "&rpar;</div>";
+          } else {
+            return sampleRequest;
+          }
+      }
+
       // User Endpoint - Register
       function epUserRegister() {
 
@@ -429,7 +457,9 @@
           "email": "example@gmail.com",
           "password": "badpassword",
         };
-
+        let expectedReturn = {
+          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        };
         let input = {
           header: "User Endpoints - Register",
           todo: "Add expected returns",
@@ -438,18 +468,34 @@
           type: "POST",
           description: "Register a new user",
           expectedInput: expectedInput,
-          sampleRequest: "axios.post&lpar;'example.com/api/auth/register', <br />" + 
-          "<div class='indent'>" +
-          fromJSON(expectedInput) +
-          "<br />" +
-          ".then&lpar;token => console.log&lpar;token&rpar; <br />" + 
-          ".catch&lpar;err => <br />" + 
-          "<div class='indent'>console.error&lpar;err&rpar; </div>" + 
-          "&rpar; </div>",
-          expectedReturn: {
-            "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          sampleRequest: {
+            axiosThen: "token => console.log&lpar;token&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
           },
+          expectedReturn: expectedReturn,
           expectedFailedReturn: "" // TODO: if Fails
+        };
+
+        outputContent = endPoints(input);
+        output(outputContent);
+      };
+
+      // Get a Property
+      function epPropertyGet() {
+        let input = {
+          header: "Property Endpoint - Get",
+          todo: "In Review",
+          comment: "",
+          endpoint: "/api/properties/:id",
+          type: "get",
+          description: "Returns an object based on the Property id.",
+          expectedInput: "",
+          sampleRequest: {
+            axiosThen: "response => console.log&lpar;response&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
+          expectedReturn: property1,
+          expectedFailedReturn: { message: 'Failed to get results.' }
         }
 
         outputContent = endPoints(input);
@@ -458,26 +504,47 @@
 
       // Property Endpoint - Get All
       function epPropertyGetAll() {
-
         let input = {
           header: "Property Endpoint - Get All",
-          todo: "In Review, need to add Sample Request and Expected Return if Fails to documentation.",
+          todo: "In Review",
           comment: "",
           endpoint: "/api/properties/",
           type: "GET",
-          description: "Get All Properties",
+          description: "Returns an array of all Properties in the database.",
           expectedInput: "",
-          sampleRequest: "Sample Request", // TODO:
-          expectedReturn: "[ <br /><div class='indent'>" + 
-            fromJSON(property1) + ", <br />" +
-            fromJSON(property2) + "<br /></div>]",
-          expectedFailedReturn: "" // TODO: if Fails
+          sampleRequest: {
+            axiosThen: "token => console.log&lpar;token&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
+          expectedReturn: fromJSON([property1, property2]),
+          expectedFailedReturn: { message: 'Failed to get results.' }
         }
 
         outputContent = endPoints(input);
         output(outputContent);
       };
 
+      // Property Endpoint - GET all properties for a specific user
+      function epPropertyGetAllforUser() {
+        let input = {
+          header: "Property Endpoint - Get All Properties for a specific user",
+          todo: "In Review",
+          comment: "",
+          endpoint: "/api/properties/user/:email",
+          type: "GET",
+          description: "Returns an array of all Properties for User.",
+          expectedInput: "",
+          sampleRequest: {
+            axiosThen: "token => console.log&lpar;token&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
+          expectedReturn: fromJSON([property1, property2]),
+          expectedFailedReturn: { message: 'Failed to get results.' }
+        }
+
+        outputContent = endPoints(input);
+        output(outputContent);
+      };
       
       // Sample Endpoint
       function epSample() {
@@ -486,7 +553,7 @@
           todo: "This is still Todo.",
           comment: "This is a comment.",
           endpoint: "/api/sample/",
-          type: "GET",
+          type: "post",
           description: "Description of the Endpoint",
           expectedInput: {
             "sample": "this is a sample object",
@@ -494,7 +561,10 @@
               "can": "can have an object inside an object.",
             }
           },
-          sampleRequest: "Sample Request",
+          sampleRequest: {
+            axiosThen: "response => console.log&lpar;response&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
           expectedReturn: "Expected Return",
           expectedFailedReturn: "Expected Return if Fails."
         }
@@ -506,17 +576,19 @@
     // #endregion - End Points
 
     // #region - Database Structures
-      function dbStructures(header, comment, model) {
-        var jsonDB = JSON.stringify(model, undefined, 2);
+      function dbStructures(header, todo, comment, model) {
+        todo = (todo) ? "<p class='todo'>" + todo + "</p>" : "";
+        comment = (comment) ? "<p class='comment'>" + comment + "</p>" : "";
+
         return "<h2> Database Structures </h2> " +
-        "<h3>" + header + "</h3> " + comment +
-        "<pre>" + jsonDB + "</pre>";
+        "<h3>" + header + "</h3> " + todo + comment +
+        "<pre>" + fromJSON(model) + "</pre>";
       }
       
       // User Table
       function dbUsers() {
         let userDb = { 
-          'id': "integer -> increment number assigned by database", 
+          id: "integer -> increment number assigned by database", 
           email: "string, notNullable, unique",
           name: {
             title: "string",
@@ -537,18 +609,19 @@
           type: "string, notNullable -> (expects one of these:) landlord, tenant, dev",
           phone: "string"
         }
-        let comment = "<p class='todo'>Reviewing using JSON for name.</p>";
+        let todo = "Reviewing using JSON for name."
+        let comment = "";
 
-        outputContent = dbStructures("Landlord User", comment, userDb);
+        outputContent = dbStructures("User Table", todo, comment, userDb);
         output(outputContent);
       }
     
       // Properties Table
       function dbProperty() {
         let propertyDb = {
-          'id': "integer -> increment number assigned by database", 
-          'property-name': "string -> Name for the Property",
-          'property-address': {
+          id: "integer -> increment number assigned by database", 
+          propertyName: "string -> Name for the Property",
+          propertyAddress: {
             street: "string",
             street2: "string",
             city: "string",
@@ -556,66 +629,70 @@
             zip: "integer",
             country: "string"
           },
-          'property-image': "string -> can be null",
-          'property-status': "string -> can be null", 
-          'property-startdate': "date -> can be null",
-          'property-enddate': "date -> can be null",
-          'landlord-id': "integer -> references id in table \'users\'"
+          propertyImage: "string -> can be null",
+          propertyStatus: "string -> can be null", 
+          propertyStartdate: "date -> can be null",
+          propertyEnddate: "date -> can be null",
+          landlordId: "integer -> references id in table \'users\'"
         };
-        let propertyComment = "<p class='comment'>Status options may include: open, closed, occupied, forRent, or forSale.</p>";
+        let todo = "";
+        let comment = "Status options may include: open, closed, occupied, forRent, or forSale.";
 
-        outputContent = dbStructures("Properties Table", propertyComment, propertyDb);
+        outputContent = dbStructures("Properties Table", todo, comment, propertyDb);
         output(outputContent);
       }
 
       // Tenant History Table
       function dbTenantHistory() {
         let tenantHistoryDb = {
-          'id': "integer -> increment number assigned by database", 
-          'tenant-id': "integer -> references id in table \'users\'",
-          'property-id': "integer -> references id in table \'properties\'",
-          'history-startdate': "date, can be 'null'",
-          'history-enddate': "date, can be 'null'"
+          id: "integer -> increment number assigned by database", 
+          tenantId: "integer -> references id in table \'users\'",
+          propertyId: "integer -> references id in table \'properties\'",
+          historyStartdate: "date, can be 'null'",
+          historyEnddate: "date, can be 'null'"
         }
+        let todo = "";
+        let comment = "";
 
-        outputContent = dbStructures("Tenant History Table", "", tenantHistoryDb);
+        outputContent = dbStructures("Tenant History Table", todo, comment, tenantHistoryDb);
         output(outputContent);
-      }
+      };
 
       // Work Order Table
       function dbWorkOrders() {
         let woDb = {
-          'id': "integer -> increment number assigned by database", 
-          'workorder': "string -> Work Order Title",
-          'wo-description': "text -> Description of the issue.",
-          'wo-type': "string -> type like: plumbing or electrical",
-          'wo-startdate': "date -> from a timestamp or date selection?",
-          'wo-enddate': "date, can be 'null'",
-          'property-id': "integer -> references id in table \'properties\'",
+          id: "integer -> increment number assigned by database", 
+          workorder: "string -> Work Order Title",
+          woDescription: "text -> Description of the issue.",
+          woType: "string -> type like: plumbing or electrical",
+          woStartdate: "date -> from a timestamp or date selection?",
+          woEnddate: "date, can be 'null'",
+          propertyId: "integer -> references id in table \'properties\'",
         }
+        let todo = "";
+        let comment = "";
 
-        outputContent = dbStructures("Work Order Table", "", woDb);
+        outputContent = dbStructures("Work Order Table", todo, comment, woDb);
         output(outputContent);
       }
 
       // Work Order History Table
       function dbWorkOrderHistory() {
         let woHistoryDb = {
-          'id': "integer -> increment number assigned by database", 
-          'wo-id': "integer -> references id in table \'workorders\'",
-          'wo-status': 'string -> status of work order', 
-          'wo-urgency': "integer -> Scale of 1 to 5",
-          'wo-update': { 
+          id: "integer -> increment number assigned by database", 
+          woId: "integer -> references id in table \'workorders\'",
+          woStatus: 'string -> status of work order', 
+          woUrgency: "integer -> Scale of 1 to 5",
+          woUpdate: { 
             assignedTo: "string -> Name of Company task assigned to",
             comment: "string -> optional comment"
           },
-          'wo-updatedate': "timestamp"
+          woUpdatedate: "timestamp"
         }
+        let todo = "Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed'";
+        let comment = "Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent";
 
-        comment = "<p class='comment'>Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent</p>" + 
-          "<p class='todo'>Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed' </p>";
-
-        outputContent = dbStructures("Work Order Table", comment, woHistoryDb);
+        outputContent = dbStructures("Work Order Table", todo, comment, woHistoryDb);
         output(outputContent);
       }
 
