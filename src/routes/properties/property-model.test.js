@@ -88,43 +88,28 @@ describe('Property Model', () => {
     it('Should return 2 results for email: landlord@email.com', async () => {
       
       // call function
-      try {
-        const results = await Properties.getPropertiesByUser("landlord@email.com");
+      const results = await Properties.getPropertiesByUser("landlord@email.com");
 
-        // expected results
-        expect(results.length).toEqual(2);
-
-      } catch(err) {
-        console.log(err)
-      }
+      // expected results
+      expect(results.length).toEqual(2);
     })
 
     it('Should return an array', async () => {
       
       // call function
-      try {
-        const results = await Properties.getPropertiesByUser("landlord@email.com");
+      const results = await Properties.getPropertiesByUser("landlord@email.com");
 
-        // expected results
-        expect(Array.isArray(results)).toBe(true);
-
-      } catch(err) {
-        console.log(err)
-      }
+      // expected results
+      expect(Array.isArray(results)).toBe(true);
     })
 
     it('Should return objects with the user\'s email: \'landlord@email.com\'', async () => {
       
       // call function
-      try {
-        const results = await Properties.getPropertiesByUser("landlord@email.com");
+      const results = await Properties.getPropertiesByUser("landlord@email.com");
 
-        // expected results
-        expect(results[0].email).toBe("landlord@email.com");
-
-      } catch(err) {
-        console.log(err)
-      }
+      // expected results
+      expect(results[0].email).toBe("landlord@email.com");
     })
 
   })
