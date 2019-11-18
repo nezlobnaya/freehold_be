@@ -44,18 +44,40 @@ describe('Property Model', () => {
         expect(typeof results).toBe('object');
 
       } catch(err) {
-        console.log(err.Error)
+        console.log(err)
       }
     })
 
-    xit('Should return result that matches expected object', async () => {
+    it('Should return result that matches expected object', async () => {
       
       // call function
       try {
         const results = await Properties.addProperty(newProperty);
 
         // expected results
-        expect(results).toMatchObject(newProperty);
+        expect(results).toMatchObject({
+          "propertyName": "New Property Added",
+          "propertyAddress": {
+            "street": "1 First St",
+            "street2": "Suite 2",
+            "city": "Salt Lake City",
+            "state": "Utah",
+            "zip": "84101",
+            "country": "USA"
+          },
+          "propertyImage": "newProperty.jpg",
+          "propertyStatus": "occupied",
+          "propertyEnddate": null,
+          "name": {
+            "title": "Title",
+            "firstname": "Firstname",
+            "middlename": "Middlename",
+            "lastname": "Lastname",
+            "suffix": "Suffix",
+            "preferredname": "Preferred"
+          },
+          "email": "landlord@email.com"
+        });
 
       } catch(err) {
         console.log(err)
@@ -67,7 +89,7 @@ describe('Property Model', () => {
   //#endregion - CREATE
 
   //#region - READ
-  xdescribe('function getAllProperties', () => {
+  describe('function getAllProperties', () => {
 
     it('Should return 2 results', async () => {
       
@@ -119,24 +141,19 @@ describe('Property Model', () => {
     })
 
     it('Should return "Sample" for the property with id=2', async () => {
-
       // Expected Input
       const id = 2;
-      
-      // call function
-      try {
-        const results = await Properties.getProperty(id);
 
+      try {
+        // call function
+        const results = await Properties.getProperty(id);
         // expected results
         expect(results["propertyName"]).toBe("Sample");
-
-      } catch(err) {
-        console.log(err)
-      }
+      } catch(err) { console.log(err) }
     })
   })
 
-  xdescribe('function getPropertiesByUser(email)', () => {
+  describe('function getPropertiesByUser(email)', () => {
 
     it('Should return 2 results for email: landlord@email.com', async () => {
       

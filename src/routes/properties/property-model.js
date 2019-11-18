@@ -17,7 +17,7 @@ module.exports = {
 
 // addProperty(input) - inserts input to properties and return results for a property by id inserted
 async function addProperty(input) {
-  const results = await db('properties').insert(input);
+  const results = await db('properties').returning('id').insert(input);
   return getProperty(results[0]);
 }
 
