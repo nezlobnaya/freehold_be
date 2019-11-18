@@ -86,7 +86,10 @@ function getPropertiesByUser(user) {
 
 //#region - Update
 
-function updateProperty(changes, id) {}
+async function updateProperty(changes, id) {
+  await db('properties').where({ id }).update(changes);
+  return getProperty({ id });
+}
 
 //#endregion
 
