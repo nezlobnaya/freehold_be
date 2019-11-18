@@ -129,6 +129,7 @@
           <ul>
             <li class="moreInfo" onclick="{epPropertyGet()}">Get a Property</li>
             <li class="moreInfo" onclick="{epPropertyGetAll()}">Get All Properties</li>
+            <li class="moreInfo" onclick="{epPropertyGetAllforUser()}">Get All Properties for User</li>
           </ul>
         </div>
 
@@ -483,7 +484,7 @@
       function epPropertyGet() {
         let input = {
           header: "Property Endpoint - Get",
-          todo: "In Review, need to add Expected Return if Fails to documentation.",
+          todo: "In Review",
           comment: "",
           endpoint: "/api/properties/:id",
           type: "get",
@@ -505,11 +506,33 @@
       function epPropertyGetAll() {
         let input = {
           header: "Property Endpoint - Get All",
-          todo: "In Review, need to add Expected Return if Fails to documentation.",
+          todo: "In Review",
           comment: "",
           endpoint: "/api/properties/",
           type: "GET",
           description: "Returns an array of all Properties in the database.",
+          expectedInput: "",
+          sampleRequest: {
+            axiosThen: "token => console.log&lpar;token&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
+          expectedReturn: fromJSON([property1, property2]),
+          expectedFailedReturn: { message: 'Failed to get results.' }
+        }
+
+        outputContent = endPoints(input);
+        output(outputContent);
+      };
+
+      // Property Endpoint - GET all properties for a specific user
+      function epPropertyGetAllforUser() {
+        let input = {
+          header: "Property Endpoint - Get All Properties for a specific user",
+          todo: "In Review",
+          comment: "",
+          endpoint: "/api/properties/user/:email",
+          type: "GET",
+          description: "Returns an array of all Properties for User.",
           expectedInput: "",
           sampleRequest: {
             axiosThen: "token => console.log&lpar;token&rpar;",
