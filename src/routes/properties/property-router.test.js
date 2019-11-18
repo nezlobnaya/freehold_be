@@ -30,6 +30,7 @@ const exampleProperty = {
   },
   "email": "landlord@email.com"
 };
+const landlordEmail = "landlord@email.com";
 
 describe('Properties Routes', () => {
 
@@ -47,22 +48,20 @@ describe('Properties Routes', () => {
       done();
     })
 
-    it('should return array with length of 2', async done => {
+    it('should return array', async done => {
       
       const results = await request.get('/api/properties/');
       const response = await results.body;
     
       expect(Array.isArray(response)).toBe(true);
-      expect(response.length).toEqual(2);
       done();
     })
 
-    it('should return array with length of 2', async done => {
+    it('should return a length of 2', async done => {
       
       const results = await request.get('/api/properties/');
       const response = await results.body;
     
-      expect(Array.isArray(response)).toBe(true);
       expect(response).toHaveLength(2);
       done();
     })
@@ -92,6 +91,53 @@ describe('Properties Routes', () => {
       const response = await results.body;
     
       expect(response).toMatchObject(exampleProperty);
+      done();
+    })
+  })
+
+  describe('get: \'/api/properties/user/:email\' endpoint', () => {
+
+    it('should return 200 status', async done => {
+      
+      const results = await request.get('/api/properties/user/"landlord@email.com"');
+      expect(results.status).toBe(200);
+      done();
+    })
+
+    it('should return array', async done => {
+      
+      const results = await request.get('/api/properties/user/' + landlordEmail );
+      const response = await results.body;
+    
+      expect(Array.isArray(response)).toBe(true);
+      done();
+    })
+
+    it('should return a length of 2', async done => {
+      
+      const results = await request.get('/api/properties/user/' + landlordEmail );
+      const response = await results.body;
+    
+      expect(response).toHaveLength(2);
+      done();
+    })
+
+    it('should return objects with the users email landlord@email.com', async done => {
+      
+      const results = await request.get('/api/properties/user/' + landlordEmail );
+      const response = await results.body;
+    
+      expect(response[0].email).toBe("landlord@email.com");
+      expect(response[1].email).toBe("landlord@email.com");
+      done();
+    })
+
+    it('if user does not exist should return empty array', async done => {
+      
+      const results = await request.get('/api/properties/user/test' );
+      const response = await results.body;
+    
+      expect(response).toEqual([]);
       done();
     })
   })

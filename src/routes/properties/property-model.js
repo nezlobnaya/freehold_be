@@ -75,7 +75,7 @@ function getPropertiesByUser(user) {
     'users.name', 
     'users.email'
   )
-  .where({ 'users.email': user })
+  .where({ 'users.email': user });
 }
 
 //#endregion - Get
