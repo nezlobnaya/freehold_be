@@ -62,6 +62,15 @@ describe('Properties Routes', () => {
       }
     })
 
+    it('should return an object', async done => {
+      
+      const results = await request.post('/api/properties/').send(newProperty);
+      const response = await results.body;
+    
+      expect(typeof response).toBe('object');
+      done();
+    })
+
   })
 
   //#endregion - CREATE 
