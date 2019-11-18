@@ -15,7 +15,10 @@ module.exports = {
 
 //#region - CREATE
 
-function addProperty(input) {}
+async function addProperty(input) {
+  const results = await db('properties').insert(input);
+  return getProperty(results[0]);
+}
 
 //#endregion
 
