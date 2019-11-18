@@ -9,6 +9,10 @@ describe('Property Model', () => {
     await Reset.dbReset();
   })
 
+  afterEach( async done => {
+    done();
+  })
+
   //#region - READ
   describe('function getAllProperties', () => {
 
@@ -77,6 +81,52 @@ describe('Property Model', () => {
         console.log(err)
       }
     })
+  })
+
+  describe('function getPropertiesByUser(email)', () => {
+
+    it('Should return 2 results for email: landlord@email.com', async () => {
+      
+      // call function
+      try {
+        const results = await Properties.getPropertiesByUser("landlord@email.com");
+
+        // expected results
+        expect(results.length).toEqual(2);
+
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('Should return an array', async () => {
+      
+      // call function
+      try {
+        const results = await Properties.getPropertiesByUser("landlord@email.com");
+
+        // expected results
+        expect(Array.isArray(results)).toBe(true);
+
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('Should return objects with the user\'s email: \'landlord@email.com\'', async () => {
+      
+      // call function
+      try {
+        const results = await Properties.getPropertiesByUser("landlord@email.com");
+
+        // expected results
+        expect(results[0].email).toBe("landlord@email.com");
+
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
   })
   // #endregion
 
