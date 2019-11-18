@@ -48,7 +48,7 @@ describe('Properties Routes', () => {
   })
 
   //#region - CREATE
-  xdescribe ('post: \'/api/properties/\' endpoint', () => {
+  describe ('post: \'/api/properties/\' endpoint', () => {
 
     it('should return 201 status', async done => {
       try {
@@ -67,7 +67,7 @@ describe('Properties Routes', () => {
   //#endregion - CREATE 
 
   //#region - READ
-  xdescribe('get: \'/api/properties/\' endpoint', () => {
+  describe('get: \'/api/properties/\' endpoint', () => {
 
     it('should return 200 status', async done => {
       
@@ -95,7 +95,7 @@ describe('Properties Routes', () => {
     })
   })
 
-  xdescribe ('get: \'/api/properties/:id\' endpoint', () => {
+  describe ('get: \'/api/properties/:id\' endpoint', () => {
 
     it('should return 200 status', async done => {
       
@@ -123,7 +123,7 @@ describe('Properties Routes', () => {
     })
   })
 
-  xdescribe ('get: \'/api/properties/user/:email\' endpoint', () => {
+  describe ('get: \'/api/properties/user/:email\' endpoint', () => {
 
     it('should return 200 status', async done => {
       
