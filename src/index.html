@@ -116,7 +116,7 @@
       <div id="endpoints" class="show">
 
         <h3 class="moreInfo" onclick="{showContent('userEndpoints')}">User Endpoints</h3>
-        <div id="userEndpoints" class="show">
+        <div id="userEndpoints" class="hid">
           <ul>
             <li onclick="{epUserRegister()}">Register</li>
             <li onclick="{}">Login - <span class="todo">in Progress</span></li>
@@ -126,19 +126,25 @@
         </div>
 
         <h3 class="moreInfo" onclick="{showContent('propertyEndpoints')}">Property Endpoints</h3>
-        <div id="propertyEndpoints" class="show">
-          <ul> Get:
+        <div id="propertyEndpoints" class="hid">
+          <ul> Create:
+            <li onclick="{epPropertyAdd()}">Add a Property</li>
+          </ul>
+          <ul> Read:
             <li onclick="{epPropertyGet()}">Get a Property</li>
             <li onclick="{epPropertyGetAll()}">Get All Properties</li>
             <li onclick="{epPropertyGetAllforUser()}">Get All Properties for User</li>
           </ul>
-          <ul> Add:
-            <li onclick="{epPropertyAdd()}">Add a Property</li>
+          <ul> Update:
+            <li onclick="{epPropertyUpdate()}">Update a Property</li>
+          </ul>
+          <ul> Delete:
+            <li onclick="{epPropertyDelete()}">Delete a Property</li>
           </ul>
         </div>
 
         <h3 class="moreInfo" onclick="{showContent('sampleEndpoints')}">Sample Endpoints</h3>
-        <div id="sampleEndpoints" class="show">
+        <div id="sampleEndpoints" class="hid">
           <ul>
             <li onclick="{epSample()}">Sample</li>
           </ul>
@@ -595,6 +601,55 @@
             "landlordId": 1
           },
           expectedFailedReturn: { message: 'Failed to create new property.' }
+        }
+
+        outputContent = endPoints(input);
+        output(outputContent);
+      };
+
+      // Property Endpoint - Update
+      function epPropertyUpdate() {
+        let input = {
+          header: "Property Endpoint - Update",
+          todo: "In Review",
+          comment: "",
+          endpoint: "/api/properties/:id",
+          type: "put",
+          description: "Updates a Property based on property id.",
+          expectedInput: {
+          "propertyName": "Property Updated",
+          "propertyStatus": "open"
+          },
+          sampleRequest: {
+            axiosThen: "response => console.log&lpar;response&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
+          expectedReturn: {
+            "propertiesId": 1,
+            "propertyName": "Property Updated",
+            "propertyAddress": {
+              "street": "1 First St",
+              "street2": "Suite 2",
+              "city": "Salt Lake City",
+              "state": "Utah",
+              "zip": "84101",
+              "country": "USA"
+            },
+            "propertyImage": "property.jpg",
+            "propertyStatus": "open",
+            "propertyStartdate": "2001-01-01T05:00:00.000Z",
+            "propertyEnddate": null,
+            "name": {
+              "title": "Title",
+              "firstname": "Firstname",
+              "middlename": "Middlename",
+              "lastname": "Lastname",
+              "suffix": "Suffix",
+              "preferredname": "Preferred"
+            },
+            "email": "landlord@email.com"
+          },
+          expectedFailedReturn: { message: 'Failed to update the property.' }
         }
 
         outputContent = endPoints(input);

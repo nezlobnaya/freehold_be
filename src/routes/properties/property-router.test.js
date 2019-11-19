@@ -48,7 +48,7 @@ describe('Properties Routes', () => {
   })
 
   //#region - CREATE
-  describe ('post: \'/api/properties/\' endpoint', () => {
+  xdescribe ('post: \'/api/properties/\' endpoint', () => {
 
     it('should return 201 status', async done => {
       try {
@@ -76,7 +76,7 @@ describe('Properties Routes', () => {
   //#endregion - CREATE 
 
   //#region - READ
-  describe('get: \'/api/properties/\' endpoint', () => {
+  xdescribe('get: \'/api/properties/\' endpoint', () => {
 
     it('should return 200 status', async done => {
       
@@ -104,7 +104,7 @@ describe('Properties Routes', () => {
     })
   })
 
-  describe ('get: \'/api/properties/:id\' endpoint', () => {
+  xdescribe ('get: \'/api/properties/:id\' endpoint', () => {
 
     it('should return 200 status', async done => {
       
@@ -132,7 +132,7 @@ describe('Properties Routes', () => {
     })
   })
 
-  describe ('get: \'/api/properties/user/:email\' endpoint', () => {
+  xdescribe ('get: \'/api/properties/user/:email\' endpoint', () => {
 
     it('should return 200 status', async done => {
       
@@ -178,6 +178,59 @@ describe('Properties Routes', () => {
       done();
     })
   })
+
   // #endregion
+
+  //#region - UPDATE
+  describe ('put: \'/api/properties/\' endpoint', () => {
+
+    it('should return 200 status', async done => {
+      try {
+        // call function
+        const results = await request.put('/api/properties/2' )
+          .send({ "propertyName": "Sample Property Updated" });
+        // expected results
+        expect(results.status).toBe(200);
+        done();
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('should fail if id is not valid with message: Could not find property with given id', async done => {
+      try {
+        // call function
+        const results = await request.put('/api/properties/5' )
+          .send({ "propertyName": "Sample Property Updated" });
+        const response = JSON.parse(results.text);
+        console.log(response)
+        // expected results
+        expect(results.status).toBe(404);
+        expect(response).toEqual({"message": "Could not find property with given id."});
+        done();
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('should fail if propertyName is null', async done => {
+      try {
+        // call function
+        const results = await request.put('/api/properties/1' )
+          .send({ "propertyName": null });
+        const response = JSON.parse(results.text);
+        console.log(response)
+        // expected results
+        expect(results.status).toBe(500);
+        expect(response).toEqual({"message": "Failed to update the property."});
+        done();
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+  })
+
+  //#endregion - CREATE 
 
 })

@@ -58,4 +58,25 @@ router.get('/user/:email', async (req, res) => {
 
 //#endregion 
 
+//#region - UPDATE
+
+// Update Property
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const changes = req.body;
+
+  try {
+    const results = await Properties.updateProperty(changes, id);
+    if (results) {
+      res.json(results);
+    } else {
+      res.status(404).json({ message: 'Could not find property with given id.' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to update the property.' });
+  }
+});
+
+//#endregion 
+
 module.exports = router; 
