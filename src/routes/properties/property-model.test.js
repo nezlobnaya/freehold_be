@@ -3,6 +3,9 @@ const db = require('../../../database/db-config.js');
 const Reset = require('../dbReset.js');
 const Properties = require('./property-model.js');
 
+// functions for tests
+function getPropsAll() { return db('properties') }
+
 describe('Property Model', () => {
 
   const newProperty = {
@@ -242,6 +245,61 @@ describe('Property Model', () => {
           },
           "email": "landlord@email.com"
         });
+
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+  })
+
+  //#endregion
+
+  //#region - DELETE
+  
+  describe('function deleteProperty', () => {
+    // deleteProperty(id) - deletes property based on the property's id
+
+    it('Should return count 1 for number of deleted properties', async () => {
+      try {
+        // call function
+        const results = await Properties.deleteProperty(2);
+        // expected results
+        expect(results).toBe(1);
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('Property by id Should return undefined after delete', async () => {
+      const id = 2
+      try {
+        // call function
+        await Properties.deleteProperty(id);
+        // check database for the property by id
+        const results = await Properties.getProperty(id);
+        // expected results
+        expect(results).not.toBeDefined();
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('Count of all Properties Should decrease by 1', async () => {
+      try {
+        // count properties before delete
+        const dbBefore = await getPropsAll();
+        const dbBeforeCount = dbBefore.length;
+
+        // call function
+        await Properties.deleteProperty(2);
+
+        // count properties after delete
+        const dbAfter = await getPropsAll();
+        const dbAfterCount = dbAfter.length;
+
+        // expected results -> Count before delete minus count after delete should equal 1
+        expect(dbBeforeCount - dbAfterCount).toEqual(1);
 
       } catch(err) {
         console.log(err)

@@ -95,6 +95,9 @@ async function updateProperty(changes, id) {
 
 //#region - Delete
 
-function deleteProperty(id) {}
+async function deleteProperty(id) {
+  const results = await db('properties').where({ id }).del();
+  return results;
+}
 
 //#endregion
