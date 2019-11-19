@@ -1,4 +1,4 @@
-const admin = require("../../lib/admin");
+// const admin = require("../../lib/admin");
 const firebase = require("../../lib/firebase");
 
 async function createUser(req, res) {
@@ -6,24 +6,27 @@ async function createUser(req, res) {
 
   try {
     // Create the user
-    const user = await admin.auth().createUser({
-      email,
-      password
-    });
+    const user = await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password);
 
     if (!user) {
       return res.status(400).json({ message: "Account not created" });
     }
 
     // Generate a JWT that can be used for future requests
-    const token = await admin.auth().createCustomToken(user.uid);
+    const token = await user.user.getIdToken()
 
     res.status(201).json({ token });
   } catch (err) {
     console.error(err);
 
+    if (err.code === "auth/email-already-in-use") {
+      return res.status(400).json({ message: "Account not created" });
+    }
+
     // TODO: Come back and address additional issues from firebase
-    res.status(500).json({})
+    res.status(500).json(err);
   }
 }
 
