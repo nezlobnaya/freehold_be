@@ -33,12 +33,13 @@
     .moreInfo { position:relative; left: 5px; }
     .moreInfo:hover { color: lightskyblue; }
     h2.moreInfo:hover { text-decoration: underline wavy; }
-    li.moreInfo { position:relative; left: -20px; cursor: pointer; }
     #main { min-width: 400px; padding-bottom: 100px; }
     #leftMenu { left: 5px; color: cornflowerblue; }
     #leftMenu h1, h2, h3 { font-weight: normal;}
     #leftMenu h3 { padding-left: 45px; }
-    #leftMenu ul { padding-left: 85px; }
+    #leftMenu ul { padding-left: 50px; }
+    #leftMenu li { cursor: pointer; margin-left: 15px; }
+    #leftMenu li:hover { color: lightskyblue; }
     .moreContent {
       min-width: 500px;
       width: 50%;
@@ -104,9 +105,9 @@
       <h2 class="moreInfo" onclick="{showContent('models')}"><button>v</button> Models</h2>
       <div id="models" class="hid">
         <ul>
-          <li class="moreInfo" onclick="{modelsUsers()}">User Models</li>
-          <li class="moreInfo" onclick="{modelsProperty()}">Property Models</li>
-          <li class="moreInfo" onclick="{modelsTenantHistory()}">Tenant History Model</li>
+          <li onclick="{modelsUsers()}">User Models</li>
+          <li onclick="{modelsProperty()}">Property Models</li>
+          <li onclick="{modelsTenantHistory()}">Tenant History Model</li>
         </ul>
       </div>
 
@@ -117,26 +118,29 @@
         <h3 class="moreInfo" onclick="{showContent('userEndpoints')}">User Endpoints</h3>
         <div id="userEndpoints" class="show">
           <ul>
-            <li class="moreInfo" onclick="{epUserRegister()}">Register</li>
-            <li class="moreInfo" onclick="{}">Login - <span class="todo">in Progress</span></li>
-            <li class="moreInfo" onclick="{}">Update User - <span class="todo">in Progress</span></li>
-            <li class="moreInfo" onclick="{}">Delete User - <span class="todo">in Progress</span></li>
+            <li onclick="{epUserRegister()}">Register</li>
+            <li onclick="{}">Login - <span class="todo">in Progress</span></li>
+            <li onclick="{}">Update User - <span class="todo">in Progress</span></li>
+            <li onclick="{}">Delete User - <span class="todo">in Progress</span></li>
           </ul>
         </div>
 
         <h3 class="moreInfo" onclick="{showContent('propertyEndpoints')}">Property Endpoints</h3>
         <div id="propertyEndpoints" class="show">
-          <ul>
-            <li class="moreInfo" onclick="{epPropertyGet()}">Get a Property</li>
-            <li class="moreInfo" onclick="{epPropertyGetAll()}">Get All Properties</li>
-            <li class="moreInfo" onclick="{epPropertyGetAllforUser()}">Get All Properties for User</li>
+          <ul> Get:
+            <li onclick="{epPropertyGet()}">Get a Property</li>
+            <li onclick="{epPropertyGetAll()}">Get All Properties</li>
+            <li onclick="{epPropertyGetAllforUser()}">Get All Properties for User</li>
+          </ul>
+          <ul> Add:
+            <li onclick="{epPropertyAdd()}">Add a Property</li>
           </ul>
         </div>
 
         <h3 class="moreInfo" onclick="{showContent('sampleEndpoints')}">Sample Endpoints</h3>
         <div id="sampleEndpoints" class="show">
           <ul>
-            <li class="moreInfo" onclick="{epSample()}">Sample</li>
+            <li onclick="{epSample()}">Sample</li>
           </ul>
         </div>
         
@@ -146,11 +150,11 @@
       <h2 class="moreInfo" onclick="{showContent('database')}"><button>v</button> Database Structure</h2>
       <div id="database" class="hid">
         <ul>
-          <li class="moreInfo" onclick="{dbUsers()}">Users Table</li> 
-          <li class="moreInfo" onclick="{dbProperty()}">Properties Table</li>
-          <li class="moreInfo" onclick="{dbTenantHistory()}">Tenant History Table</li> 
-          <li class="moreInfo" onclick="{dbWorkOrders()}">Work Order Table</li>
-          <li class="moreInfo" onclick="{dbWorkOrderHistory()}">Work Order History Table</li>
+          <li onclick="{dbUsers()}">Users Table</li> 
+          <li onclick="{dbProperty()}">Properties Table</li>
+          <li onclick="{dbTenantHistory()}">Tenant History Table</li> 
+          <li onclick="{dbWorkOrders()}">Work Order Table</li>
+          <li onclick="{dbWorkOrderHistory()}">Work Order History Table</li>
         </ul>
       </div>
 
@@ -546,6 +550,57 @@
         output(outputContent);
       };
       
+      // Property Endpoint - Add
+      function epPropertyAdd() {
+        let input = {
+          header: "Property Endpoint - Add",
+          todo: "In Review",
+          comment: "",
+          endpoint: "/api/properties/",
+          type: "post",
+          description: "Adds a Property to the database.",
+          expectedInput: {
+            "propertyName": "New Property Added",
+            "propertyAddress": {
+              "street": "1 First St",
+              "street2": "Suite 2",
+              "city": "Salt Lake City",
+              "state": "Utah",
+              "zip": "84101",
+              "country": "USA"
+            },
+            "propertyImage": "newProperty.jpg",
+            "propertyStatus": "occupied",
+            "propertyStartdate": "2019-01-01",
+            "landlordId": 1
+          },
+          sampleRequest: {
+            axiosThen: "response => console.log&lpar;response&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
+          expectedReturn: {
+            "propertyName": "New Property Added",
+            "propertyAddress": {
+              "street": "1 First St",
+              "street2": "Suite 2",
+              "city": "Salt Lake City",
+              "state": "Utah",
+              "zip": "84101",
+              "country": "USA"
+            },
+            "propertyImage": "newProperty.jpg",
+            "propertyStatus": "occupied",
+            "propertyStartdate": "2019-01-01",
+            "propertyEnddate": null,
+            "landlordId": 1
+          },
+          expectedFailedReturn: { message: 'Failed to create new property.' }
+        }
+
+        outputContent = endPoints(input);
+        output(outputContent);
+      };
+
       // Sample Endpoint
       function epSample() {
         let input = {
