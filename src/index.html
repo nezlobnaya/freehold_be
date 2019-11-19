@@ -656,6 +656,43 @@
         output(outputContent);
       };
 
+      // Property Endpoint - Update
+      function epPropertyDelete() {
+        let input = {
+          header: "Property Endpoint - Update",
+          todo: "In Review",
+          comment: "Currently this will not delete if property is linked in another database. This function should be added, or maybe a way to archive property.",
+          endpoint: "/api/properties/:id",
+          type: "delete",
+          description: "Deletes a Property based on property id, and returns the property information.",
+          expectedInput: "",
+          sampleRequest: {
+            axiosThen: "response => console.log&lpar;response&rpar;",
+            axiosCatch: "err => console.error&lpar;err&rpar;",
+          }, 
+          expectedReturn: {
+            "propertiesId": 2,
+            "propertyName": "Sample",
+            "propertyAddress": {},
+            "propertyImage": null,
+            "propertyStatus": "closed",
+            "name": {
+              "title": "Title",
+              "firstname": "Firstname",
+              "middlename": "Middlename",
+              "lastname": "Lastname",
+              "suffix": "Suffix",
+              "preferredname": "Preferred"
+            },
+            "email": "landlord@email.com"
+          },
+          expectedFailedReturn: { message: 'Failed to delete property.' }
+        }
+
+        outputContent = endPoints(input);
+        output(outputContent);
+      };
+
       // Sample Endpoint
       function epSample() {
         let input = {
