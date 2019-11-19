@@ -194,4 +194,61 @@ describe('Property Model', () => {
   })
   // #endregion
 
+  //#region - UPDATE
+  
+  describe('function updateProperty', () => {
+    // updateProperty(changes, id) - updates input to properties and return results for a property by id
+
+    it('Should update propertyName to: Sample Property Updated', async () => {
+      try {
+        // call function
+        const results = await Properties.updateProperty({ "propertyName": "Sample Property Updated" }, 2);
+        // expected results
+        expect(results.propertyName).toBe('Sample Property Updated');
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('Should return result that matches expected object', async () => {
+      try {
+        // call function
+        const results = await Properties.updateProperty({ 
+          "propertyName": "Property Updated",
+          "propertyStatus": "open" 
+        }, 1);
+
+        // expected results
+        expect(results).toMatchObject({
+          "propertiesId": 1,
+          "propertyName": "Property Updated",
+          "propertyAddress": {
+            "street": "1 First St",
+            "street2": "Suite 2",
+            "city": "Salt Lake City",
+            "state": "Utah",
+            "zip": "84101",
+            "country": "USA"
+          },
+          "propertyImage": "property.jpg",
+          "propertyStatus": "open",
+          "name": {
+            "title": "Title",
+            "firstname": "Firstname",
+            "middlename": "Middlename",
+            "lastname": "Lastname",
+            "suffix": "Suffix",
+            "preferredname": "Preferred"
+          },
+          "email": "landlord@email.com"
+        });
+
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+  })
+
+  //#endregion
 })
