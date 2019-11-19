@@ -48,7 +48,7 @@ describe('Properties Routes', () => {
   })
 
   //#region - CREATE
-  xdescribe ('post: \'/api/properties/\' endpoint', () => {
+  describe ('post: \'/api/properties/\' endpoint', () => {
 
     it('should return 201 status', async done => {
       try {
@@ -76,7 +76,7 @@ describe('Properties Routes', () => {
   //#endregion - CREATE 
 
   //#region - READ
-  xdescribe('get: \'/api/properties/\' endpoint', () => {
+  describe('get: \'/api/properties/\' endpoint', () => {
 
     it('should return 200 status', async done => {
       
@@ -104,7 +104,7 @@ describe('Properties Routes', () => {
     })
   })
 
-  xdescribe ('get: \'/api/properties/:id\' endpoint', () => {
+  describe ('get: \'/api/properties/:id\' endpoint', () => {
 
     it('should return 200 status', async done => {
       
@@ -132,7 +132,7 @@ describe('Properties Routes', () => {
     })
   })
 
-  xdescribe ('get: \'/api/properties/user/:email\' endpoint', () => {
+  describe ('get: \'/api/properties/user/:email\' endpoint', () => {
 
     it('should return 200 status', async done => {
       
@@ -203,7 +203,6 @@ describe('Properties Routes', () => {
         const results = await request.put('/api/properties/5' )
           .send({ "propertyName": "Sample Property Updated" });
         const response = JSON.parse(results.text);
-        console.log(response)
         // expected results
         expect(results.status).toBe(404);
         expect(response).toEqual({"message": "Could not find property with given id."});
@@ -219,7 +218,6 @@ describe('Properties Routes', () => {
         const results = await request.put('/api/properties/1' )
           .send({ "propertyName": null });
         const response = JSON.parse(results.text);
-        console.log(response)
         // expected results
         expect(results.status).toBe(500);
         expect(response).toEqual({"message": "Failed to update the property."});
@@ -231,6 +229,77 @@ describe('Properties Routes', () => {
 
   })
 
-  //#endregion - CREATE 
+  //#endregion - UPDATE 
 
+  //#region - DELETE
+  describe ('delete: \'/api/properties/\' endpoint', () => {
+
+    it('should return 200 status', async done => {
+      try {
+        // call function
+        const results = await request.delete('/api/properties/2');
+        // expected results
+        expect(results.status).toBe(200);
+        done();
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('should return property to be deleted', async done => {
+      try {
+        // call function
+        const results = await request.delete('/api/properties/2');
+        // expected results
+        expect(results.body).toMatchObject({
+          "propertiesId": 2,
+          "propertyName": "Sample",
+          "propertyAddress": {},
+          "propertyImage": null,
+          "propertyStatus": "closed",
+          "name": {
+            "title": "Title",
+            "firstname": "Firstname",
+            "middlename": "Middlename",
+            "lastname": "Lastname",
+            "suffix": "Suffix",
+            "preferredname": "Preferred"
+          },
+          "email": "landlord@email.com"
+        });
+        done();
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('should fail if id is not valid with status 404', async done => {
+      try {
+        // call function
+        const results = await request.delete('/api/properties/5');
+        // expected results
+        expect(results.status).toBe(404);
+        done();
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('should fail if id is not valid with message', async done => {
+      try {
+        // call function
+        const results = await request.delete('/api/properties/5');
+        const response = JSON.parse(results.text);
+        // expected results
+        expect(response).toEqual({"message": "Could not find property with given id."});
+        done();
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+  })
+
+  //#endregion - DELETE 
+  
 })
