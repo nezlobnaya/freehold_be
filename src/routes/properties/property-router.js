@@ -4,6 +4,22 @@ const Properties = require('./property-model.js');
 
 const router = express.Router();
 
+//#region - CREATE 
+
+// add Property and return results for a property by id inserted
+router.post('/', async (req, res) => {
+  const input = req.body;
+
+  try {
+    const results = await Properties.addProperty(input);
+    res.status(201).json(results);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to create new property.' });
+  }
+});
+
+//#endregion - CREATE
+
 //#region - READ
 
 // GET all properties

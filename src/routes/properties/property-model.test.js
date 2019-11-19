@@ -5,6 +5,22 @@ const Properties = require('./property-model.js');
 
 describe('Property Model', () => {
 
+  const newProperty = {
+    "propertyName": "New Property Added",
+    "propertyAddress": {
+      "street": "1 First St",
+      "street2": "Suite 2",
+      "city": "Salt Lake City",
+      "state": "Utah",
+      "zip": "84101",
+      "country": "USA"
+    },
+    "propertyImage": "newProperty.jpg",
+    "propertyStatus": "occupied",
+    "propertyStartdate": "2019-01-01",
+    "landlordId": 1
+  };
+
   beforeEach(async () => {
     await Reset.dbReset();
   })
@@ -12,6 +28,65 @@ describe('Property Model', () => {
   afterEach( async done => {
     done();
   })
+
+  //#region - CREATE 
+  
+  describe('function addProperty', () => {
+    // addProperty(input) - inserts input to properties and return results for a property by id inserted
+
+    it('Should return result of an object', async () => {
+      
+      // call function
+      try {
+        const results = await Properties.addProperty(newProperty);
+
+        // expected results
+        expect(typeof results).toBe('object');
+
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+    it('Should return result that matches expected object', async () => {
+      
+      // call function
+      try {
+        const results = await Properties.addProperty(newProperty);
+
+        // expected results
+        expect(results).toMatchObject({
+          "propertyName": "New Property Added",
+          "propertyAddress": {
+            "street": "1 First St",
+            "street2": "Suite 2",
+            "city": "Salt Lake City",
+            "state": "Utah",
+            "zip": "84101",
+            "country": "USA"
+          },
+          "propertyImage": "newProperty.jpg",
+          "propertyStatus": "occupied",
+          "propertyEnddate": null,
+          "name": {
+            "title": "Title",
+            "firstname": "Firstname",
+            "middlename": "Middlename",
+            "lastname": "Lastname",
+            "suffix": "Suffix",
+            "preferredname": "Preferred"
+          },
+          "email": "landlord@email.com"
+        });
+
+      } catch(err) {
+        console.log(err)
+      }
+    })
+
+  })
+
+  //#endregion - CREATE
 
   //#region - READ
   describe('function getAllProperties', () => {
@@ -66,20 +141,15 @@ describe('Property Model', () => {
     })
 
     it('Should return "Sample" for the property with id=2', async () => {
-
       // Expected Input
       const id = 2;
-      
-      // call function
-      try {
-        const results = await Properties.getProperty(id);
 
+      try {
+        // call function
+        const results = await Properties.getProperty(id);
         // expected results
         expect(results["propertyName"]).toBe("Sample");
-
-      } catch(err) {
-        console.log(err)
-      }
+      } catch(err) { console.log(err) }
     })
   })
 
