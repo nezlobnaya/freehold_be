@@ -86,12 +86,18 @@ function getPropertiesByUser(user) {
 
 //#region - Update
 
-function updateProperty(changes, id) {}
+async function updateProperty(changes, id) {
+  await db('properties').where({ id }).update(changes);
+  return getProperty(id);
+}
 
 //#endregion
 
 //#region - Delete
 
-function deleteProperty(id) {}
+async function deleteProperty(id) {
+  const results = await db('properties').where({ id }).del();
+  return results;
+}
 
 //#endregion
