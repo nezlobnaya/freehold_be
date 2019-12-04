@@ -54,7 +54,7 @@ exports.seed = function(knex) {
       'propertyAddress': {},
       'propertyStatus': "closed", 
       'propertyStartdate': "01-01-2001",
-      'propertyEnddate': null,
+      'propertyEnddate': "12-31-2013",
       'landlordId': 4
     },
     { // id: 7, (auto)
