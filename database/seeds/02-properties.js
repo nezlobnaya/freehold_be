@@ -1,8 +1,7 @@
 exports.seed = function(knex) {
   // Deletes ALL existing entries
   return knex.from("properties").insert([
-    {
-      // id: 1, (auto)
+    { // id: 1, (auto)
       'propertyName': "Name for the Property",
       'propertyAddress': {
         street: "1 First St",
@@ -18,8 +17,7 @@ exports.seed = function(knex) {
       'propertyEnddate': null,
       'landlordId': 1
     },
-    {
-      // id: 2, (auto)
+    { // id: 2, (auto)
       'propertyName': "Sample",
       'propertyAddress': {},
       'propertyStatus': "closed", // closed - no longer an active property
@@ -27,8 +25,7 @@ exports.seed = function(knex) {
       'propertyEnddate': "05-01-2018",
       'landlordId': 1
     },
-    {
-      // id: 3, (auto)
+    { // id: 3, (auto)
       'propertyName': "Property that is for Rent",
       'propertyAddress': {},
       'propertyStatus': "forRent", 
@@ -36,8 +33,7 @@ exports.seed = function(knex) {
       'propertyEnddate': null,
       'landlordId': 4
     },
-    {
-      // id: 4, (auto)
+    { // id: 4, (auto)
       'propertyName': "Property that is for Sale",
       'propertyAddress': {},
       'propertyStatus': "forSale", 
@@ -45,8 +41,7 @@ exports.seed = function(knex) {
       'propertyEnddate': null,
       'landlordId': 4
     },
-    {
-      // id: 5, (auto)
+    { // id: 5, (auto)
       'propertyName': "Property that is Open",
       'propertyAddress': {},
       'propertyStatus': "open", 
@@ -54,8 +49,7 @@ exports.seed = function(knex) {
       'propertyEnddate': null,
       'landlordId': 4
     },
-    {
-      // id: 6, (auto)
+    { // id: 6, (auto)
       'propertyName': "Property that is Closed",
       'propertyAddress': {},
       'propertyStatus': "closed", 
@@ -63,8 +57,7 @@ exports.seed = function(knex) {
       'propertyEnddate': null,
       'landlordId': 4
     },
-    {
-      // id: 7, (auto)
+    { // id: 7, (auto)
       'propertyName': "Property that is Occupied",
       'propertyAddress': {},
       'propertyStatus': "occupied", 
