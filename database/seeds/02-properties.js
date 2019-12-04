@@ -27,5 +27,50 @@ exports.seed = function(knex) {
       'propertyEnddate': "05-01-2018",
       'landlordId': 1
     },
+    {
+      // id: 3, (auto)
+      'propertyName': "Property that is for Rent",
+      'propertyAddress': {},
+      'propertyStatus': "forRent", 
+      'propertyStartdate': "01-01-2001",
+      'propertyEnddate': null,
+      'landlordId': 4
+    },
+    {
+      // id: 4, (auto)
+      'propertyName': "Property that is for Sale",
+      'propertyAddress': {},
+      'propertyStatus': "forSale", 
+      'propertyStartdate': "01-01-2001",
+      'propertyEnddate': null,
+      'landlordId': 4
+    },
+    {
+      // id: 5, (auto)
+      'propertyName': "Property that is Open",
+      'propertyAddress': {},
+      'propertyStatus': "open", 
+      'propertyStartdate': "01-01-2001",
+      'propertyEnddate': null,
+      'landlordId': 4
+    },
+    {
+      // id: 6, (auto)
+      'propertyName': "Property that is Closed",
+      'propertyAddress': {},
+      'propertyStatus': "closed", 
+      'propertyStartdate': "01-01-2001",
+      'propertyEnddate': null,
+      'landlordId': 4
+    },
+    {
+      // id: 7, (auto)
+      'propertyName': "Property that is Occupied",
+      'propertyAddress': {},
+      'propertyStatus': "occupied", 
+      'propertyStartdate': "01-01-2001",
+      'propertyEnddate': null,
+      'landlordId': 4
+    },
   ]);
 };
