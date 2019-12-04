@@ -1,10 +1,10 @@
 exports.seed = function(knex) {
   // Deletes ALL existing entries
   return knex.from("users").insert([
-    {
-      // id: 1, (auto)
-      // username: "landlord",
+    { // id: 1, (auto) - landlord@email.com
+      // username: "landlord", -- not needed if using Firebase
       // password: "examplepass", -- not needed if using Firebase
+      email: "landlord@email.com",
       name: {
         title: "Title",
         firstname: "Firstname",
@@ -13,7 +13,6 @@ exports.seed = function(knex) {
         suffix: "Suffix",
         preferredname: "Preferred"
       },
-      email: "landlord@email.com",
       address: {
         street: "1 First St",
         street2: "Suite 2",
@@ -25,25 +24,34 @@ exports.seed = function(knex) {
       type: "landlord",
       phone: "123-456-7890"
     },
-    {
-      // id: 2, (auto)
-      // username: "dev",
+    { // id: 2, (auto) - dev@email.com
+      // username: "dev", -- not needed if using Firebase
       // password: "pass", -- not needed if using Firebase
+      email: "dev@email.com",
       name: {
         firstname: "Web",
         lastname: "Dev"
       },
-      email: "dev@email.com",
       type: "dev"
     },
-    {
-      // id: 3, (auto)
-      // username: "tenant",
+    { // id: 3, (auto) - tenant@email.com
+      // username: "tenant", -- not needed if using Firebase
       // password: "pass", -- not needed if using Firebase
-      name: {
-        firstname: "Tenant"
-      },
       email: "tenant@email.com",
+      name: { firstname: "Tenant" },
+      type: "tenant"
+    },
+    { // id: 4, (auto) - landlord2@email.com
+      email: "landlord2@email.com",
+      name: { firstname: "Landlord" },
+      type: "landlord"
+    },
+    { // id: 5, (auto) - tenant2@email.com
+      email: "tenant2@email.com",
+      name: { 
+        firstname: "Second",
+        lastname: "Tenant"
+      },
       type: "tenant"
     },
   ]);
