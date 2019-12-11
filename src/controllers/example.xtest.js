@@ -1,6 +1,6 @@
 const cleaner = require("knex-cleaner");
 const example = require("./example");
-const db = require("../../database/db-config");
+const db = require("../../database/db");
 
 beforeEach(async () => {
   // This wipes the entire test database clean before each test

@@ -1,4 +1,4 @@
-// const admin = require("../../lib/admin");
+const User = require("../../models/user");
 const firebase = require("../../lib/firebase");
 
 async function createUser(req, res) {
@@ -14,15 +14,15 @@ async function createUser(req, res) {
       return res.status(400).json({ message: "Account not created" });
     }
 
+    await User.create({ email, type: "landlord" });
+
     // Generate a JWT that can be used for future requests
-    const token = await user.user.getIdToken()
+    const token = await user.user.getIdToken();
 
     res.status(201).json({ token });
   } catch (err) {
-    console.error(err);
-
     if (err.code === "auth/email-already-in-use") {
-      return res.status(400).json({ message: "Account not created" });
+      return res.status(400).json({ message: "Email is already used" });
     }
 
     // TODO: Come back and address additional issues from firebase
@@ -46,9 +46,7 @@ async function login(req, res) {
 
     res.status(200).json({ token });
   } catch (err) {
-    console.error(err);
-
-    res.send(401).json({
+    res.status(401).json({
       error: "Invalid credentials"
     });
   }
