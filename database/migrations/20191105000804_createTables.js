@@ -32,10 +32,10 @@ exports.up = function(knex) {
   .createTable("tenanthistory", tbl => {
     tbl.increments();
     tbl.integer('tenantId').unsigned()
-      .references('id').inTable('users');
+      .references('id').inTable('users').notNullable();
     tbl.integer('propertyId').unsigned()
-      .references('id').inTable('properties');
-    tbl.date('historyStartdate');
+      .references('id').inTable('properties').notNullable();
+    tbl.date('historyStartdate').notNullable();
     tbl.date('historyEnddate');
   })
   

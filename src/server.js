@@ -20,6 +20,7 @@ app.use(express.json());
 // require router files
 const authRouter = require("./routes/auth/");
 const propertyRouter = require("./routes/properties/property-router.js");
+const tenantHistoryRouter = require("./routes/history/tenantHistory-router.js");
 
 app.use("/api/auth", authRouter);
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/auth", authRouter);
 app.use("/api/properties", propertyRouter);
+app.use("/api/history", tenantHistoryRouter);
 
 app.get("/hello", (_req, res) => {
   res.send("Hello, world");
