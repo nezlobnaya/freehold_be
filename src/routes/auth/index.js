@@ -1,11 +1,3 @@
-const express = require("express");
-const validateAuthInput = require("../../lib/validate-auth-input");
-const router = express.Router();
+const auth = require("./auth");
 
-const { createUser, login } = require("../../controllers/auth/");
-
-router.post("/register", validateAuthInput, createUser);
-
-router.post("/login", validateAuthInput, login);
-
-module.exports = router;
+module.exports = auth;
