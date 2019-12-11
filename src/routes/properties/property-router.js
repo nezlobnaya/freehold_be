@@ -22,14 +22,8 @@ const requireLandlord = (req, res, next) => {
   next();
 };
 
-const validatePropertyInput = (req, res, next) => {
-  const { name } = req.body;
-
-  let errors = {};
-
-  if (!name) {
-    errors.name = "Name field is required on Property";
-  }
+const validateInput = getErrors => (req, res, next) => {
+  const errors = getErrors(req.body);
 
   if (Object.keys(errors).length > 0) {
     res.status(400).json({ errors });
@@ -37,6 +31,18 @@ const validatePropertyInput = (req, res, next) => {
     next();
   }
 };
+
+const validatePropertyCreation = validateInput(input => {
+  const { name } = input;
+
+  let errors = {};
+
+  if (!name) {
+    errors.name = "Name field is required on Property";
+  }
+
+  return errors;
+});
 
 const validatePropertyId = async (req, res, next) => {
   const { id } = req.params;
@@ -60,7 +66,12 @@ const validatePropertyId = async (req, res, next) => {
 //#region - CREATE
 
 // add Property and return results for a property by id inserted
-router.post("/", requireLandlord, PropertyController.create);
+router.post(
+  "/",
+  requireLandlord,
+  validatePropertyCreation,
+  PropertyController.create
+);
 
 //#endregion - CREATE
 
@@ -72,7 +83,8 @@ router.get("/", requireLandlord, PropertyController.getAllByUser);
 // GET property by id
 router.get(
   "/:id",
-  /* requireLandlord, authorizeProperty? */ PropertyController.getById
+  requireLandlord,
+  /* authorizeProperty? */ PropertyController.getById
 );
 
 // GET all properties for a specific user
@@ -92,7 +104,7 @@ router.get("/user/:email", async (req, res) => {
 //#region - UPDATE
 
 // Update Property
-router.put("/:id", validatePropertyInput, PropertyController.updateById);
+router.put("/:id", PropertyController.updateById);
 
 //#endregion
 
