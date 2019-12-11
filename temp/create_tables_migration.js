@@ -23,20 +23,37 @@ exports.up = function(knex) {
       // properties
       .createTable("properties", tbl => {
         tbl.increments();
-        tbl.string("propertyName").notNullable();
-        tbl.json("propertyAddress").notNullable();
-        tbl.string("propertyImage");
-        tbl.string("propertyStatus");
+
+        tbl.string("name").notNullable();
+
+        // Address related fields
+        tbl.string("street").notNullable();
+        tbl.string("city").notNullable();
+        tbl.string("state").notNullable();
+        tbl.string("zip").notNullable();
+
+        tbl.string("image");
+        tbl.enum("status", ["vacant", "occupied"]).notNullable();
+
         tbl.date("propertyStartdate");
         tbl.date("propertyEnddate");
+
         tbl
           .integer("landlordId")
           .unsigned()
           .references("id")
           .inTable("users")
           .onUpdate("CASCADE")
-          .onDelete("CASCADE");
+          .onDelete("CASCADE")
+          .notNullable();
       })
+
+      // MOVE INTO OWN MIGRATION
+      // .createTable('leases', leases => {
+      //   leases.increments();
+
+      //   leases.integer('propertyId').unsigned().references('id').inTable('properties').onUpdate('CASCADE').onDelete('CASCADE').notNullable();
+      // })
 
       // tenanthistory
       .createTable("tenanthistory", tbl => {
@@ -58,18 +75,25 @@ exports.up = function(knex) {
       // workorders
       .createTable("workorders", tbl => {
         tbl.increments();
-        tbl.string("workorder").notNullable();
-        tbl.text("woDescription").notNullable();
-        tbl.string("woType").notNullable();
-        tbl.date("woStartdate").notNullable();
-        tbl.date("woEnddate");
+        tbl.string("title").notNullable();
+        tbl.text("description").notNullable();
+        tbl.string("type").notNullable();
+        tbl.date("startDate").notNullable();
+        tbl.date("endDate");
         tbl
           .integer("propertyId")
           .unsigned()
           .references("id")
           .inTable("properties")
           .onUpdate("CASCADE")
-          .onDelete("CASCADE");
+          .onDelete("CASCADE")
+          .notNullable();
+        tbl
+          .integer("createdBy")
+          .unsigned()
+          .references("id")
+          .inTable("users")
+          .notNullable();
       })
 
       // wohistory
