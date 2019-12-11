@@ -10,8 +10,8 @@
     "seed:run": "npx knex seed:run",
     "migrate:test": "cross-env NODE_ENV=testing npx knex migrate:latest",
     "res": "npm run migrate:latest && npm run seed:run && npm run migrate:test",
-    "test": "jest --detectOpenHandles",
-    "test:watch": "jest --watchAll"
+    "test": "jest --runInBand",
+    "test:watch": "npm run test -- --watchAll"
   },
   "repository": {
     "type": "git",
