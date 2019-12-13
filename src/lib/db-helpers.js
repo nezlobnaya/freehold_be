@@ -4,10 +4,10 @@ const creatUser = type => ({
   email: faker.internet.email(),
   firstName: faker.name.firstName(),
   lastName: faker.name.lastName(),
-  street: faker.address.streetAddress(),
-  city: faker.address.city(),
-  state: faker.address.state(),
-  zip: faker.address.zipCode(),
+  // street: faker.address.streetAddress(),
+  // city: faker.address.city(),
+  // state: faker.address.state(),
+  // zip: faker.address.zipCode(),
   phone: faker.phone.phoneNumber(),
   type
 });

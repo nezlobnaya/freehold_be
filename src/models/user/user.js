@@ -20,6 +20,15 @@ async function findByEmail(email) {
   return user || null;
 }
 
+async function findById(id) {
+  const [user] = await db
+    .from(table)
+    .select("*")
+    .where({ id });
+
+  return user || null;
+}
+
 async function updateByEmail(email, update) {
   const [user] = await db
     .from(table)
@@ -33,5 +42,6 @@ async function updateByEmail(email, update) {
 module.exports = {
   create,
   findByEmail,
+  findById,
   updateByEmail
 };

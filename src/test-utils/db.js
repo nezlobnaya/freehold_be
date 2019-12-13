@@ -25,12 +25,16 @@ const insertUsers = insertResourceIntoTable("users as u");
 const getAllUsers = () => db.from("users as u");
 const getAllProperties = () => db.from("properties as p");
 const insertProperties = insertResourceIntoTable("properties as p");
+const getAllTenantHistory = () => db.from("tenanthistory");
+const insertTenantHistories = insertResourceIntoTable("tenanthistory");
 
 module.exports = {
   destroyConn,
   getAllProperties,
   getAllUsers,
+  getAllTenantHistory,
   insertProperties,
   insertUsers,
+  insertTenantHistories,
   reset
 };

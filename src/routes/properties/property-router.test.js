@@ -186,23 +186,6 @@ describe("Properties Routes", () => {
       expect(results.status).toBe(404);
       expect(results.body.message).toEqual("No property found with that id");
     });
-
-    it("should send 400 if invalid input is given", async () => {
-      mockVerifyId();
-
-      await Db.insertProperties([Models.createProperty()]);
-
-      // call function
-      const results = await request
-        .put("/api/properties/1")
-        .set("Authorization", "Bearer 1234")
-        .send({ name: null });
-      // expected results
-      expect(results.status).toBe(400);
-      expect(results.body.errors).toEqual({
-        name: "Name field is required on Property"
-      });
-    });
   });
 
   //#endregion - UPDATE

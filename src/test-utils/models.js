@@ -1,5 +1,5 @@
 const createUser = input => {
-  const obj = {
+  return {
     firstName: "Matt",
     lastName: "Hagner",
     street: "123 Test Ln",
@@ -11,12 +11,14 @@ const createUser = input => {
     phone: "1238675309",
     ...input
   };
-
-  return obj;
 };
 
+const createLandlord = input => createUser({ type: "landlord", ...input });
+const createTenant = input =>
+  createUser({ type: "tenant", ...input });
+
 const createProperty = input => {
-  const obj = {
+  return {
     name: "First Property",
     street: "123 Easy Street",
     city: "Minneapolis",
@@ -27,11 +29,22 @@ const createProperty = input => {
     landlordId: 1,
     ...input
   };
+};
 
-  return obj;
+const createTenantHistory = input => {
+  return {
+    tenantId: 1,
+    propertyId: 1,
+    historyStartdate: new Date(),
+    historyEnddate: new Date(),
+    ...input
+  };
 };
 
 module.exports = {
+  createLandlord,
   createUser,
-  createProperty
+  createProperty,
+  createTenant,
+  createTenantHistory
 };

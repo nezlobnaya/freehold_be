@@ -1,4 +1,4 @@
-const db = require('../../../database/db-config.js');
+const db = require("../../../database/db");
 
 module.exports = {
   // Create
@@ -17,64 +17,65 @@ module.exports = {
 
 // addTenantHistory(input) - inserts input to tenant history table and return results by id
 async function addTenantHistory(input) {
-  const results = await db('tenanthistory').returning('id').insert(input);
+  const results = await db("tenanthistory")
+    .returning("id")
+    .insert(input);
   return getHistoryById(results[0]);
 }
 
 //#endregion
 
-//#region - READ 
+//#region - READ
 
 // getHistoryById() - Get tenant history results by id.
 function getHistoryById(id) {
-  return db('tenanthistory')
-    .join('users', 'users.id', 'tenanthistory.tenantId')
-    .join('properties', 'properties.id', 'tenanthistory.propertyId')
+  return db("tenanthistory")
+    .join("users", "users.id", "tenanthistory.tenantId")
+    .join("properties as p", "p.id", "tenanthistory.propertyId")
     .select(
-      'tenanthistory.id',
-      'tenanthistory.propertyId',
-      'properties.propertyName',
-      'tenanthistory.tenantId',
-      'users.name',
-      'users.email',
-      'users.phone',
-      'tenanthistory.historyStartdate',
-      'tenanthistory.historyEnddate'
+      "tenanthistory.id",
+      "p.name",
+      "users.firstName",
+      "users.lastName",
+      "users.email",
+      "users.phone",
+      "tenanthistory.startDate",
+      "tenanthistory.endDate"
     )
-    .where({ 'tenanthistory.id': id })    
+    .where({ "tenanthistory.id": id })
     .first();
 }
 
 // getHistoryByProperty() - Get all tenant history results for property, by property id.
 function getHistoryByProperty(id) {
-  return db('tenanthistory')
-    .join('users', 'users.id', 'tenanthistory.tenantId')
-    .join('properties', 'properties.id', 'tenanthistory.propertyId')
+  return db("tenanthistory")
+    .join("users", "users.id", "tenanthistory.tenantId")
+    .join("properties", "properties.id", "tenanthistory.propertyId")
     .select(
-      'tenanthistory.id',
-      'tenanthistory.tenantId',
-      'users.name',
-      'users.email',
-      'users.phone',
-      'tenanthistory.historyStartdate',
-      'tenanthistory.historyEnddate'
+      "tenanthistory.id",
+      "users.firstName",
+      "users.lastName",
+      "users.email",
+      "users.phone",
+      "tenanthistory.startDate",
+      "tenanthistory.endDate"
     )
-    .where({ 'tenanthistory.propertyId': id });
+    .where({ "tenanthistory.propertyId": id });
 }
 
 // getHistoryByTenant() - Get all tenant history results by tenant id.
 function getHistoryByTenant(id) {
-  return db('tenanthistory')
-    .join('users', 'users.id', 'tenanthistory.tenantId')
-    .join('properties', 'properties.id', 'tenanthistory.propertyId')
+  return db("tenanthistory")
+    .join("users", "users.id", "tenanthistory.tenantId")
+    .join("properties", "properties.id", "tenanthistory.propertyId")
     .select(
-      'tenanthistory.id',
-      'tenanthistory.propertyId',
-      'properties.propertyName',
-      'tenanthistory.historyStartdate',
-      'tenanthistory.historyEnddate'
+      "tenanthistory.id",
+      "tenanthistory.propertyId",
+      "properties.name",
+      "tenanthistory.startDate",
+      "tenanthistory.endDate"
     )
-    .where({ 'tenanthistory.tenantId': id });
+    .where({ "tenanthistory.tenantId": id });
 }
 
 //#endregion
@@ -82,7 +83,9 @@ function getHistoryByTenant(id) {
 //#region - Update
 
 async function updateHistory(changes, id) {
-  await db('tenanthistory').where({ id }).update(changes);
+  await db("tenanthistory")
+    .where({ id })
+    .update(changes);
   return getHistoryById(id);
 }
 
@@ -91,7 +94,9 @@ async function updateHistory(changes, id) {
 //#region - Delete
 
 async function deleteHistory(id) {
-  const results = await db('tenanthistory').where({ id }).del();
+  const results = await db("tenanthistory")
+    .where({ id })
+    .del();
   return results;
 }
 
