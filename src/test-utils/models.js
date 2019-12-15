@@ -1,11 +1,11 @@
+const format = require("date-fns/format");
+
+const formatStandard = date => (date ? format(date, "MM/dd/yyyy") : null);
+
 const createUser = input => {
   return {
     firstName: "Matt",
     lastName: "Hagner",
-    street: "123 Test Ln",
-    city: "Test City",
-    state: "MN",
-    zip: "55555",
     email: "test@gmail.com",
     type: "landlord",
     phone: "1238675309",
@@ -14,8 +14,7 @@ const createUser = input => {
 };
 
 const createLandlord = input => createUser({ type: "landlord", ...input });
-const createTenant = input =>
-  createUser({ type: "tenant", ...input });
+const createTenant = input => createUser({ type: "tenant", ...input });
 
 const createProperty = input => {
   return {
@@ -31,12 +30,14 @@ const createProperty = input => {
   };
 };
 
-const createTenantHistory = input => {
+const createTenantHistory = ({ startDate, endDate, ...input } = {}) => {
+  const date = new Date();
+
   return {
     tenantId: 1,
     propertyId: 1,
-    historyStartdate: new Date(),
-    historyEnddate: new Date(),
+    startDate: startDate ? formatStandard(startDate) : formatStandard(date),
+    endDate: endDate ? formatStandard(endDate) : null,
     ...input
   };
 };
