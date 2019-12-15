@@ -1,11 +1,14 @@
 const express = require("express");
 const History = require("./tenantHistory-model.js");
+
 const {
   isValidTenantId,
+  isValidTenantIdParam,
   isValidPropertyId,
+  isValidPropertyIdParam,
   validateTenantHistoryInput
 } = require("../../middleware");
-const parseDate = require("../../lib/parseDate.js");
+
 const router = express.Router();
 
 //#region - CREATE
@@ -14,15 +17,16 @@ const router = express.Router();
 router.post(
   "/",
   validateTenantHistoryInput,
-  isValidPropertyId,
+  isValidPropertyId("propertyId"),
   isValidTenantId,
   async (req, res) => {
     const input = req.input;
 
     try {
-      const results = await History.addTenantHistory(input);
+      const results = await History.create(input);
       res.status(201).json(results);
     } catch (err) {
+      console.error(err);
       res.status(500).json({ message: "Failed to create new entry." });
     }
   }
@@ -37,36 +41,31 @@ router.get("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const results = await History.getHistoryById(id);
+    const results = await History.getById(id);
 
-    // change date to a readable string
-    results.historyRawStartdate = results.historyStartdate;
-    results.historyRawEnddate = results.historyEnddate;
-    results.historyStartdate = parseDate.simple(results.historyStartdate);
-    results.historyEnddate = parseDate.simple(results.historyEnddate);
-
-    res.json(results);
+    if (results) {
+      res.status(200).json(results);
+    } else {
+      res.sendStatus(404);
+    }
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Failed to get results for given id." });
   }
 });
 
 // GET history by property id
-router.get("/property/:id", async (req, res) => {
+router.get("/property/:id", isValidPropertyIdParam(), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const rawResults = await History.getHistoryByProperty(id);
+    const results = await History.getByPropertyId(id);
 
-    // map thru raw results to change date to a readable string
-    const results = rawResults.map(x => {
-      x.historyRawStartdate = x.historyStartdate;
-      x.historyStartdate = parseDate.simple(x.historyStartdate);
-      x.historyEnddate = parseDate.simple(x.historyEnddate);
-      return x;
-    });
-
-    res.json(results);
+    if (results) {
+      res.status(200).json(results);
+    } else {
+      res.json(results);
+    }
   } catch (err) {
     res
       .status(500)
@@ -75,21 +74,13 @@ router.get("/property/:id", async (req, res) => {
 });
 
 // GET history by tenant id
-router.get("/tenant/:id", async (req, res) => {
+router.get("/tenant/:id", isValidTenantIdParam("id"), async (req, res) => {
   const { id } = req.params;
 
   try {
-    const rawResults = await History.getHistoryByTenant(id);
+    const results = await History.getByTenantId(id);
 
-    // map thru raw results to change date to a readable string
-    const results = rawResults.map(x => {
-      x.historyRawStartdate = x.historyStartdate;
-      x.historyStartdate = parseDate.simple(x.historyStartdate);
-      x.historyEnddate = parseDate.simple(x.historyEnddate);
-      return x;
-    });
-
-    res.json(results);
+    res.status(200).json(results);
   } catch (err) {
     res
       .status(500)
@@ -106,14 +97,21 @@ router.put("/:id", async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
 
+  // Possibly extract into middleware
+  if (Object.keys(changes).length <= 0) {
+    return res.status(400).json({ message: "Request body must not be empty" });
+  }
+
   try {
-    const results = await History.updateHistory(changes, id);
+    const results = await History.updateById(changes, id);
+
     if (results) {
       res.json(results);
     } else {
       res.status(404).json({ message: "Could not find entry with given id." });
     }
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Failed to update the entry." });
   }
 });
@@ -127,22 +125,17 @@ router.delete("/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
-    const entryToDelete = await History.getHistoryById(id);
-
     // check that property exists
-    if (entryToDelete) {
-      const results = await History.deleteHistory(id);
+    const { deleted, tenantHistory } = await History.deleteById(id);
 
-      // check that delete returns
-      if (results) {
-        res.json(entryToDelete); // return the entry to be deleted.
-      } else {
-        res.status(404).json({ message: "Could not delete entry." });
-      }
+    // check that delete returns
+    if (deleted) {
+      res.status(200).json(tenantHistory); // return the entry to be deleted.
     } else {
       res.status(404).json({ message: "Could not find entry with given id." });
     }
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Failed to delete entry." });
   }
 });
