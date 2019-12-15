@@ -1,4 +1,4 @@
-const moment = require("moment");
+const isDate = require("date-fns/isDate");
 
 const validateTenantHistoryInput = (req, res, next) => {
   const { tenantId, propertyId, startDate, endDate } = req.body;
@@ -18,23 +18,23 @@ const validateTenantHistoryInput = (req, res, next) => {
 
   if (!startDate) {
     errors.startDate = "Field `startDate` is required";
-  } else if (!moment(startDate).isDate()) {
+  } else if (isDate(startDate)) {
     errors.startDate = "Field `startDate` must be a valid date";
   }
 
-  if (endDate && !moment(endDate).isDate()) {
+  if (endDate && isDate(endDate)) {
     errors.endDate = "Field `endDate` must be a valid date";
   }
 
   if (Object.keys(errors).length > 0) {
-    return res.send(400).json({ errors });
+    return res.status(400).json({ errors });
   }
 
   const input = {
     tenantId,
     propertyId,
-    startDate: startDate || moment(startDate).format("L"),
-    endDate: endDate || moment(endDate).format("L")
+    startDate: startDate,
+    endDate: endDate
   };
 
   req.input = input;

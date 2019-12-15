@@ -1,7 +1,7 @@
 const Property = require("../models/property");
 
-const isValidPropertyId = (key = "id") => async (req, res, next) => {
-  const propertyId = req.body[key];
+const isValidPropertyIdParam = (key = "id") => async (req, res, next) => {
+  const propertyId = req.params[key];
 
   try {
     const property = await Property.getProperty(propertyId);
@@ -18,4 +18,4 @@ const isValidPropertyId = (key = "id") => async (req, res, next) => {
   }
 };
 
-module.exports = isValidPropertyId;
+module.exports = isValidPropertyIdParam;
