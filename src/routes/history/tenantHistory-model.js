@@ -1,103 +1,121 @@
 const db = require("../../../database/db");
+const format = require("date-fns/format");
+
+const table = "tenanthistory";
+const formatStandard = date => (date ? format(date, "MM/dd/yyyy") : null);
+
+const formatOutput = ({ startDate, endDate, ...tenantHistory }) => ({
+  ...tenantHistory,
+  startDate: formatStandard(startDate),
+  endDate: formatStandard(endDate)
+});
 
 module.exports = {
   // Create
-  addTenantHistory,
+  create,
   // Read
-  getHistoryById,
-  getHistoryByProperty,
-  getHistoryByTenant,
+  getById,
+  getByPropertyId,
+  getByTenantId,
   // Update
-  updateHistory,
+  updateById,
   // Delete
-  deleteHistory
+  deleteById
 };
 
 //#region - CREATE
 
 // addTenantHistory(input) - inserts input to tenant history table and return results by id
-async function addTenantHistory(input) {
-  const results = await db("tenanthistory")
-    .returning("id")
+async function create(input) {
+  const [tenantHistory] = await db(table)
+    .returning("*")
     .insert(input);
-  return getHistoryById(results[0]);
+
+  if (!tenantHistory) {
+    return null;
+  }
+
+  return formatOutput(tenantHistory);
+}
+
+async function getAllBy(key, value) {
+  const results = await db(table)
+    .select("*")
+    .where({ [key]: value });
+
+  return results.map(formatOutput);
+}
+
+async function getBy(key, value) {
+  const [first] = await getAllBy(key, value);
+
+  return first ? first : null;
+}
+
+function getById(id) {
+  return getBy("id", id);
 }
 
 //#endregion
 
 //#region - READ
 
-// getHistoryById() - Get tenant history results by id.
-function getHistoryById(id) {
-  return db("tenanthistory")
-    .join("users", "users.id", "tenanthistory.tenantId")
-    .join("properties as p", "p.id", "tenanthistory.propertyId")
-    .select(
-      "tenanthistory.id",
-      "p.name",
-      "users.firstName",
-      "users.lastName",
-      "users.email",
-      "users.phone",
-      "tenanthistory.startDate",
-      "tenanthistory.endDate"
-    )
-    .where({ "tenanthistory.id": id })
-    .first();
-}
-
 // getHistoryByProperty() - Get all tenant history results for property, by property id.
-function getHistoryByProperty(id) {
-  return db("tenanthistory")
-    .join("users", "users.id", "tenanthistory.tenantId")
-    .join("properties", "properties.id", "tenanthistory.propertyId")
-    .select(
-      "tenanthistory.id",
-      "users.firstName",
-      "users.lastName",
-      "users.email",
-      "users.phone",
-      "tenanthistory.startDate",
-      "tenanthistory.endDate"
-    )
-    .where({ "tenanthistory.propertyId": id });
+function getByPropertyId(id) {
+  return getAllBy("propertyId", id);
 }
 
 // getHistoryByTenant() - Get all tenant history results by tenant id.
-function getHistoryByTenant(id) {
-  return db("tenanthistory")
-    .join("users", "users.id", "tenanthistory.tenantId")
-    .join("properties", "properties.id", "tenanthistory.propertyId")
-    .select(
-      "tenanthistory.id",
-      "tenanthistory.propertyId",
-      "properties.name",
-      "tenanthistory.startDate",
-      "tenanthistory.endDate"
-    )
-    .where({ "tenanthistory.tenantId": id });
+function getByTenantId(id) {
+  return getAllBy("tenantId", id);
 }
 
 //#endregion
 
-//#region - Update
+async function updateAllBy(key, value, changes) {
+  const results = await db
+    .from(table)
+    .returning("*")
+    .update(changes)
+    .where({ [key]: value });
 
-async function updateHistory(changes, id) {
-  await db("tenanthistory")
-    .where({ id })
-    .update(changes);
-  return getHistoryById(id);
+  return results.map(formatOutput);
 }
+
+async function updateBy(key, value, changes) {
+  const [first] = await updateAllBy(key, value, changes);
+
+  return first ? first : null;
+}
+
+function updateById(changes, id) {
+  return updateBy("id", id, changes);
+}
+
+//#region - Update
 
 //#endregion
 
 //#region - Delete
 
-async function deleteHistory(id) {
-  const results = await db("tenanthistory")
-    .where({ id })
+async function deleteAllBy(key, value, returning = "*") {
+  const results = await db
+    .from(table)
+    .where({ [key]: value })
+    .returning(returning)
     .del();
-  return results;
+
+  return results.map(formatOutput);
+}
+
+async function deleteBy(key, value) {
+  const [result] = await deleteAllBy(key, value);
+
+  return result ? { deleted: true, tenantHistory: result } : { deleted: false };
+}
+
+function deleteById(id) {
+  return deleteBy("id", id);
 }
 
 //#endregion
