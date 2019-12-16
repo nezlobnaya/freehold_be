@@ -1,111 +1,133 @@
-const express = require('express');
+const express = require("express");
+const PropertyController = require("../../controllers/properties");
+const bearerAuth = require("../../lib/bearer-auth");
+const requireAuth = require("../../lib/require-auth");
 
-const Properties = require('./property-model.js');
+const Properties = require("../../models/property");
 
 const router = express.Router();
 
-//#region - CREATE 
+router.use(bearerAuth, requireAuth);
 
-// add Property and return results for a property by id inserted
-router.post('/', async (req, res) => {
-  const input = req.body;
+const requireLandlord = (req, res, next) => {
+  const userType = (req.user && req.user.type) || "";
+
+  if (userType !== "landlord") {
+    res
+      .status(401)
+      .json({ error: "User is not authorized for that operation" });
+    return;
+  }
+
+  next();
+};
+
+const validateInput = getErrors => (req, res, next) => {
+  const errors = getErrors(req.body);
+
+  if (Object.keys(errors).length > 0) {
+    res.status(400).json({ errors });
+  } else {
+    next();
+  }
+};
+
+const validatePropertyCreation = validateInput(input => {
+  const { name } = input;
+
+  let errors = {};
+
+  if (!name) {
+    errors.name = "Name field is required on Property";
+  }
+
+  return errors;
+});
+
+const validatePropertyId = async (req, res, next) => {
+  const { id } = req.params;
 
   try {
-    const results = await Properties.addProperty(input);
-    res.status(201).json(results);
+    const property = await Properties.getProperty(id);
+
+    if (!property) {
+      res.status(404).json({ message: "No property found with that id." });
+    } else {
+      /* eslint-disable-next-line */
+      req.property = property;
+      next();
+    }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to create new property.' });
+    console.error(err);
+    res.status(500).json({ message: "Internal server error" });
   }
-});
+};
+
+//#region - CREATE
+
+// add Property and return results for a property by id inserted
+router.post(
+  "/",
+  requireLandlord,
+  validatePropertyCreation,
+  PropertyController.create
+);
 
 //#endregion - CREATE
 
 //#region - READ
 
 // GET all properties
-router.get('/', async (req, res) => {
-  try {
-    const results = await Properties.getAllProperties();
-    res.json(results);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to get results.' });
-  }
-});
+router.get("/", requireLandlord, PropertyController.getAllByUser);
 
 // GET property by id
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const results = await Properties.getProperty(id);
-    res.json(results);
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to get results.' });
-  }
-});
+router.get(
+  "/:id",
+  requireLandlord,
+  /* authorizeProperty? */ PropertyController.getById
+);
 
 // GET all properties for a specific user
-router.get('/user/:email', async (req, res) => {
+router.get("/user/:email", async (req, res) => {
   const { email } = req.params;
 
   try {
     const results = await Properties.getPropertiesByUser(email);
     res.json(results);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to get results.' });
+    res.status(500).json({ message: "Failed to get results." });
   }
 });
 
-//#endregion 
+//#endregion
 
 //#region - UPDATE
 
 // Update Property
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
-  const changes = req.body;
+router.put("/:id", PropertyController.updateById);
 
-  try {
-    const results = await Properties.updateProperty(changes, id);
-    if (results) {
-      res.json(results);
-    } else {
-      res.status(404).json({ message: 'Could not find property with given id.' });
-    }
-  } catch (err) {
-    res.status(500).json({ message: 'Failed to update the property.' });
-  }
-});
-
-//#endregion 
+//#endregion
 
 //#region - DELETE
 
 // delete Event
-router.delete('/:id', async (req, res) => {
+router.delete("/:id", validatePropertyId, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const propertyToDelete = await Properties.getProperty(id);
-
     // check that property exists
-    if (propertyToDelete) {
-      const results = await Properties.deleteProperty(id);
+    const { deleted } = await Properties.deleteProperty(id);
 
-      // check that delete returns
-      if (results) {
-        res.json(propertyToDelete); // return the property to be deleted.
-      } else {
-        res.status(404).json({ message: 'Could not delete property.' });
-      }
+    if (deleted) {
+      res.status(200).json(req.property);
     } else {
-      res.status(404).json({ message: 'Could not find property with given id.' });
+      res.status(400).json({ message: "Could not delete property." });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to delete property.' });
+    res.status(500).json({ message: "Failed to delete property." });
   }
 });
 
-//#endregion 
+//#endregion
 
-module.exports = router; 
+module.exports = router;

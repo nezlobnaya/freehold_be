@@ -1,365 +1,308 @@
-const db = require('../../../database/db-config.js');
-const TenantHistory = require('./tenantHistory-model');
-const parseDate = require('../../lib/parseDate.js');
+const TenantHistory = require("./tenantHistory-model");
+const addDays = require("date-fns/addDays");
+const parse = require("date-fns/parse");
+const format = require("date-fns/format");
+
+const MDY = "MM/dd/yyyy";
+
+const formatStandard = date => (date ? format(date, MDY) : null);
+const parseStandard = date => parse(date, MDY, new Date());
+const addFormattedDate = (date, days = 14) =>
+  formatStandard(addDays(parseStandard(date), days));
 
 // Reset Database
-const Reset = require('../dbReset.js');
+const { Db, Models } = require("../../test-utils");
 
-// functions for tests
-function getAll() { return db('tenanthistory') }
+const userFixture = () =>
+  Db.insertUsers([
+    Models.createLandlord(),
+    Models.createTenant(),
+    Models.createTenant(),
+    Models.createTenant(),
+    Models.createTenant(),
+    Models.createTenant(),
+    Models.createLandlord()
+  ]);
 
-describe('Tenant History Model', () => {
+const propertyFixture = () =>
+  Db.insertProperties([Models.createProperty(), Models.createProperty()]);
 
-  beforeEach(async () => {
-    await Reset.dbReset();
-  })
+const setupFixtures = async () => {
+  const users = await userFixture();
+  const properties = await propertyFixture();
 
-  afterEach( async done => {
-    done();
-  })
-  
-  afterAll(() => Reset.close());
+  return [users, properties];
+};
 
-  //#region - CREATE
-  
-  describe('function addTenantHistory', () => {
-    
-    it('inserts input to tenant history table and return results by id', async () => {
-      
-      // call function
-      try {
-        const results = await TenantHistory.addTenantHistory(
-          { // id: 8
-            'tenantId': 5,
-            'propertyId': 1,
-            'historyStartdate': null,
-            'historyEnddate': null
-          });
-        
-        // parse date
-        results.historyStartdate = parseDate.simple(results.historyStartdate);
-        results.historyEnddate = parseDate.simple(results.historyEnddate);
+beforeEach(async () => {
+  await Db.reset();
+});
 
-        // expected results
-        expect(results.id).toBe(8);
-        expect(results.propertyId).toBe(1);
-        expect(results.propertyName).toBe('Name for the Property');
-        expect(results.tenantId).toBe(5);
-        expect(results.historyStartdate).toBeNull();
-        expect(results.historyEnddate).toBeNull();
+afterAll(async () => {
+  await Db.destroyConn();
+});
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
+//describe("Tenant History Model", () => {
+//  //#region - CREATE
 
-    it('Count of all entries should increase by 1', async () => {
-      try {
-        // count entries before insert
-        const dbBefore = await getAll();
-        const dbBeforeCount = dbBefore.length;
+describe("function addTenantHistory", () => {
+  it("inserts input to tenant history table and return results by id", async () => {
+    // call function
+    await setupFixtures();
 
-        // call function        
-        await TenantHistory.addTenantHistory(
-          { // id: 8
-            'tenantId': 5,
-            'propertyId': 1,
-            'historyStartdate': null,
-            'historyEnddate': null
-          });
+    const input = Models.createTenantHistory({ tenantId: 5 });
 
-        // count entries after insert
-        const dbAfter = await getAll();
-        const dbAfterCount = dbAfter.length;
+    const results = await TenantHistory.create(input);
 
-        // expected results -> Check Difference
-        expect(dbAfterCount - dbBeforeCount).toEqual(1);
+    // expected results
+    expect(results).toEqual({ ...input, id: 1 });
+  });
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
+  it("Count of all entries should increase by 1", async () => {
+    // count entries before insert
+    await setupFixtures();
 
-  })
+    const input = Models.createTenantHistory({ tenantId: 5 });
 
-  //#endregion
+    const before = await Db.getAllTenantHistory();
+    await TenantHistory.create(input);
+    const after = await Db.getAllTenantHistory();
 
-  //#region - READ 
-  
-  describe('function getHistoryById', () => {
+    // expected results
+    expect(after.length - before.length).toEqual(1);
+  });
+});
 
-    it('Should return an object', async () => {
+//#endregion
 
-      // Expected Input
-      const id = 1;
-      
-      // call function
-      try {
-        const results = await TenantHistory.getHistoryById(id);
+//#region - READ
 
-        // expected results
-        expect(typeof results).toBe('object');
+describe("function getHistoryById", () => {
+  it("Should return an object", async () => {
+    // Expected Input
+    const id = 1;
+    await setupFixtures();
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
-    
-    it('id 1 should return specific values', async () => {
+    const input = Models.createTenantHistory({ tenantId: 5 });
 
-      // Expected Input
-      const id = 1;
-      
-      // call function
-      try {
-        const results = await TenantHistory.getHistoryById(id);
-        
-        // parse date
-        results.historyStartdate = parseDate.simple(results.historyStartdate);
-        results.historyEnddate = parseDate.simple(results.historyEnddate);
+    await Db.insertTenantHistories(input);
 
-        // expected results
-        expect(results.propertyId).toBe(2);
-        expect(results.propertyName).toBe('Sample');
-        expect(results.tenantId).toBe(3);
-        expect(results.name).toMatchObject({ firstname: 'Tenant' });
-        expect(results.email).toBe('tenant@email.com');
-        expect(results.phone).toBeNull();
-        expect(results.historyStartdate).toBe('01/01/2001');
-        expect(results.historyEnddate).toBe('12/31/2009');
+    const tenantHistory = await TenantHistory.getById(id);
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
+    // call function
+    expect(typeof tenantHistory).toBe("object");
+  });
 
-  })
-  
-  describe('function getHistoryByProperty', () => {
-    
-    it('Property with id 1 should have length of 1', async () => {
-      
-      // call function
-      try {
-        const results = await TenantHistory.getHistoryByProperty(1);
+  it("id 1 should return specific values", async () => {
+    // Expected Input
+    const id = 1;
+    await setupFixtures();
 
-        // expected results
-        expect(results).toHaveLength(1);
+    const input = Models.createTenantHistory({ tenantId: 1, propertyId: 1 });
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
-    
-    it('Property with id 1 should return array with specific values', async () => {
-      
-      // call function
-      try {
-        const results = await TenantHistory.getHistoryByProperty(1);
-        
-        // parse date
-        results[0].historyStartdate = parseDate.simple(results[0].historyStartdate);
+    await Db.insertTenantHistories(input);
 
-        // expected results
-        expect(results[0].id).toBe(2);
-        expect(results[0].tenantId).toBe(3);
-        expect(results[0].name).toMatchObject({ firstname: 'Tenant' });
-        expect(results[0].email).toBe('tenant@email.com');
-        expect(results[0].phone).toBeNull();
-        expect(results[0].historyStartdate).toBe('01/01/2010');
-        expect(results[0].historyEnddate).toBeNull();
+    // call function
+    const results = await TenantHistory.getById(id);
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
+    // parse date
 
-  })
-  
-  describe('function getHistoryByTenant', () => {
-    
-    it('Tenant with userId 3 should have length of 2', async () => {
-      
-      // call function
-      try {
-        const results = await TenantHistory.getHistoryByTenant(3);
+    // expected results
+    expect(results).toEqual({ ...input, id: 1 });
+  });
+});
 
-        // expected results
-        expect(results).toHaveLength(2);
+describe("function getByPropertyId", () => {
+  it("Property with id 1 should have length of 1", async () => {
+    // call function
+    await setupFixtures();
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
-    
-    it('Tenant with userId 3 should return array with specific values', async () => {
-      
-      // call function
-      try {
-        const results = await TenantHistory.getHistoryByTenant(3);
+    const input = Models.createTenantHistory();
 
-        // parse date
-        results[0].historyStartdate = parseDate.simple(results[0].historyStartdate);
-        results[0].historyEnddate = parseDate.simple(results[0].historyEnddate);
-        results[1].historyStartdate = parseDate.simple(results[1].historyStartdate);
+    await Db.insertTenantHistories(input);
 
-        // expected results
-        expect(results[0].id).toBe(1);
-        expect(results[0].propertyId).toBe(2);
-        expect(results[0].propertyName).toBe('Sample');
-        expect(results[0].historyStartdate).toBe('01/01/2001');
-        expect(results[0].historyEnddate).toBe('12/31/2009');
-        
-        expect(results[1].id).toBe(2);
-        expect(results[1].propertyId).toBe(1);
-        expect(results[1].propertyName).toBe('Name for the Property');
-        expect(results[1].historyStartdate).toBe('01/01/2010');
-        expect(results[1].historyEnddate).toBeNull();
+    const results = await TenantHistory.getByPropertyId(1);
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
+    // expected results
+    expect(results).toHaveLength(1);
+  });
 
-  })
+  it("Property with id 1 should return array with specific values", async () => {
+    // call function
+    await setupFixtures();
 
-  //#endregion
+    const input = Models.createTenantHistory();
 
-  //#region - Update
-  
-  describe('function updateHistory', () => {
+    await Db.insertTenantHistories(input);
+    const results = await TenantHistory.getByPropertyId(1);
 
-    it('Update Should return an object', async () => {
+    // expected results
+    expect(results).toEqual([{ ...input, id: 1 }]);
+  });
+});
 
-      // Expected Input
-      const id = 1;
-      const updatedEntry = { tenantId: 5 }
-      
-      // call function
-      try {
-        const results = await TenantHistory.updateHistory(updatedEntry, id);
+describe("function getByTenantId", () => {
+  it("Tenant with userId 3 should have length of 2", async () => {
+    // call function
+    await setupFixtures();
 
-        // expected results
-        expect(typeof results).toBe('object');
+    const input = Models.createTenantHistory({ tenantId: 3 });
+    const input2 = Models.createTenantHistory({ tenantId: 3, propertyId: 2 });
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
-    
-    it('Update Should return specific values', async () => {
+    await Db.insertTenantHistories([input, input2]);
 
-      // Expected Input
-      const id = 1;
-      const updatedEntry = { tenantId: 5 }
-      
-      // call function
-      try {
-        const results = await TenantHistory.updateHistory(updatedEntry, id);
-        
-        // parse date
-        results.historyStartdate = parseDate.simple(results.historyStartdate);
-        results.historyEnddate = parseDate.simple(results.historyEnddate);
+    const results = await TenantHistory.getByTenantId(3);
 
-        // expected results
-        expect(results.propertyId).toBe(2);
-        expect(results.propertyName).toBe('Sample');
-        expect(results.tenantId).toBe(5);
-        expect(results.name).toMatchObject({ firstname: 'Second', lastname: 'Tenant' });
-        expect(results.email).toBe('tenant2@email.com');
-        expect(results.phone).toBeNull();
-        expect(results.historyStartdate).toBe('01/01/2001');
-        expect(results.historyEnddate).toBe('12/31/2009');
+    // expected results
+    expect(results).toHaveLength(2);
+  });
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
-    
-    it('Update dates should return specific dates', async () => {
+  it("Tenant with userId 3 should return array with specific values", async () => {
+    // call function
+    await setupFixtures();
 
-      // Expected Input
-      const id = 2;
-      const updatedEntry = { historyEnddate: '11/30/2019' }
-      
-      // call function
-      try {
-        const results = await TenantHistory.updateHistory(updatedEntry, id);
-        
-        // parse date
-        results.historyStartdate = parseDate.simple(results.historyStartdate);
-        results.historyEnddate = parseDate.simple(results.historyEnddate);
+    const input = Models.createTenantHistory({ tenantId: 3 });
+    const input2 = Models.createTenantHistory({ tenantId: 3, propertyId: 2 });
 
-        // expected results
-        expect(results.propertyId).toBe(1);
-        expect(results.historyEnddate).toBe('11/30/2019');
+    await Db.insertTenantHistories([input, input2]);
+    const [first, second] = await TenantHistory.getByTenantId(3);
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
+    // parse date
 
-  })
-  
-  //#endregion
+    // expected results
+    expect(first).toEqual({ ...input, id: 1 });
 
-  //#region - Delete
-  
-  describe('function deleteHistory', () => {
-    // expected input
-    const id = 2
+    expect(second).toEqual({ ...input2, id: 2 });
+  });
+});
 
-    it('Should return count 1 for number of deleted entries', async () => {
+//#endregion
 
-      try {
-        // call function
-        const results = await TenantHistory.deleteHistory(id);
-        // expected results
-        expect(results).toBe(1);
-      } catch(err) {
-        console.log(err)
-      }
-    })
+//#region - Update
 
-    it('Entry by id should return undefined after delete', async () => {
+describe("function updateHistory", () => {
+  it("Update Should return an object", async () => {
+    // Expected Input
+    await setupFixtures();
 
-      try {
-        // call function
-        await TenantHistory.deleteHistory(id);
-        // check database for the entry by id
-        const results = await TenantHistory.getHistoryById(id);
-        // expected results
-        expect(results).not.toBeDefined();
-      } catch(err) {
-        console.log(err)
-      }
-    })
+    const input = Models.createTenantHistory({ tenantId: 3 });
 
-    it('Count of all entries should decrease by 1', async () => {
+    const id = 1;
+    const updatedEntry = {
+      startDate: addFormattedDate(input.startDate, 14)
+    };
 
-      try {
-        // count properties before delete
-        const dbBefore = await getAll();
-        const dbBeforeCount = dbBefore.length;
+    await Db.insertTenantHistories(input);
+    // call function
+    const results = await TenantHistory.updateById(updatedEntry, id);
 
-        // call function
-        await TenantHistory.deleteHistory(id);
+    // expected results
+    expect(typeof results).toBe("object");
+  });
 
-        // count properties after delete
-        const dbAfter = await getAll();
-        const dbAfterCount = dbAfter.length;
+  it("Update Should return specific values", async () => {
+    // Expected Input
+    await setupFixtures();
 
-        // expected results -> Count before delete minus count after delete should equal 1
-        expect(dbBeforeCount - dbAfterCount).toEqual(1);
+    const input = Models.createTenantHistory({ tenantId: 3, propertyId: 2 });
 
-      } catch(err) {
-        console.log(err)
-      }
-    })
+    await Db.insertTenantHistories(input);
 
-  // })
+    const id = 1;
+    const updatedEntry = {
+      startDate: addFormattedDate(input.startDate, 14)
+    };
 
-  })
-  //#endregion
+    // call function
+    const results = await TenantHistory.updateById(updatedEntry, id);
 
-})
+    // expected results
+    expect(results).toEqual({ ...input, id: 1, ...updatedEntry });
+  });
+
+  it("Update dates should return specific dates", async () => {
+    // Expected Input
+    await setupFixtures();
+
+    const input = Models.createTenantHistory({ tenantId: 3, propertyId: 2 });
+
+    await Db.insertTenantHistories(input);
+
+    const id = 1;
+    const updatedEntry = {
+      endDate: formatStandard(parseStandard("12/30/2019"))
+    };
+
+    // call function
+    const results = await TenantHistory.updateById(updatedEntry, id);
+
+    // expected results
+    expect(results.endDate).toEqual(updatedEntry.endDate);
+  });
+});
+
+//#endregion
+
+//#region - Delete
+
+describe("function deleteHistory", () => {
+  // expected input
+  const id = 2;
+
+  it("Should return { deleted: true, tenantHistory } for the deleted entries", async () => {
+    await setupFixtures();
+
+    const input = Models.createTenantHistory({ tenantId: 3, propertyId: 2 });
+
+    const input2 = Models.createTenantHistory({ tenantId: 2, propertyId: 1 });
+
+    await Db.insertTenantHistories([input, input2]);
+
+    // call function
+    const { deleted, tenantHistory } = await TenantHistory.deleteById(id);
+
+    // expected results
+    expect(deleted).toBe(true);
+    expect(tenantHistory).toEqual({ ...input2, id: 2 });
+  });
+
+  it("Entry by id should return undefined after delete", async () => {
+    await setupFixtures();
+
+    const input = Models.createTenantHistory({ tenantId: 3, propertyId: 2 });
+    const input2 = Models.createTenantHistory({ tenantId: 2, propertyId: 1 });
+
+    await Db.insertTenantHistories([input, input2]);
+
+    // call function
+    await TenantHistory.deleteById(id);
+    // check database for the entry by id
+    const results = await Db.getAllTenantHistory();
+    const element = results.find(el => el.id === id);
+    // expected results
+    expect(element).not.toBeDefined();
+  });
+
+  it("Count of all entries should decrease by 1", async () => {
+    await setupFixtures();
+
+    const input = Models.createTenantHistory({ tenantId: 3, propertyId: 2 });
+    const input2 = Models.createTenantHistory({ tenantId: 2, propertyId: 1 });
+
+    await Db.insertTenantHistories([input, input2]);
+    // count properties before delete
+    const dbBefore = await Db.getAllTenantHistory();
+    const dbBeforeCount = dbBefore.length;
+
+    // call function
+    await TenantHistory.deleteById(id);
+
+    // count properties after delete
+    const dbAfter = await Db.getAllTenantHistory();
+    const dbAfterCount = dbAfter.length;
+
+    // expected results -> Count before delete minus count after delete should equal 1
+    expect(dbBeforeCount - dbAfterCount).toEqual(1);
+  });
+});
+//#endregion

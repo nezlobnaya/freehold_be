@@ -1,4 +1,5 @@
 const admin = require("./admin");
+const User = require("../models/user");
 
 const bearerAuth = async (req, res, next) => {
   // We get the authorization header and default to an empty string
@@ -13,14 +14,15 @@ const bearerAuth = async (req, res, next) => {
    * */
   if (type === "Bearer") {
     try {
-      const user = await admin.auth().verifyIdToken(payload);
+      const token = await admin.auth().verifyIdToken(payload);
+
+      const user = await User.findByEmail(token.email);
 
       /* eslint-disable-next-line */
-      req.user = user.email;
+      req.user = user;
 
       next();
     } catch (err) {
-      console.error(err);
       return res.status(401).send({ error: "You are not authorized" });
     }
   } else {
