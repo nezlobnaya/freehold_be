@@ -2,9 +2,15 @@ const express = require("express");
 const cors = require("cors")({ origin: true });
 const helmet = require("helmet");
 const morgan = require("morgan");
+const path = require("path");
+
+const authRouter = require("./routes/auth/");
+const propertyRouter = require("./routes/properties/property-router.js");
+const tenantHistoryRouter = require("./routes/history/tenantHistory-router.js");
+const tenantsRouter = require("./routes/tenants");
+
 const bearerAuth = require("./lib/bearer-auth");
 const requireAuth = require("./lib/require-auth");
-const path = require("path");
 
 const app = express();
 
@@ -17,9 +23,6 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 // require router files
-const authRouter = require("./routes/auth/");
-const propertyRouter = require("./routes/properties/property-router.js");
-const tenantHistoryRouter = require("./routes/history/tenantHistory-router.js");
 
 app.use("/api/auth", authRouter);
 
@@ -32,6 +35,8 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/properties", propertyRouter);
 app.use("/api/history", tenantHistoryRouter);
+
+app.use("/api/tenants", tenantsRouter);
 
 app.get("/hello", (_req, res) => {
   res.send("Hello, world");
