@@ -8,16 +8,10 @@ Object.keys(functions).forEach(function (item) {
     functions[item].toString() + "\n";
 });
 
-// Docs
-const docs = require("./docs.js");
-let displayDocs = ""
-//JSON.stringify(docs, undefined, 1);
-
 module.exports = "<footer>" +
   // footer + 
   "</footer> \n" +
   "<script> \n" +
-    "const docs = { \n" + displayDocs + "} \n" +
     display + "\n" +
   "</script> \n" +
   "</body> \n" +

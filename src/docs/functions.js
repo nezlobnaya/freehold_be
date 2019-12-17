@@ -1,3 +1,5 @@
+const docs = require("./docs.js");
+
 module.exports = {
   showContent,
   output,
@@ -5,6 +7,12 @@ module.exports = {
   // Models
   models,
   modelsUsers,
+  modelsProperty,
+  modelsTenantHistory,
+  // Endpoints
+  endpoints,
+  displayAxios,
+  displayEndpoints,
   test
 }
 
@@ -24,57 +32,139 @@ function fromJSON(obj) {
   return JSON.stringify(obj, undefined, 2);
 }
 
-function models(header, todo, comment, model) {
+// #region - Models
 
-  // If variable exists, display
-  todo = (todo) ? "<p class='todo'>" + todo + "</p>" : "";
-  comment = (comment) ? "<p class='comment'>" + comment + "</p>" : "";
+  function models(header, todo, comment, model) {
 
-  // Return Output
-  return "<h3>" + header + "</h3> " + 
-    todo + comment +
-    "<pre>" + fromJSON(model) + "</pre>";
-}
+    // If variable exists, display
+    todo = (todo) ? "<p class='todo'>" + todo + "</p>" : "";
+    comment = (comment) ? "<p class='comment'>" + comment + "</p>" : "";
 
-// User Models
-function modelsUsers() {
+    // Return Output
+    return "<h3>" + header + "</h3> " + 
+      todo + comment +
+      "<pre>" + fromJSON(model) + "</pre>";
+  }
 
-  // Models
-  let landlordModel = { 
-    userId: 1,
-    email: "landlord@email.com",
-    name: {
-      title: "Title",
-      firstname: "Firstname",
-      middlename: "Middlename",
-      lastname: "Lastname",
-      suffix: "Suffix",
-      preferredname: "Preferred"
-    },
-    address: {
-      street: "1 First St",
-      street2: "Suite 2",
-      city: "Salt Lake City",
-      state: "Utah",
-      zip: "84101",
-      country: "USA"
-    },
-    type: "landlord",
-    phone: "123-456-7890"
-  };
-  let devModel = {};
-  let tenantModel = {}; 
+  // User Models
+  function modelsUsers() {
 
-  let header = "<h2>User Models</h2> ";
-  let outputContent = header + 
-    models("Landlord User Model", "Still updating", "", landlordModel) + 
-    models("Dev Model", "", "", devModel) + 
-    models("Tenant Model", "", "", tenantModel);
+    // Models
+    let landlordModel = docs.models.User.examples[0];
+    let devModel = docs.models.User.examples[1];
+    let tenantModel = docs.models.User.examples[2];
 
-  // Display Output
-  output(outputContent);
-}
+    let header = "<h2>User Models</h2> ";
+    let outputContent = header + 
+      models("Landlord User Model", "Still updating", "", landlordModel) + 
+      models("Dev Model", "", "", devModel) + 
+      models("Tenant Model", "", "", tenantModel);
 
+    // Display Output
+    output(outputContent);
+  }
+
+  // Property Models
+  function modelsProperty() {
+          
+    // Todo
+    let propertyTodo = "In Review - this may or may not change";
+    // Comments
+    let propertyComment = "";
+
+    let header = "<h2>Property Models</h2> ";
+    let outputContent = header + 
+      models("Property Model 1", propertyTodo, propertyComment, docs.models.Property.examples[0]) + 
+      models("Property Model 2", propertyTodo, propertyComment, docs.models.Property.examples[1]);
+    
+    // Display Output
+    output(outputContent);
+  }
+
+  // Tenant History Model
+  function modelsTenantHistory() {
+          
+    // Todo
+    let tenantHistoryTodo = "Still updating";
+    // Comments
+    let tenantHistoryComment = "";
+
+    let header = "<h2>Tenant History Model</h2> ";
+    let outputContent = header + models("", tenantHistoryTodo, tenantHistoryComment, docs.models['Tenant History'].examples[0]);
+    output(outputContent);
+  }
+
+// #endregion - Models
+
+// #region - End Points
+  function displayEndpoints(input) {
+    let outputContent = endpoints(input);
+    output(outputContent);
+  }
+
+  function endpoints(input) {
+
+    let { header, todo, comment, endpoint, type, description, expectedInput, sampleRequest, expectedReturn, expectedFailedReturn } = input
+    
+    // sample request
+    sampleRequest.type = type.toLowerCase();
+    sampleRequest.address = docs.address + endpoint;
+    sampleRequest.input = expectedInput;
+
+    // If type == GET, make header a link with the endpoint
+    header = (type == "GET") ? "<a href='" + endpoint + "'>" + header + "</a>" : header;
+
+    // If variable is an object, convert to JSON string
+    expectedInput = (typeof expectedInput == "object") ? fromJSON(expectedInput) : expectedInput ;
+    expectedReturn = (typeof expectedReturn == "object") ? fromJSON(expectedReturn) : expectedReturn ;
+    expectedFailedReturn = (typeof expectedFailedReturn == "object") ? fromJSON(expectedFailedReturn) : expectedFailedReturn ;
+
+    // If variable exists, display
+    todo = (todo) ? "<p class='todo'>" + todo + "</p>" : "";
+    comment = (comment) ? "<p class='comment'>" + comment + "</p>" : "";
+    endpoint = "<p><strong>Endpoint:</strong> <code>`" + endpoint + "`</code></p>";
+    type = "<p><strong>Type:</strong> <code>`" + type + "`</code></p>";
+    description = "<p><strong>Description:</strong> <code>" + description + "</code></p>";
+    expectedInput = (expectedInput != "") 
+      ? "<p><strong>Expected Input Sample:</strong> </p> <pre>" + expectedInput + "</pre>" 
+      : "";
+    sampleRequest = (sampleRequest != "")
+      ? "<p><strong>Sample Request:</strong> </p> <pre>" + displayAxios(sampleRequest) + "</pre>" 
+      : "";
+    expectedReturn = (expectedReturn != "") 
+      ? "<p><strong>Expected Return:</strong> </p> <pre>" + expectedReturn + "</pre>" 
+      : "";
+    expectedFailedReturn = (expectedFailedReturn != "") 
+    ? "<p><strong>Expected Return if Fails:</strong> </p> <pre>" + expectedFailedReturn + "</pre>" 
+    : "";
+
+    return "<h3>" + header + "</h3>" +
+      todo + comment + endpoint + type + description + 
+      expectedInput + sampleRequest + expectedReturn + expectedFailedReturn ;
+  }
+
+  function displayAxios(sampleRequest) {
+    // if sampleRequest is an object, display
+    if (typeof sampleRequest == "object") {
+      let { type, address, input, axiosThen, axiosCatch } = sampleRequest;
+
+
+      // if input is an object, display
+      input = (typeof input == "object") 
+        ? ", <div class='indent'>" + fromJSON(input)  + "&rpar; <br />"
+        : "&rpar; <div class='indent'>";
+
+      return "axios." + 
+        type + "&lpar;\'" + 
+        address + "\'" + 
+        input + 
+        ".then&lpar;" + axiosThen + "&rpar;<br />" + 
+        ".catch&lpar;" + axiosCatch + "&rpar;</div>";
+      } else {
+        return sampleRequest;
+      }
+  }
+//#endregion
 
 function test() {
   output("Something");
