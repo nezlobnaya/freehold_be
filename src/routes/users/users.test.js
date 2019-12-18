@@ -108,8 +108,6 @@ describe("PUT /api/users/me", () => {
       .set("Authorization", "Bearer 1234")
       .send(update);
 
-    console.log(res.body);
-
     expect(res.body).toEqual({ ...rest, ...update });
   });
 });
