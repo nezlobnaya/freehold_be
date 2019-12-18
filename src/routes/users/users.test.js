@@ -94,12 +94,22 @@ describe("PUT /api/users/me", () => {
       firstName: "George"
     };
 
+    const {
+    // eslint-disable-next-line
+      residenceId: _dontNeed,
+    // eslint-disable-next-line
+      landlordId: _dontNeed2,
+      ...rest
+    } = landlord;
+
     admin.verifyIdToken.mockResolvedValue({ email: landlord.email });
     const res = await req
       .put(endpoint)
       .set("Authorization", "Bearer 1234")
       .send(update);
 
-    expect(res.body).toEqual({ ...landlord, ...update });
+    console.log(res.body);
+
+    expect(res.body).toEqual({ ...rest, ...update });
   });
 });

@@ -2,10 +2,16 @@ const db = require("../../../database/db");
 
 const table = "users as u";
 
-async function create(
-  input,
-  returning = ["id", "firstName", "lastName", "type", "phone", "email"]
-) {
+const landlordReturning = [
+  "id",
+  "firstName",
+  "lastName",
+  "type",
+  "phone",
+  "email"
+];
+
+async function create(input, returning = landlordReturning) {
   const [user] = await db
     .from(table)
     .insert(input)
@@ -18,30 +24,30 @@ function createTenant(input) {
   return create(input, "*");
 }
 
-async function findByEmail(email) {
+async function findByEmail(email, returning = landlordReturning) {
   const [user] = await db
     .from(table)
-    .select("*")
+    .select(returning)
     .where({ email });
 
   return user || null;
 }
 
-async function findById(id) {
+async function findById(id, returning = landlordReturning) {
   const [user] = await db
     .from(table)
-    .select("*")
+    .select(returning)
     .where({ id });
 
   return user || null;
 }
 
-async function updateByEmail(email, update) {
+async function updateByEmail(email, update, returning = landlordReturning) {
   const [user] = await db
     .from(table)
     .update(update)
     .where({ email })
-    .returning("*");
+    .returning(returning);
 
   return user ? { updated: true, user } : { updated: false };
 }
