@@ -43,7 +43,8 @@ router.post("/", bearerAuth, requireAuth, canAddTenant, async (req, res) => {
 
     const tenant = await User.createTenant({
       ...req.body,
-      landlordId: req.user.id
+      landlordId: req.user.id,
+      type: 'tenant'
     });
 
     if (tenant) {
