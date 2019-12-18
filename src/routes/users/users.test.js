@@ -57,7 +57,49 @@ describe("GET /api/users/me", () => {
 });
 
 describe("PUT /api/users/me", () => {
-  it.skip("should return 401 if the user is not authroized", () => {});
-  it.skip("should return 200 if the user is succesful", () => {});
-  it.skip("should return the updated user", () => {});
+  const endpoint = "/api/users/me";
+
+  it("should return 401 if the user is not authroized", async () => {
+    await testFixture();
+
+    const update = {
+      firstName: "George"
+    };
+
+    const res = await req.put(endpoint).send(update);
+
+    expect(res.status).toBe(401);
+  });
+
+  it.skip("should return 200 if the user is succesful", async () => {
+    let [landlord] = await testFixture();
+
+    const update = {
+      firstName: "George"
+    };
+
+    admin.verifyIdToken.mockResolvedValue({ email: landlord.email });
+    const res = await req
+      .put(endpoint)
+      .set("Authorization", "Bearer 1234")
+      .send(update);
+
+    expect(res.status).toBe(200);
+  });
+
+  it.skip("should return the updated user", async () => {
+    let [landlord] = await testFixture();
+
+    const update = {
+      firstName: "George"
+    };
+
+    admin.verifyIdToken.mockResolvedValue({ email: landlord.email });
+    const res = await req
+      .put(endpoint)
+      .set("Authorization", "Bearer 1234")
+      .send(update);
+
+    expect(res.body).toEqual({ ...landlord, ...update });
+  });
 });
