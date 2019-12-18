@@ -55,3 +55,9 @@ describe("GET /api/users/me", () => {
     });
   });
 });
+
+describe("PUT /api/users/me", () => {
+  it.skip("should return 401 if the user is not authroized", () => {});
+  it.skip("should return 200 if the user is succesful", () => {});
+  it.skip("should return the updated user", () => {});
+});
