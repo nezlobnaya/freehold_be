@@ -11,14 +11,6 @@ exports.up = function(knex) {
     tbl.string("phone");
     tbl.string("firstName");
     tbl.string("lastName");
-
-    // tbl
-    //   .integer("landlordId")
-    //   .unsigned()
-    //   .references("id")
-    //   .inTable("users")
-    //   .onUpdate("CASCADE")
-    //   .onUpdate("CASCADE");
   });
 };
 

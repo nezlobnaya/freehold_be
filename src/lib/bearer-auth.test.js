@@ -39,11 +39,14 @@ describe("bearerAuth", () => {
 
     admin.verifyIdToken.mockResolvedValue({ email: defaultUser.email });
 
+    // eslint-disable-next-line
+    const { residenceId, landlordId, ...rest } = insertedUser;
+
     // act
     await bearerAuth(req, res, next);
 
     // assert
-    expect(req.user).toEqual(insertedUser);
+    expect(req.user).toEqual(rest);
   });
 
   // Because we have a modular auth system a different piece of middleware is
