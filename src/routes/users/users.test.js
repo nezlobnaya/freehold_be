@@ -71,7 +71,7 @@ describe("PUT /api/users/me", () => {
     expect(res.status).toBe(401);
   });
 
-  it.skip("should return 200 if the user is succesful", async () => {
+  it("should return 200 if the user is succesful", async () => {
     let [landlord] = await testFixture();
 
     const update = {
@@ -87,7 +87,7 @@ describe("PUT /api/users/me", () => {
     expect(res.status).toBe(200);
   });
 
-  it.skip("should return the updated user", async () => {
+  it("should return the updated user", async () => {
     let [landlord] = await testFixture();
 
     const update = {
