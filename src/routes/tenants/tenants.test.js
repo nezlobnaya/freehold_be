@@ -2,6 +2,8 @@ const supertest = require("supertest");
 const app = require("../../server");
 const admin = require("../../lib/admin");
 
+const db = require("../../../database/db");
+
 const { Db, Models } = require("../../test-utils");
 
 const request = supertest(app);
@@ -163,4 +165,36 @@ describe("POST /api/tenants", () => {
 
     expect(results.status).toBe(401);
   });
+
+  it("should change the status of the property from vacant to occupied when a tenant is added", async () => {
+    const { properties } = await testFixture();
+
+    await testFixture();
+    const fakeToken = "1234";
+
+    const tenant = Models.createTenant({
+      firstName: "peter",
+      lastName: "peterton"
+    });
+
+    const input = {
+      residenceId: properties[0].id,
+      ...tenant
+    };
+
+    mockVerifyId();
+    await request
+      .post(endpoint)
+      .set("Authorization", "Bearer " + fakeToken)
+      .send(input);
+
+    const [prop] = await db
+      .from("properties")
+      .select("status")
+      .where({ id: properties[0].id });
+
+    expect(prop.status).toBe("occupied");
+  });
+
+  it.skip("should change the status of the property from occupied to vacant when all tenants are removed", () => {});
 });

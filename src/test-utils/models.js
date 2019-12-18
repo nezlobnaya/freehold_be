@@ -24,7 +24,7 @@ const createProperty = input => {
     state: "MN",
     zip: "55330",
     image: "newProperty.jpg",
-    status: "occupied",
+    status: "vacant",
     landlordId: 1,
     ...input
   };
