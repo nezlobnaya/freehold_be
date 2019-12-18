@@ -2,13 +2,20 @@ const db = require("../../../database/db");
 
 const table = "users as u";
 
-async function create(input) {
+async function create(
+  input,
+  returning = ["id", "firstName", "lastName", "type", "phone", "email"]
+) {
   const [user] = await db
     .from(table)
     .insert(input)
-    .returning("*");
+    .returning(returning);
 
   return user || null;
+}
+
+function createTenant(input) {
+  return create(input, "*");
 }
 
 async function findByEmail(email) {
@@ -41,6 +48,7 @@ async function updateByEmail(email, update) {
 
 module.exports = {
   create,
+  createTenant,
   findByEmail,
   findById,
   updateByEmail
