@@ -1,56 +1,6 @@
 const docs = require("./docs.js");
 
-const menu = {
-  planning: {
-    tag: "h1",
-    onclick: "{showContent('planning')}",
-    content: "Planning",
-  },
-  developmentBE: {
-    tag: "h1",
-    onclick: "{showContent('developmentBE')}",
-    content: "Development Back End",
-    subSections: [
-      {
-        section: "models",
-        tag: "h2",
-        class: "moreInfo",
-        onclick: "{showContent('models')}",
-        content: "<button>v</button> Models",
-      },
-      {
-        section: "endpoints",
-        tag: "h2",
-        class: "moreInfo",
-        onclick: "{showContent('endpoints')}",
-        content: "<button>v</button> Endpoints",
-        subHeaders: [
-          {
-            section: "userEndpoints",
-            tag: "h3",
-            class: "moreInfo",
-            onclick: "{showContent('userEndpoints')}",
-            content: "User Endpoints",
-          },
-          {
-            section: "propertyEndpoints",
-            tag: "h3",
-            class: "moreInfo",
-            onclick: "{showContent('propertyEndpoints')}",
-            content: "Property Endpoints",
-          },
-          {
-            section: "tenantHistoryEndpoints",
-            tag: "h3",
-            class: "moreInfo",
-            onclick: "{showContent('tenantHistoryEndpoints')}",
-            content: "Tenant History Endpoints",
-          },
-        ]
-      }
-    ]
-  }
-}
+const menu = docs.menu;
 
 function displayMenu(item) {
   let display = "";
@@ -80,6 +30,7 @@ function displayMenu(item) {
 
   return display;
 }
+
 // Models
 let modelsMenu = '<div id="models" class="hid"> \n <ul> \n';
 for (let i = 0; i < Object.keys(docs.models).length; i++) {
@@ -90,22 +41,90 @@ for (let i = 0; i < Object.keys(docs.models).length; i++) {
 }
 modelsMenu = modelsMenu + ' \n </ul> \n </div>';
 
-function displayList(sec, call, content) {
-  let output = '<div id="' + sec + '" class="hid"> \n <ul> \n';
-  for (let i = 0; i < Object.keys(content).length; i++) {
-    let key = Object.keys(content)[i];
-    let object = content[key];
-    let setCall = call + "[\"" + key.trim() + "\"]";
-    let callFunction = "displayEndpoints(" + setCall + ")";
+// Display List
+function displayList(sec, content, event) {
+  // If any value is empty
+  if (sec === "" || !sec) { return "Empty Section Information." }
+  if (content === "" || !content) { return "Empty Content Information." }
 
-    output = output + 
-    "<li onclick='" + callFunction + "'>" + object.header + " </li> \n";
+  // Check that sec is a string
+  if (sec && typeof sec === "string") {
+    // Output Div and List
+    let output = '<div id="' + sec + '" class="hid"> \n <ul> \n';
+  
+    let section = eval(content);
+
+    // check that section returns an object 
+    if (section && typeof section === "object") {
+      let keys = Object.keys(section);
+      let count = keys.length;
+    
+      for (let i = 0; i < count; i++) {
+        let key = keys[i];
+        let object = section[key];
+        let call = "[\"" + key.trim() + "\"]";
+        let callFunction = "";
+
+        if (event && typeof event === "string") {
+          callFunction = " onclick='" + event + "(" + content + call + ")'";
+        }
+
+        // Check that Object exists
+        if (object && typeof object === "object") {
+          let header = "<span class='alert'>Header missing in docs.<span>";
+          if (object.header) { header = object.header }
+
+          // Output
+          output = output + 
+          "<li" + callFunction + ">" + header + " </li> \n";
+        } else {
+          output = output + "<li>Key Object is missing.</li>"
+        }
+      }
+    } else {
+      output = output + "Section Object is missing for List."
+    }
+  
+    // Close List and Div
+    output = output + ' \n </ul> \n </div>';
+  
+    return output;
+  } else {
+    return "Missing List information - Section Name"
   }
-  output = output + ' \n </ul> \n </div>';
-
-  return output;
 }
 
+function displaySubSections(section){
+  let count = Object.keys(section.subHeaders).length;
+  let output = "";
+
+  if (count > 0) {
+    for (let i = 0; i < count; i++) {
+
+      if (section.subHeaders[i] && section.subHeaders[i] != "") {
+        let subHeader = section.subHeaders[i]
+
+        if (!subHeader.section || subHeader.section === "") {
+          output = output + "No Section Informtion."
+        }
+        if (!subHeader.docs || subHeader.docs === "") {
+          output = output + "No Documents Reference for: " + subHeader.section
+        }
+        if (!section.event) {
+          output = output + "No Event Informtion. Must at least be an empty string. For:" + subHeader.section
+        }
+
+        output = output + displayMenu(subHeader) + "\n" +
+          displayList(subHeader.section, subHeader.docs, section.event)
+      }
+    }
+    return output
+
+  } else {
+    return "No SubSection";
+  }
+
+}
 
 // Left Side Menu
 module.exports = '<div id="leftMenu"> \n' +
@@ -118,17 +137,10 @@ module.exports = '<div id="leftMenu"> \n' +
     displayMenu(menu.developmentBE.subSections[0]) + "\n" +
     modelsMenu +
     displayMenu(menu.developmentBE.subSections[1]) + "\n" +
+    // Endpoints
     '<div id="endpoints" class="show">' +
-      // User Endpoints
-      displayMenu(menu.developmentBE.subSections[1].subHeaders[0]) + "\n" +
-      displayList('userEndpoints', 'docs.endpoints.User', docs.endpoints.User) +
-      // Property Endpoints
-      displayMenu(menu.developmentBE.subSections[1].subHeaders[1]) + "\n" +
-      displayList('propertyEndpoints', 'docs.endpoints.Property', docs.endpoints.Property) +
-      // Tenant History Endpoints
-      displayMenu(menu.developmentBE.subSections[1].subHeaders[2]) + "\n" +
-      displayList('tenantHistoryEndpoints', 'docs.endpoints.TenantHistory', docs.endpoints.TenantHistory) +
-
+      // Display SubSections for Endpoints
+      displaySubSections(menu.developmentBE.subSections[1]) +
     '</div>' +
     "\n" +
   '</div>' +

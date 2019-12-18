@@ -138,6 +138,69 @@ const docs = {
     '<a href="https://docs.google.com/document/d/1bYrgvbAEnnRviKBgIuJjOvdBhLfcCzw5stIwvk0ErM8">Labs Sprint Rubric</a> <br />'
   ],
   address: "https://pt6-propman.herokuapp.com",
+  menu: {
+    planning: {
+      tag: "h1",
+      onclick: "{showContent('planning')}",
+      content: "Planning",
+    },
+    developmentBE: {
+      tag: "h1",
+      onclick: "{showContent('developmentBE')}",
+      content: "Development Back End",
+      subSections: [
+        {
+          section: "models",
+          tag: "h2",
+          class: "moreInfo",
+          onclick: "{showContent('models')}",
+          content: "<button>v</button> Models",
+        },
+        {
+          section: "endpoints",
+          tag: "h2",
+          class: "moreInfo",
+          onclick: "{showContent('endpoints')}",
+          event: 'displayEndpoints',
+          content: "<button>v</button> Endpoints",
+          subHeaders: [
+            {
+              section: "userEndpoints",
+              tag: "h3",
+              class: "moreInfo",
+              onclick: "{showContent('userEndpoints')}",
+              docs: 'docs.endpoints.User',
+              content: "User Endpoints",
+            },
+            {
+              section: "propertyEndpoints",
+              tag: "h3",
+              class: "moreInfo",
+              onclick: "{showContent('propertyEndpoints')}",
+              docs: 'docs.endpoints.Property',
+              content: "Property Endpoints",
+            },
+            {
+              section: "tenantHistoryEndpoints",
+              tag: "h3",
+              class: "moreInfo",
+              onclick: "{showContent('tenantHistoryEndpoints')}",
+              docs: 'docs.endpoints.TenantHistory',
+              content: "Tenant History Endpoints",
+            },
+            {
+              section: "sampleEndpoints",
+              tag: "h3",
+              class: "moreInfo",
+              onclick: "{showContent('sampleEndpoints')}",
+              docs: 'docs.endpoints.Sample',
+              content: "Sample Endpoints",
+            },
+          ]
+        }
+      ]
+    }
+  },
   models: {
     'User': {
       function: "modelsUsers()",
@@ -566,9 +629,9 @@ const docs = {
       }
     },
     Sample: {
-      Add: {
-        header: "Add a ",
-      },
+      // Add: {
+      //   header: "Add a ",
+      // },
       Get: {
         header: "This is a Sample for Documentation Only.",
         todo: "This is still Todo.",
@@ -589,12 +652,12 @@ const docs = {
         expectedReturn: "Expected Return",
         expectedFailedReturn: "Expected Return if Fails."
       },
-      Update: {
-        header: "Update a ",
-      },
-      Delete: {
-        header: "Delete a ",
-      }
+      // Update: {
+      //   header: "Update a ",
+      // },
+      // Delete: {
+      //   header: "Delete a ",
+      // }
     }
   }
 };

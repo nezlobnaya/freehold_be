@@ -74,7 +74,7 @@ const styles = {
   ".indent": [ "padding-left: 15px; " ],
   ".indent2": [ "padding-left: 40px; " ],
   ".codesnip": [ "color: lightgreen; " ],
-  ".alert": [ "color: red; " ],
+  ".alert": [ "color: lightcoral; " ],
   ".todo": [ "color: yellow; " ],
   ".comment": [ "color: lightseagreen; " ]
 }

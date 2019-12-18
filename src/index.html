@@ -59,7 +59,7 @@
     .indent { padding-left: 15px; }
     .indent2 { padding-left: 40px; }
     .codesnip { color: lightgreen; }
-    .alert { color: red; }
+    .alert { color: crimson; }
     .todo {  color: yellow; }
     .comment { color: lightseagreen; }
 
@@ -249,116 +249,7 @@
     // Initial Display Setup
     var outputContent = "<h3>Content</h3>";
 
-    // #region - variables for models
-        
-      // Users
-      const landlordModel = { 
-        userId: 1,
-        email: "landlord@email.com",
-        name: {
-          title: "Title",
-          firstname: "Firstname",
-          middlename: "Middlename",
-          lastname: "Lastname",
-          suffix: "Suffix",
-          preferredname: "Preferred"
-        },
-        address: {
-          street: "1 First St",
-          street2: "Suite 2",
-          city: "Salt Lake City",
-          state: "Utah",
-          zip: "84101",
-          country: "USA"
-        },
-        type: "landlord",
-        phone: "123-456-7890"
-      }
-      const devModel = { 
-        userId: 2,
-        email: "dev@email.com",
-        name: {
-          firstname: "Web",
-          lastname: "Dev"
-        },
-        type: "dev"
-      }
-      const tenantModel = { 
-        userId: 3,
-        email: "tenant@email.com",
-        name: {
-          firstname: "Tenant"
-        },
-        type: "tenant"
-      }
-
-      // Properties
-      const property1 = {
-        propertiesId: 1,
-        propertyName: "Name for the Property",
-        propertyAddress: {
-          street: "1 First St",
-          street2: "Suite 2",
-          city: "Salt Lake City",
-          state: "Utah",
-          zip: "84101",
-          country: "USA"
-        },
-        propertyImage: "property.jpg",
-        propertyStatus: "occupied",
-        propertyStartdate: "2001-01-01T05:00:00.000Z",
-        propertyEnddate: null,
-        name: {
-          title: "Title",
-          firstname: "Firstname",
-          middlename: "Middlename",
-          lastname: "Lastname",
-          suffix: "Suffix",
-          preferredname: "Preferred"
-        },
-        email: "landlord@email.com"
-      };
-      const property2 = {
-        propertiesId: 2,
-        propertyName: "Sample",
-        propertyAddress: { },
-        propertyImage: null,
-        propertyStatus: "closed",
-        propertyStartdate: "2001-01-01T05:00:00.000Z",
-        propertyEnddate: "2018-05-01T04:00:00.000Z",
-        name: {
-          title: "Title",
-          firstname: "Firstname",
-          middlename: "Middlename",
-          lastname: "Lastname",
-          suffix: "Suffix",
-          preferredname: "Preferred"
-        },
-        email: "landlord@email.com"
-      };
-
-      // Tenant History
-      const tenantHistory = {
-        "id": 2,
-        "propertyId": 1,
-        "propertyName": "Name for the Property",
-        "tenantId": 3,
-        "name": {
-          "firstname": "Tenant"
-        },
-        "email": "tenant@email.com",
-        "phone":null,
-        "historyStartdate": "01/01/2010",
-        "historyEnddate": null,
-        "historyRawStartdate": "2010-01-01T05:00:00.000Z",
-        "historyRawEnddate": null
-      };
-
-      // Work Orders
-
-      // Work Order History
-
-    //#endregion
+    
     
     // #region - Models
       function models(header, todo, comment, model) {
