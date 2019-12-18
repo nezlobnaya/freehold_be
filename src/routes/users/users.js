@@ -8,4 +8,6 @@ const router = express.Router();
 
 router.get("/me", bearerAuth, requireAuth, Users.getCurrent);
 
+router.put("/me", bearerAuth, requireAuth, Users.updateCurrent);
+
 module.exports = router;
