@@ -197,9 +197,27 @@ const docs = {
               content: "Sample Endpoints",
             },
           ]
+        },
+        {
+          section: "database",
+          tag: "h2",
+          class: "moreInfo",
+          onclick: "{showContent('database')}",
+          event: 'displayDatabase',
+          content: "<button>v</button> Database Structures",
+          subHeaders: [
+            {
+              section: "tables",
+              tag: "h3",
+              class: "moreInfo",
+              onclick: "{showContent('tables')}",
+              docs: 'docs.database.tables',
+              content: "Tables",
+            }
+          ]
         }
       ]
-    }
+    },
   },
   models: {
     'User': {
@@ -659,6 +677,107 @@ const docs = {
       //   header: "Delete a ",
       // }
     }
+  },
+  database: {
+    tables: {
+      user: {
+        header: "Users Table",
+        todo: "Reformatting need to update.",
+        comment: "",
+        table: {
+          id: "integer -> increment number assigned by database", 
+          email: "string, notNullable, unique",
+          name: {
+            title: "string",
+            firstname: "string",
+            middlename: "string",
+            lastname: "string",
+            suffix: "string",
+            preferredname: "string"
+          },
+          address: {
+            street: "string",
+            street2: "string",
+            city: "string",
+            state: "string",
+            zip: "integer",
+            country: "string"
+          },
+          type: "string, notNullable -> (expects one of these:) landlord, tenant, dev",
+          phone: "string"
+        }
+      },
+      properties: {
+        header: "Properties Table",
+        todo: "",
+        comment: "Status options may include: open, closed, occupied, forRent, or forSale.",
+        table: {
+          id: "integer -> increment number assigned by database", 
+          propertyName: "string -> Name for the Property",
+          propertyAddress: {
+            street: "string",
+            street2: "string",
+            city: "string",
+            state: "string",
+            zip: "integer",
+            country: "string"
+          },
+          propertyImage: "string -> can be null",
+          propertyStatus: "string -> can be null", 
+          propertyStartdate: "date -> can be null",
+          propertyEnddate: "date -> can be null",
+          landlordId: "integer -> references id in table \'users\'"
+        }
+      },
+      tenantHistory: {
+        header: "Tenant History Table",
+        todo: "",
+        comment: "",
+        table: {
+          id: "integer -> increment number assigned by database", 
+          tenantId: "integer -> references id in table \'users\'",
+          propertyId: "integer -> references id in table \'properties\'",
+          historyStartdate: "date, can be 'null'",
+          historyEnddate: "date, can be 'null'"
+        }
+      },
+      workOther: {
+        header: "Work Order Table",
+        todo: "",
+        comment: "",
+        table: {
+          id: "integer -> increment number assigned by database", 
+          workorder: "string -> Work Order Title",
+          woDescription: "text -> Description of the issue.",
+          woType: "string -> type like: plumbing or electrical",
+          woStartdate: "date -> from a timestamp or date selection?",
+          woEnddate: "date, can be 'null'",
+          propertyId: "integer -> references id in table 'properties'",
+        }
+      },
+      woHistory: {
+        header: "Work Order History Table",
+        todo: "Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed'",
+        comment: "Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent",
+        table: {
+          id: "integer -> increment number assigned by database", 
+          woId: "integer -> references id in table \'workorders\'",
+          woStatus: 'string -> status of work order', 
+          woUrgency: "integer -> Scale of 1 to 5",
+          woUpdate: { 
+            assignedTo: "string -> Name of Company task assigned to",
+            comment: "string -> optional comment"
+          },
+          woUpdatedate: "timestamp"
+        }
+      },
+      // other: {
+      //   header: "Other Table",
+      //   todo: "",
+      //   comment: "",
+      //   table: {}
+      // }
+    },
   }
 };
 
