@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const path = require("path");
 
+// import routes
 const authRouter = require("./routes/auth/");
 const propertyRouter = require("./routes/properties/property-router.js");
 const tenantHistoryRouter = require("./routes/history/tenantHistory-router.js");
@@ -23,9 +24,8 @@ if (process.env.NODE_ENV !== "test") {
   app.use(morgan("tiny"));
 }
 
-// Base Route
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname + "/index.html"));
+app.get("/protected", bearerAuth, requireAuth, (req, res) => {
+  res.send(`Yay! your email is ${req.user}`);
 });
 
 // Routes
@@ -35,12 +35,11 @@ app.use("/api/history", tenantHistoryRouter);
 app.use("/api/tenants", tenantsRouter);
 app.use("/api/users", usersRouter);
 
-app.get("/hello", (_req, res) => {
-  res.send("Hello, world");
-});
-
-app.get("/protected", bearerAuth, requireAuth, (req, res) => {
-  res.send(`Yay! your email is ${req.user}`);
+// Base Route
+const docs = require("./docs/index.js");
+app.get("/", (req, res) => {
+  res.setHeader("Content-Type", "text/html");
+  res.send(docs);
 });
 
 module.exports = app;
