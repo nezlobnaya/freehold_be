@@ -19,6 +19,20 @@
     email: "tenant@email.com",
     type: "tenant"
   }
+  const registerInput = {
+    "email": "example@gmail.com",
+    "password": "badpassword",
+  }
+  const registerReturn = {
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+  }
+  const LoginInput = {
+    "email": "example@gmail.com",
+    "password": "badpassword",
+  }
+  const LoginReturn = {
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+  }
 
   // Properties
   const property1 = {
@@ -31,7 +45,7 @@
     status: "occupied",
     image: null,
     landlordId: 1
-  };
+  }
   const property2 = {
     id: 2,
     name: "Sample",
@@ -42,8 +56,8 @@
     status: "vacant",
     image: null,
     landlordId: 1
-  };
-  const addProperty = {
+  }
+  const addPropertyInput = {
     name: "Property Name",
     street: "1 First St",
     city: "Salt Lake City",
@@ -51,7 +65,7 @@
     zip: "84101",
     status: "occupied",
     landlordId: 1
-  };
+  }
   const addPropertyReturn = {
     id: 3,
     name: "Property Name",
@@ -62,7 +76,22 @@
     status: "occupied",
     image: null,
     landlordId: 1
-  };
+  }
+  const updatePropertyInput = {
+    "propertyName": "Property Updated",
+    "propertyStatus": "vacant"
+  }
+  const updatePropertyReturn = {
+    id: 1,
+    name: "Property Updated",
+    street: "1 First St",
+    city: "Salt Lake City",
+    state: "Utah",
+    zip: "84101",
+    status: "vacant",
+    image: null,
+    landlordId: 1
+  }
 
   // Tenant History
   const tenantHistory = {
@@ -71,7 +100,29 @@
     "propertyId": 1,
     "startDate": "01/01/2010",
     "endDate": null,
-  };
+  }
+  const addTenantHistoryInput = {
+    'tenantId': 5,
+    'propertyId': 1,
+    'historyStartdate': "12-31-2018"
+  }
+  const addTenantHistoryReturn = {
+    id: 9,
+    "tenantId": 5,
+    "propertyId": 1,
+    "startDate": "12/31/2018",
+    "endDate": null,      
+  }
+  const updateTenantHistoryInput = {
+    'endDate': "12-31-2010"
+  }
+  const updateTenantHistoryReturn = {
+    "id": 2,
+    "tenantId": 3,
+    "propertyId": 1,
+    "startDate": "01/01/2010",
+    "endDate": "12/31/2010",      
+  }
 
   // Work Orders
 
@@ -231,17 +282,12 @@ const docs = {
         endpoint: "/api/auth/register",
         type: "POST",
         description: "Register a new user",
-        expectedInput: {
-          "email": "example@gmail.com",
-          "password": "badpassword",
-        },
+        expectedInput: registerInput,
         sampleRequest: {
           axiosThen: "token => console.log&lpar;token&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         },
-        expectedReturn: {
-          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-        },
+        expectedReturn: registerReturn,
         expectedFailedReturn: "" // TODO: if Fails
       },
       Login: {
@@ -251,17 +297,12 @@ const docs = {
         endpoint: "/api/auth/login",
         type: "POST",
         description: "Login user",
-        expectedInput: {
-          "email": "example@gmail.com",
-          "password": "badpassword",
-        },
+        expectedInput: LoginInput,
         sampleRequest: {
           axiosThen: "token => console.log&lpar;token&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         },
-        expectedReturn: {
-          token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-        },
+        expectedReturn: LoginReturn,
         expectedFailedReturn: "" // TODO: if Fails
       },
       // 'Update User': {
@@ -297,7 +338,7 @@ const docs = {
         endpoint: "/api/properties/",
         type: "post",
         description: "Adds a Property to the database.",
-        expectedInput: addProperty,
+        expectedInput: addPropertyInput,
         sampleRequest: {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
@@ -357,25 +398,12 @@ const docs = {
         endpoint: "/api/properties/:id",
         type: "put",
         description: "Updates a Property based on property id.",
-        expectedInput: {
-          "propertyName": "Property Updated",
-          "propertyStatus": "vacant"
-          },
+        expectedInput: updatePropertyInput,
         sampleRequest: {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         }, 
-        expectedReturn: {
-          id: 1,
-          name: "Property Updated",
-          street: "1 First St",
-          city: "Salt Lake City",
-          state: "Utah",
-          zip: "84101",
-          status: "vacant",
-          image: null,
-          landlordId: 1
-        },
+        expectedReturn: updatePropertyReturn,
         expectedFailedReturn: { message: 'Failed to update the property.' }
       },
       Delete: {
@@ -402,22 +430,12 @@ const docs = {
         endpoint: "/api/history/",
         type: "post",
         description: "Add Entry for Tenant History",
-        expectedInput: {
-          'tenantId': 5,
-          'propertyId': 1,
-          'historyStartdate': "12-31-2018"
-        },
+        expectedInput: addTenantHistoryInput,
         sampleRequest: {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         }, 
-        expectedReturn: {
-          id: 9,
-          "tenantId": 5,
-          "propertyId": 1,
-          "startDate": "12/31/2018",
-          "endDate": null,      
-        },
+        expectedReturn: addTenantHistoryReturn,
         expectedFailedReturn: { message: 'Failed to create new entry.' }
       },
       Get: {
@@ -472,20 +490,12 @@ const docs = {
         endpoint: "/api/history/:id",
         type: "put",
         description: "Update Entry for Tenant History by Id",
-        expectedInput: {
-          'endDate': "12-31-2010"
-        },
+        expectedInput: updateTenantHistoryInput,
         sampleRequest: {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         }, 
-        expectedReturn: {
-          "id": 2,
-          "tenantId": 3,
-          "propertyId": 1,
-          "startDate": "01/01/2010",
-          "endDate": "12/31/2010",      
-        },
+        expectedReturn: updateTenantHistoryReturn,
         expectedFailedReturn: [
           { message: 'Could not find entry with given id.' },
           { message: 'Failed to update the entry.' }
