@@ -260,18 +260,18 @@ const docs = {
       function: "modelsTenantHistory()",
       examples: [ tenantHistory ]
     },
-    'Work Orders': {
-      function: "test()",
-      examples: [
-        {}
-      ]
-    },
-    'Work Order History': {
-      function: "test()",
-      examples: [
-        {}
-      ]
-    },
+    // 'Work Orders': {
+    //   function: "test()",
+    //   examples: [
+    //     {}
+    //   ]
+    // },
+    // 'Work Order History': {
+    //   function: "test()",
+    //   examples: [
+    //     {}
+    //   ]
+    // },
   },
   endpoints: {
     User: {
