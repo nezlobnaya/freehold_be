@@ -42,6 +42,10 @@ async function findById(id, returning = landlordReturning) {
   return user || null;
 }
 
+function findTenantById(id) {
+  return findById(id, "*");
+}
+
 async function updateByEmail(email, update, returning = landlordReturning) {
   const [user] = await db
     .from(table)
@@ -71,6 +75,7 @@ module.exports = {
   createTenant,
   findByEmail,
   findById,
+  findTenantById,
   updateByEmail,
   getAllTenantsByPropertyId,
   getAllTenantsByLandlordId
