@@ -1,3 +1,5 @@
+// TODO: - update tenant History Models, endpoints, and table
+
 // #region - variables for models
         
   // Users
@@ -22,47 +24,46 @@
 
   // Properties
   const property1 = {
-    propertiesId: 1,
-    propertyName: "Name for the Property",
-    propertyAddress: {
-      street: "1 First St",
-      street2: "Suite 2",
-      city: "Salt Lake City",
-      state: "Utah",
-      zip: "84101",
-      country: "USA"
-    },
-    propertyImage: "property.jpg",
-    propertyStatus: "occupied",
-    propertyStartdate: "2001-01-01T05:00:00.000Z",
-    propertyEnddate: null,
-    name: {
-      title: "Title",
-      firstname: "Firstname",
-      middlename: "Middlename",
-      lastname: "Lastname",
-      suffix: "Suffix",
-      preferredname: "Preferred"
-    },
-    email: "landlord@email.com"
+    id: 1,
+    name: "Name for the Property",
+    street: "1 First St",
+    city: "Salt Lake City",
+    state: "Utah",
+    zip: "84101",
+    status: "occupied",
+    image: null,
+    landlordId: 1
   };
   const property2 = {
-    propertiesId: 2,
-    propertyName: "Sample",
-    propertyAddress: { },
-    propertyImage: null,
-    propertyStatus: "closed",
-    propertyStartdate: "2001-01-01T05:00:00.000Z",
-    propertyEnddate: "2018-05-01T04:00:00.000Z",
-    name: {
-      title: "Title",
-      firstname: "Firstname",
-      middlename: "Middlename",
-      lastname: "Lastname",
-      suffix: "Suffix",
-      preferredname: "Preferred"
-    },
-    email: "landlord@email.com"
+    id: 2,
+    name: "Sample",
+    street: "2 Second St",
+    city: "Salt Lake City",
+    state: "Utah",
+    zip: "84101",
+    status: "vacant",
+    image: null,
+    landlordId: 1
+  };
+  const addProperty = {
+    name: "Property Name",
+    street: "1 First St",
+    city: "Salt Lake City",
+    state: "Utah",
+    zip: "84101",
+    status: "occupied",
+    landlordId: 1
+  };
+  const addPropertyReturn = {
+    id: 3,
+    name: "Property Name",
+    street: "1 First St",
+    city: "Salt Lake City",
+    state: "Utah",
+    zip: "84101",
+    status: "occupied",
+    image: null,
+    landlordId: 1
   };
 
   // Tenant History
@@ -235,7 +236,7 @@ const docs = {
     User: {
       Register: {
         header: "User Endpoints - Register",
-        todo: "Add expected returns",
+        todo: "",
         comment: "",
         endpoint: "/api/auth/register",
         type: "POST",
@@ -255,7 +256,7 @@ const docs = {
       },
       Login: {
         header: "User Endpoints - Login",
-        todo: "Add expected returns",
+        todo: "",
         comment: "",
         endpoint: "/api/auth/login",
         type: "POST",
@@ -273,79 +274,50 @@ const docs = {
         },
         expectedFailedReturn: "" // TODO: if Fails
       },
-      'Update User': {
-        header: "User Endpoints - Update User",
-        todo: "TODO",
-        comment: "",
-        endpoint: "",
-        type: "",
-        description: "",
-        expectedInput: { },
-        sampleRequest: { },
-        expectedReturn: { },
-        expectedFailedReturn: ""
-      },
-      'Delete User': {
-        header: "User Endpoints - Delete User",
-        todo: "TODO",
-        comment: "",
-        endpoint: "",
-        type: "",
-        description: "",
-        expectedInput: { },
-        sampleRequest: { },
-        expectedReturn: { },
-        expectedFailedReturn: ""
-      }
+      // 'Update User': {
+      //   header: "User Endpoints - Update User",
+      //   todo: "TODO",
+      //   comment: "",
+      //   endpoint: "",
+      //   type: "",
+      //   description: "",
+      //   expectedInput: { },
+      //   sampleRequest: { },
+      //   expectedReturn: { },
+      //   expectedFailedReturn: ""
+      // },
+      // 'Delete User': {
+      //   header: "User Endpoints - Delete User",
+      //   todo: "TODO",
+      //   comment: "",
+      //   endpoint: "",
+      //   type: "",
+      //   description: "",
+      //   expectedInput: { },
+      //   sampleRequest: { },
+      //   expectedReturn: { },
+      //   expectedFailedReturn: ""
+      // }
     },
     Property: {
       Add: {
         header: "Add a Property",
-        todo: "In Review",
+        todo: "",
         comment: "",
         endpoint: "/api/properties/",
         type: "post",
         description: "Adds a Property to the database.",
-        expectedInput: {
-          "propertyName": "New Property Added",
-          "propertyAddress": {
-            "street": "1 First St",
-            "street2": "Suite 2",
-            "city": "Salt Lake City",
-            "state": "Utah",
-            "zip": "84101",
-            "country": "USA"
-          },
-          "propertyImage": "newProperty.jpg",
-          "propertyStatus": "occupied",
-          "propertyStartdate": "2019-01-01",
-          "landlordId": 1
-        },
+        expectedInput: addProperty,
         sampleRequest: {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         }, 
-        expectedReturn: {
-          "propertyName": "New Property Added",
-          "propertyAddress": {
-            "street": "1 First St",
-            "street2": "Suite 2",
-            "city": "Salt Lake City",
-            "state": "Utah",
-            "zip": "84101",
-            "country": "USA"
-          },
-          "propertyImage": "newProperty.jpg",
-          "propertyStatus": "occupied",
-          "propertyStartdate": "2019-01-01",
-          "propertyEnddate": null,
-          "landlordId": 1
-        },
+        expectedReturn: addPropertyReturn,
         expectedFailedReturn: { message: 'Failed to create new property.' }
       },
       Get: {
         header: "Get a Property",
-        todo: "In Review",
+        todo: "",
         comment: "",
         endpoint: "/api/properties/:id",
         type: "get",
@@ -360,7 +332,7 @@ const docs = {
       },
       GetAll: {
         header: "Get All Properties",
-        todo: "In Review",
+        todo: "",
         comment: "",
         endpoint: "/api/properties/",
         type: "GET",
@@ -375,7 +347,7 @@ const docs = {
       },
       GetAllUser: {
         header: "Get All Properties for User",
-        todo: "In Review",
+        todo: "",
         comment: "",
         endpoint: "/api/properties/user/:email",
         type: "GET",
@@ -390,49 +362,35 @@ const docs = {
       },
       Update: {
         header: "Update a Property",
-        todo: "In Review",
+        todo: "",
         comment: "",
         endpoint: "/api/properties/:id",
         type: "put",
         description: "Updates a Property based on property id.",
         expectedInput: {
-        "propertyName": "Property Updated",
-        "propertyStatus": "open"
-        },
+          "propertyName": "Property Updated",
+          "propertyStatus": "vacant"
+          },
         sampleRequest: {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         }, 
         expectedReturn: {
-          "propertiesId": 1,
-          "propertyName": "Property Updated",
-          "propertyAddress": {
-            "street": "1 First St",
-            "street2": "Suite 2",
-            "city": "Salt Lake City",
-            "state": "Utah",
-            "zip": "84101",
-            "country": "USA"
-          },
-          "propertyImage": "property.jpg",
-          "propertyStatus": "open",
-          "propertyStartdate": "2001-01-01T05:00:00.000Z",
-          "propertyEnddate": null,
-          "name": {
-            "title": "Title",
-            "firstname": "Firstname",
-            "middlename": "Middlename",
-            "lastname": "Lastname",
-            "suffix": "Suffix",
-            "preferredname": "Preferred"
-          },
-          "email": "landlord@email.com"
+          id: 1,
+          name: "Property Updated",
+          street: "1 First St",
+          city: "Salt Lake City",
+          state: "Utah",
+          zip: "84101",
+          status: "vacant",
+          image: null,
+          landlordId: 1
         },
         expectedFailedReturn: { message: 'Failed to update the property.' }
       },
       Delete: {
         header: "Delete a Property",
-        todo: "In Review",
+        todo: "",
         comment: "Currently this will not delete if property is linked in another database. This function should be added, or maybe a way to archive property.",
         endpoint: "/api/properties/:id",
         type: "delete",
@@ -442,25 +400,11 @@ const docs = {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         }, 
-        expectedReturn: {
-          "propertiesId": 2,
-          "propertyName": "Sample",
-          "propertyAddress": {},
-          "propertyImage": null,
-          "propertyStatus": "closed",
-          "name": {
-            "title": "Title",
-            "firstname": "Firstname",
-            "middlename": "Middlename",
-            "lastname": "Lastname",
-            "suffix": "Suffix",
-            "preferredname": "Preferred"
-          },
-          "email": "landlord@email.com"
-        },
+        expectedReturn: property2,
         expectedFailedReturn: { message: 'Failed to delete property.' }
       }
     },
+// TODO: - update these endpoints
     TenantHistory: {
       Add: {
         header: "Add Entry",
@@ -665,8 +609,8 @@ const docs = {
         comment: "",
         table: {
           id: "integer -> increment number assigned by database", 
-          email: "string, notNullable, unique",
-          type: "string, notNullable -> (expects one of these:) landlord, tenant, dev",
+          email: "string, not Null, unique",
+          type: "string, not Null -> (expects one of these:) landlord, tenant, dev",
           firstName: "string",
           lastName: "string",
           phone: "string"
@@ -678,25 +622,20 @@ const docs = {
         comment: "Status options may include: open, closed, occupied, forRent, or forSale.",
         table: {
           id: "integer -> increment number assigned by database", 
-          propertyName: "string -> Name for the Property",
-          propertyAddress: {
-            street: "string",
-            street2: "string",
-            city: "string",
-            state: "string",
-            zip: "integer",
-            country: "string"
-          },
-          propertyImage: "string -> can be null",
-          propertyStatus: "string -> can be null", 
-          propertyStartdate: "date -> can be null",
-          propertyEnddate: "date -> can be null",
-          landlordId: "integer -> references id in table \'users\'"
+          name: "string, not Null",
+          street: "string, not Null",
+          city: "string, not Null",
+          state: "string, not Null",
+          zip: "string, not Null",
+          status: "string, not Null",
+          image: "string, can be null",
+          landlordId: "integer -> references id in table 'users'"
         }
       },
+// TODO: - update below tables
       tenantHistory: {
         header: "Tenant History Table",
-        todo: "",
+        todo: "Updating This",
         comment: "",
         table: {
           id: "integer -> increment number assigned by database", 
@@ -706,36 +645,36 @@ const docs = {
           historyEnddate: "date, can be 'null'"
         }
       },
-      workOther: {
-        header: "Work Order Table",
-        todo: "",
-        comment: "",
-        table: {
-          id: "integer -> increment number assigned by database", 
-          workorder: "string -> Work Order Title",
-          woDescription: "text -> Description of the issue.",
-          woType: "string -> type like: plumbing or electrical",
-          woStartdate: "date -> from a timestamp or date selection?",
-          woEnddate: "date, can be 'null'",
-          propertyId: "integer -> references id in table 'properties'",
-        }
-      },
-      woHistory: {
-        header: "Work Order History Table",
-        todo: "Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed'",
-        comment: "Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent",
-        table: {
-          id: "integer -> increment number assigned by database", 
-          woId: "integer -> references id in table \'workorders\'",
-          woStatus: 'string -> status of work order', 
-          woUrgency: "integer -> Scale of 1 to 5",
-          woUpdate: { 
-            assignedTo: "string -> Name of Company task assigned to",
-            comment: "string -> optional comment"
-          },
-          woUpdatedate: "timestamp"
-        }
-      },
+      // workOther: {
+      //   header: "Work Order Table",
+      //   todo: "",
+      //   comment: "",
+      //   table: {
+      //     id: "integer -> increment number assigned by database", 
+      //     workorder: "string -> Work Order Title",
+      //     woDescription: "text -> Description of the issue.",
+      //     woType: "string -> type like: plumbing or electrical",
+      //     woStartdate: "date -> from a timestamp or date selection?",
+      //     woEnddate: "date, can be 'null'",
+      //     propertyId: "integer -> references id in table 'properties'",
+      //   }
+      // },
+      // woHistory: {
+      //   header: "Work Order History Table",
+      //   todo: "Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed'",
+      //   comment: "Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent",
+      //   table: {
+      //     id: "integer -> increment number assigned by database", 
+      //     woId: "integer -> references id in table \'workorders\'",
+      //     woStatus: 'string -> status of work order', 
+      //     woUrgency: "integer -> Scale of 1 to 5",
+      //     woUpdate: { 
+      //       assignedTo: "string -> Name of Company task assigned to",
+      //       comment: "string -> optional comment"
+      //     },
+      //     woUpdatedate: "timestamp"
+      //   }
+      // },
       // other: {
       //   header: "Other Table",
       //   todo: "",

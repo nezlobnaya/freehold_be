@@ -99,8 +99,7 @@ function displayList(sec, content, event) {
 function displaySubSections(section) {
   let count = 0, output = "";
   
-  console.log('subHeaders' in section);
-  if (section.subHeaders) {
+  if ('subHeaders' in section) {
     count = Object.keys(section.subHeaders).length;
   }
 

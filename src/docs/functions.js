@@ -57,7 +57,7 @@ function fromJSON(obj) {
 
     let header = "<h2>User Models</h2> ";
     let outputContent = header + 
-      models("Landlord User Model", "Still updating", "", landlordModel) + 
+      models("Landlord User Model", "", "", landlordModel) + 
       models("Dev Model", "", "", devModel) + 
       models("Tenant Model", "", "", tenantModel);
 
@@ -69,7 +69,7 @@ function fromJSON(obj) {
   function modelsProperty() {
           
     // Todo
-    let propertyTodo = "In Review - this may or may not change";
+    let propertyTodo = "";
     // Comments
     let propertyComment = "";
 
@@ -86,7 +86,7 @@ function fromJSON(obj) {
   function modelsTenantHistory() {
           
     // Todo
-    let tenantHistoryTodo = "Still updating";
+    let tenantHistoryTodo = "";
     // Comments
     let tenantHistoryComment = "";
 
