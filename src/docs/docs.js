@@ -4,40 +4,19 @@
   const landlordModel = { 
     userId: 1,
     email: "landlord@email.com",
-    name: {
-      title: "Title",
-      firstname: "Firstname",
-      middlename: "Middlename",
-      lastname: "Lastname",
-      suffix: "Suffix",
-      preferredname: "Preferred"
-    },
-    address: {
-      street: "1 First St",
-      street2: "Suite 2",
-      city: "Salt Lake City",
-      state: "Utah",
-      zip: "84101",
-      country: "USA"
-    },
+    firstName: "Firstname",
+    lastName: "Lastname",
     type: "landlord",
     phone: "123-456-7890"
   }
   const devModel = { 
     userId: 2,
     email: "dev@email.com",
-    name: {
-      firstname: "Web",
-      lastname: "Dev"
-    },
     type: "dev"
   }
   const tenantModel = { 
     userId: 3,
     email: "tenant@email.com",
-    name: {
-      firstname: "Tenant"
-    },
     type: "tenant"
   }
 
@@ -682,28 +661,14 @@ const docs = {
     tables: {
       user: {
         header: "Users Table",
-        todo: "Reformatting need to update.",
+        todo: "",
         comment: "",
         table: {
           id: "integer -> increment number assigned by database", 
           email: "string, notNullable, unique",
-          name: {
-            title: "string",
-            firstname: "string",
-            middlename: "string",
-            lastname: "string",
-            suffix: "string",
-            preferredname: "string"
-          },
-          address: {
-            street: "string",
-            street2: "string",
-            city: "string",
-            state: "string",
-            zip: "integer",
-            country: "string"
-          },
           type: "string, notNullable -> (expects one of these:) landlord, tenant, dev",
+          firstName: "string",
+          lastName: "string",
           phone: "string"
         }
       },
