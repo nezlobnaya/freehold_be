@@ -10,9 +10,10 @@ module.exports = {
   modelsProperty,
   modelsTenantHistory,
   // Endpoints
-  endpoints,
   displayAxios,
   displayEndpoints,
+  // Database Structures
+  displayDatabase,
   test
 }
 
@@ -98,11 +99,6 @@ function fromJSON(obj) {
 
 // #region - End Points
   function displayEndpoints(input) {
-    let outputContent = endpoints(input);
-    output(outputContent);
-  }
-
-  function endpoints(input) {
 
     let { header, todo, comment, endpoint, type, description, expectedInput, sampleRequest, expectedReturn, expectedFailedReturn } = input
     
@@ -138,9 +134,12 @@ function fromJSON(obj) {
     ? "<p><strong>Expected Return if Fails:</strong> </p> <pre>" + expectedFailedReturn + "</pre>" 
     : "";
 
-    return "<h3>" + header + "</h3>" +
+    let outputContent = "<h3>" + header + "</h3>" +
       todo + comment + endpoint + type + description + 
       expectedInput + sampleRequest + expectedReturn + expectedFailedReturn ;
+
+    // Output Content
+    output(outputContent);
   }
 
   function displayAxios(sampleRequest) {
@@ -164,7 +163,25 @@ function fromJSON(obj) {
         return sampleRequest;
       }
   }
-//#endregion
+// #endregion
+
+// #region - Database Structures
+  function displayDatabase(input) {
+    let { header, todo, comment, table } = input;
+
+    //, todo, comment, userDb
+    
+    todo = (todo) ? "<p class='todo'>" + todo + "</p>" : "";
+    comment = (comment) ? "<p class='comment'>" + comment + "</p>" : "";
+
+    let outputContent = "<h2> Database Structures </h2> " +
+    "<h3>" + header + "</h3> " + todo + comment +
+    "<pre>" + fromJSON(table) + "</pre>";
+    
+    // Output Content
+    output(outputContent);
+  }
+// #endregion
 
 function test() {
   output("Something");

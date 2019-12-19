@@ -1,5 +1,4 @@
 const docs = require("./docs.js");
-
 const menu = docs.menu;
 
 function displayMenu(item) {
@@ -32,14 +31,17 @@ function displayMenu(item) {
 }
 
 // Models
-let modelsMenu = '<div id="models" class="hid"> \n <ul> \n';
-for (let i = 0; i < Object.keys(docs.models).length; i++) {
-  let key = Object.keys(docs.models)[i];
-  let object = docs.models[key];
-  modelsMenu = modelsMenu + 
-  "<li onclick='" + object.function + "'>" + key + " Models </li> \n";
+function displayModels(){
+  let modelsMenu = '<div id="models" class="hid"> \n <ul> \n';
+  for (let i = 0; i < Object.keys(docs.models).length; i++) {
+    let key = Object.keys(docs.models)[i];
+    let object = docs.models[key];
+    modelsMenu = modelsMenu + 
+    "<li onclick='" + object.function + "'>" + key + " Models </li> \n";
+  }
+  modelsMenu = modelsMenu + ' \n </ul> \n </div>';
+  return modelsMenu;
 }
-modelsMenu = modelsMenu + ' \n </ul> \n </div>';
 
 // Display List
 function displayList(sec, content, event) {
@@ -132,17 +134,25 @@ module.exports = '<div id="leftMenu"> \n' +
   displayMenu(menu.developmentBE) + "\n" +
 
   // Development Back End
-  '<div id="developmentBE" class="show">' +
+  '<div id="developmentBE" class="show"> \n' +
     // Models
     displayMenu(menu.developmentBE.subSections[0]) + "\n" +
-    modelsMenu +
-    displayMenu(menu.developmentBE.subSections[1]) + "\n" +
+    displayModels() +
+
     // Endpoints
-    '<div id="endpoints" class="show">' +
+    displayMenu(menu.developmentBE.subSections[1]) + "\n" +
+    '<div id="endpoints" class="hid">' +
       // Display SubSections for Endpoints
       displaySubSections(menu.developmentBE.subSections[1]) +
-    '</div>' +
-    "\n" +
-  '</div>' +
+    '</div> \n' +
+
+    // Database Structures
+    displayMenu(menu.developmentBE.subSections[2]) + "\n" +
+    '<div id="database" class="hid">' +
+      // Display SubSections for Endpoints
+      displaySubSections(menu.developmentBE.subSections[2]) +
+    '</div> \n' +
+
+  '</div> \n' +
 
   '</div>';
