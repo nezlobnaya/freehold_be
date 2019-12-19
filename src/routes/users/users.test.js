@@ -95,9 +95,9 @@ describe("PUT /api/users/me", () => {
     };
 
     const {
-    // eslint-disable-next-line
+      // eslint-disable-next-line
       residenceId: _dontNeed,
-    // eslint-disable-next-line
+      // eslint-disable-next-line
       landlordId: _dontNeed2,
       ...rest
     } = landlord;
@@ -109,5 +109,54 @@ describe("PUT /api/users/me", () => {
       .send(update);
 
     expect(res.body).toEqual({ ...rest, ...update });
+  });
+
+  // CURRENTLY UNSUPPORTED
+  it("should send a 400 if the user attempts to change their email", async () => {
+    let [landlord] = await testFixture();
+
+    const update = {
+      email: "georgey@gmail.com"
+    };
+
+    admin.verifyIdToken.mockResolvedValue({ email: landlord.email });
+    const res = await req
+      .put(endpoint)
+      .set("Authorization", "Bearer 1234")
+      .send(update);
+
+    expect(res.status).toBe(400);
+  });
+
+  it("should send a 400 if the user attempts to send an empty string for an email", async () => {
+    let [landlord] = await testFixture();
+
+    const update = {
+      email: ""
+    };
+
+    admin.verifyIdToken.mockResolvedValue({ email: landlord.email });
+    const res = await req
+      .put(endpoint)
+      .set("Authorization", "Bearer 1234")
+      .send(update);
+
+    expect(res.status).toBe(400);
+  });
+
+  it("should send a 400 if the user attempts to send an null for an email", async () => {
+    let [landlord] = await testFixture();
+
+    const update = {
+      email: null
+    };
+
+    admin.verifyIdToken.mockResolvedValue({ email: landlord.email });
+    const res = await req
+      .put(endpoint)
+      .set("Authorization", "Bearer 1234")
+      .send(update);
+
+    expect(res.status).toBe(400);
   });
 });
