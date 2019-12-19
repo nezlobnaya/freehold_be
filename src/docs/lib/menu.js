@@ -1,4 +1,4 @@
-const docs = require("./docs.js");
+const docs = require("../docs.js");
 const menu = docs.menu;
 
 function displayMenu(item) {
@@ -96,9 +96,12 @@ function displayList(sec, content, event) {
   }
 }
 
-function displaySubSections(section){
-  let count = Object.keys(section.subHeaders).length;
-  let output = "";
+function displaySubSections(section) {
+  let count = 0, output = "";
+  
+  if ('subHeaders' in section) {
+    count = Object.keys(section.subHeaders).length;
+  }
 
   if (count > 0) {
     for (let i = 0; i < count; i++) {
@@ -128,31 +131,62 @@ function displaySubSections(section){
 
 }
 
+function outputMenu(thisMenu) {
+  let output = "";
+  let menuItems = {}, subSection = {};
+
+  // Check menu exists and is an object
+  if(thisMenu && typeof thisMenu === "object") {
+
+    // For Each Menu item
+    Object.keys(thisMenu).forEach(function (item) {
+      menuItems = thisMenu[item];
+
+      // Display Menu item 
+      output = output + displayMenu(menuItems) + "\n";
+
+      if (item == "planning") {
+        output = output + '<div> \n'
+      } else {
+        output = output + '<div id="' + item + '" class="show"> \n'
+      }
+
+      // check for subSections
+      if (menuItems.subSections) {
+        
+        // For Each Menu subSection
+        Object.keys(menuItems.subSections).forEach(function (i) {
+
+          subSection = menuItems.subSections[i];
+
+          // Display Header for subSections
+          output = output + displayMenu(subSection) + "\n"
+
+          if (subSection.section) {
+            
+            if (subSection.section == "models") {
+              output = output + displayModels();
+            } else {
+              output = output + '<div id="'+ subSection.section + '" class="hid">'
+              output = output + displaySubSections(subSection)
+              output = output + '</div> \n'
+            }
+
+          }
+
+        });
+
+      }
+
+      output = output + '</div> \n'
+    });
+  }
+
+  // Disply Output
+  return output;
+}
+
 // Left Side Menu
 module.exports = '<div id="leftMenu"> \n' +
-  displayMenu(menu.planning) + "\n" +
-  displayMenu(menu.developmentBE) + "\n" +
-
-  // Development Back End
-  '<div id="developmentBE" class="show"> \n' +
-    // Models
-    displayMenu(menu.developmentBE.subSections[0]) + "\n" +
-    displayModels() +
-
-    // Endpoints
-    displayMenu(menu.developmentBE.subSections[1]) + "\n" +
-    '<div id="endpoints" class="hid">' +
-      // Display SubSections for Endpoints
-      displaySubSections(menu.developmentBE.subSections[1]) +
-    '</div> \n' +
-
-    // Database Structures
-    displayMenu(menu.developmentBE.subSections[2]) + "\n" +
-    '<div id="database" class="hid">' +
-      // Display SubSections for Endpoints
-      displaySubSections(menu.developmentBE.subSections[2]) +
-    '</div> \n' +
-
-  '</div> \n' +
-
+  outputMenu(menu) +
   '</div>';

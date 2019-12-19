@@ -2,7 +2,7 @@ const title = "Property Manager Backend";
 const styles = require("./styles.js");
 
 // Docs
-const docs = require("./docs.js");
+const docs = require("../docs.js");
 let displayDocs = JSON.stringify(docs, undefined, 1);
 
 module.exports = "<!DOCTYPE html> \n" +
