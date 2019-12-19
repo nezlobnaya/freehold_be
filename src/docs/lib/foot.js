@@ -1,4 +1,3 @@
-const footer = "Property Manager Backend";
 const functions = require("./functions.js");
 
 let display = "\n";
