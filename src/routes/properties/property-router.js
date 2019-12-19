@@ -2,24 +2,13 @@ const express = require("express");
 const PropertyController = require("../../controllers/properties");
 const bearerAuth = require("../../lib/bearer-auth");
 const requireAuth = require("../../lib/require-auth");
+const { requireLandlord } = require("../../middleware");
 
 const Properties = require("../../models/property");
 
 const router = express.Router();
 
 router.use(bearerAuth, requireAuth);
-
-const requireLandlord = (req, res, next) => {
-  const userType = (req.user && req.user.type) || "";
-
-  if (userType !== "landlord") {
-    return res
-      .status(401)
-      .json({ error: "User is not authorized for that operation" });
-  }
-
-  next();
-};
 
 const validateInput = getErrors => (req, res, next) => {
   const errors = getErrors(req.body);
