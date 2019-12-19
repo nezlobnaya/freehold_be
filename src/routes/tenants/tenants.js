@@ -4,6 +4,7 @@ const User = require("../../models/user");
 
 const bearerAuth = require("../../lib/bearer-auth");
 const requireAuth = require("../../lib/require-auth");
+const { requireLandlord } = require("../../middleware");
 
 const router = express.Router();
 
@@ -57,7 +58,7 @@ router.post("/", canAddTenant, async (req, res) => {
   } catch (err) {
     console.error(err);
 
-    res.status(500).json({ message: "Something unexpected happened" });
+    return res.status(500).json({ message: "Something unexpected happened" });
   }
 });
 
@@ -74,12 +75,28 @@ router.get("/", async (req, res) => {
   } catch (err) {
     console.error(err);
 
-    res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
 // get tenant by id
-router.get("/:id", (req, res) => {});
+router.get("/:id", requireLandlord, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await User.findTenantById(id);
+
+    if (user.landlordId !== req.user.id) {
+      return res.sendStatus(401);
+    }
+
+    res.status(200).json(user);
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 // update tenant info
 router.put("/:id", (req, res) => {});
