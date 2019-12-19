@@ -42,6 +42,10 @@ async function findById(id, returning = landlordReturning) {
   return user || null;
 }
 
+function findTenantById(id) {
+  return findById(id, "*");
+}
+
 async function updateByEmail(email, update, returning = landlordReturning) {
   const [user] = await db
     .from(table)
@@ -52,10 +56,27 @@ async function updateByEmail(email, update, returning = landlordReturning) {
   return user ? { updated: true, user } : { updated: false };
 }
 
+function getAllTenantsByPropertyId(id) {
+  return db
+    .from(table)
+    .select("*")
+    .where({ residenceId: id });
+}
+
+function getAllTenantsByLandlordId(id) {
+  return db
+    .from(table)
+    .select("*")
+    .where({ landlordId: id });
+}
+
 module.exports = {
   create,
   createTenant,
   findByEmail,
   findById,
-  updateByEmail
+  findTenantById,
+  updateByEmail,
+  getAllTenantsByPropertyId,
+  getAllTenantsByLandlordId
 };

@@ -3,11 +3,13 @@ const isValidTenantIdParam = require("./is-valid-tenant-id-param");
 const isValidPropertyId = require("./is-valid-property-id");
 const isValidPropertyIdParam = require("./is-valid-property-id-param");
 const validateTenantHistoryInput = require("./validate-tenant-history-input");
+const requireLandlord = require("./require-landlord");
 
 module.exports = {
   isValidTenantId,
   isValidTenantIdParam,
   isValidPropertyId,
   isValidPropertyIdParam,
-  validateTenantHistoryInput
+  validateTenantHistoryInput,
+  requireLandlord
 };

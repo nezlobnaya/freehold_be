@@ -8,8 +8,8 @@ const request = supertest(app);
 const defaultLandlord = Models.createUser();
 const newProperty = Models.createProperty();
 
-const mockVerifyId = () =>
-  admin.verifyIdToken.mockResolvedValue({ email: defaultLandlord.email });
+const mockVerifyId = (email = defaultLandlord.email) =>
+  admin.verifyIdToken.mockResolvedValue({ email });
 
 beforeEach(async () => {
   await Db.reset();
@@ -19,6 +19,48 @@ beforeEach(async () => {
 afterAll(async () => {
   await Db.destroyConn();
 });
+
+const testFixture = async () => {
+  const users = await Db.insertUsers([
+    defaultLandlord,
+    Models.createLandlord({
+      firstName: "landlord2",
+      email: "somelandlord@gmail.com"
+    })
+  ]);
+  const properties = await Db.insertProperties([
+    Models.createProperty(),
+    Models.createProperty({ landlordId: 2 })
+  ]);
+
+  return [users, properties];
+};
+
+const tenant1 = Models.createTenant({
+  residenceId: 1,
+  landlordId: 1,
+  firstName: "tenant1",
+  email: "tenant1@gmail.com"
+});
+
+const tenant2 = Models.createTenant({
+  residenceId: 1,
+  landlordId: 1,
+  firstName: "tenant2",
+  email: "tenant2@gmail.com"
+});
+
+const tenantsFixture = async () => {
+  const [landlords, properties] = await testFixture();
+
+  const tenants = await Db.insertUsers([tenant1, tenant2]);
+
+  return {
+    landlords,
+    tenants,
+    properties
+  };
+};
 
 describe("Properties Routes", () => {
   //#region - CREATE
@@ -237,4 +279,59 @@ describe("Properties Routes", () => {
   });
 
   //#endregion - DELETE
+});
+
+describe("GET /api/properties/:id/tenants", () => {
+  it("should return 401 when logged in", async () => {
+    await tenantsFixture();
+    const results = await request.get("/api/properties/1/tenants");
+
+    expect(results.status).toBe(401);
+  });
+
+  it("should send a 401 when the landlord is not authorized to view the property", async () => {
+    await tenantsFixture();
+    mockVerifyId();
+    const results = await request
+      .get("/api/properties/2/tenants")
+      .set("Authorization", "Bearer 1234");
+
+    expect(results.status).toBe(401);
+  });
+
+  it("should send 404 when no property exists with that id", async () => {
+    await tenantsFixture();
+
+    mockVerifyId();
+
+    const results = await request
+      .get("/api/properties/3/tenants")
+      .set("Authorization", "Bearer 1234");
+
+    expect(results.status).toBe(404);
+  });
+
+  it("should send a 200 when successful", async () => {
+    await tenantsFixture();
+
+    mockVerifyId();
+
+    const results = await request
+      .get("/api/properties/1/tenants")
+      .set("Authorization", "Bearer 1234");
+
+    expect(results.status).toBe(200);
+  });
+
+  it("should return an array of tenants when successful", async () => {
+    const { tenants } = await tenantsFixture();
+
+    mockVerifyId();
+
+    const results = await request
+      .get("/api/properties/1/tenants")
+      .set("Authorization", "Bearer 1234");
+
+    expect(results.body).toEqual(tenants);
+  });
 });

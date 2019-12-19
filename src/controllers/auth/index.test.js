@@ -1,5 +1,5 @@
 const { createUser, login } = require("./");
-const { Express } = require("../../test-utils");
+const { Db, Express } = require("../../test-utils");
 const firebase = require("../../lib/firebase");
 
 const mockRequest = () =>
@@ -13,6 +13,14 @@ const mockRequest = () =>
 const mockExpress = () => ({
   req: mockRequest(),
   res: Express.mockResponse()
+});
+
+beforeEach(async () => {
+  await Db.reset();
+});
+
+afterAll(async () => {
+  await Db.destroyConn();
 });
 
 describe("createUser", () => {

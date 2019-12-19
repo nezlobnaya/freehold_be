@@ -2,25 +2,13 @@ const express = require("express");
 const PropertyController = require("../../controllers/properties");
 const bearerAuth = require("../../lib/bearer-auth");
 const requireAuth = require("../../lib/require-auth");
+const { requireLandlord } = require("../../middleware");
 
 const Properties = require("../../models/property");
 
 const router = express.Router();
 
 router.use(bearerAuth, requireAuth);
-
-const requireLandlord = (req, res, next) => {
-  const userType = (req.user && req.user.type) || "";
-
-  if (userType !== "landlord") {
-    res
-      .status(401)
-      .json({ error: "User is not authorized for that operation" });
-    return;
-  }
-
-  next();
-};
 
 const validateInput = getErrors => (req, res, next) => {
   const errors = getErrors(req.body);
@@ -63,6 +51,26 @@ const validatePropertyId = async (req, res, next) => {
   }
 };
 
+// Must be placed after bearerAuth/requireAuth and validatePropertyId
+const canModifyProperty = (propertyIdKey = "id") => async (req, res, next) => {
+  try {
+    const property = await Properties.getProperty(req.params[propertyIdKey]);
+
+    if (!property) {
+      return res.sendStatus(404);
+    }
+
+    if (req.user.id !== property.landlordId) {
+      return res.sendStatus(401);
+    }
+
+    next();
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+};
+
 //#region - CREATE
 
 // add Property and return results for a property by id inserted
@@ -85,6 +93,14 @@ router.get(
   "/:id",
   requireLandlord,
   /* authorizeProperty? */ PropertyController.getById
+);
+
+router.get(
+  "/:id/tenants",
+  requireLandlord,
+  validatePropertyId,
+  canModifyProperty("id"),
+  PropertyController.getAllTenantsById
 );
 
 // GET all properties for a specific user
