@@ -136,8 +136,9 @@ function fromJSON(obj) {
 
 const docs = {
   changes: [
-    'Added User Endpoints',
-    'Added Tenant History Endpoints'
+    'Updated User Models, Endpoints, and Table Example',
+    'Updated Property Models, Endpoints, and Table Example',
+    'Updated Tenant History Models, Endpoints, and Table Example'
   ],
   planning: [
     '<h2>PropMan Links</h2>' +
