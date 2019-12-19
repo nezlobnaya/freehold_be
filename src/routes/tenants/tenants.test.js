@@ -169,7 +169,6 @@ describe("POST /api/tenants", () => {
   it("should change the status of the property from vacant to occupied when a tenant is added", async () => {
     const { properties } = await testFixture();
 
-    await testFixture();
     const fakeToken = "1234";
 
     const tenant = Models.createTenant({
@@ -197,4 +196,32 @@ describe("POST /api/tenants", () => {
   });
 
   it.skip("should change the status of the property from occupied to vacant when all tenants are removed", () => {});
+});
+
+describe("GET /api/tenants", () => {
+  const endpoint = "/api/tenants";
+
+  it("should return a 401 if the user is not logged in", async () => {
+    await testFixture();
+
+    mockVerifyId();
+    let res = await request.get(endpoint);
+
+    expect(res.status).toBe(401);
+  });
+
+  it("should return a 401 if the user is a tenant", async () => {
+    await testFixture();
+
+    mockVerifyId();
+    let res = await request.get(endpoint);
+
+    expect(res.status).toBe(401);
+  });
+
+  it.skip("should return a 200 if successful", () => {});
+
+  it.skip("should return an array of tenants", () => {});
+
+  it.skip("should return of users that all have a landlordId that matches the landlords id", () => {});
 });
