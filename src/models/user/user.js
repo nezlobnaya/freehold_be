@@ -59,11 +59,19 @@ function getAllTenantsByPropertyId(id) {
     .where({ residenceId: id });
 }
 
+function getAllTenantsByLandlordId(id) {
+  return db
+    .from(table)
+    .select("*")
+    .where({ landlordId: id });
+}
+
 module.exports = {
   create,
   createTenant,
   findByEmail,
   findById,
   updateByEmail,
-  getAllTenantsByPropertyId
+  getAllTenantsByPropertyId,
+  getAllTenantsByLandlordId
 };

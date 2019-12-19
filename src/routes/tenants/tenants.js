@@ -7,6 +7,8 @@ const requireAuth = require("../../lib/require-auth");
 
 const router = express.Router();
 
+router.use(bearerAuth, requireAuth);
+
 const canAddTenant = (req, res, next) => {
   // Sets the default user to an empty object to avoid `property is not a valid
   // key on undefined`
@@ -25,7 +27,7 @@ const canAddTenant = (req, res, next) => {
 /* eslint-disable */
 
 // create tenant
-router.post("/", bearerAuth, requireAuth, canAddTenant, async (req, res) => {
+router.post("/", canAddTenant, async (req, res) => {
   try {
     /* Start potential middleware */
     const property = await Property.getProperty(req.body.residenceId);
@@ -44,7 +46,7 @@ router.post("/", bearerAuth, requireAuth, canAddTenant, async (req, res) => {
     const tenant = await User.createTenant({
       ...req.body,
       landlordId: req.user.id,
-      type: 'tenant'
+      type: "tenant"
     });
 
     if (tenant) {
@@ -60,7 +62,21 @@ router.post("/", bearerAuth, requireAuth, canAddTenant, async (req, res) => {
 });
 
 // get all tenants
-router.get("/", (req, res) => {});
+router.get("/", async (req, res) => {
+  try {
+    const tenants = await User.getAllTenantsByLandlordId(req.user.id);
+
+    if (tenants) {
+      res.status(200).json(tenants);
+    } else {
+      res.status(500).json({ message: "Internal Server error" });
+    }
+  } catch (err) {
+    console.error(err);
+
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 // get tenant by id
 router.get("/:id", (req, res) => {});
