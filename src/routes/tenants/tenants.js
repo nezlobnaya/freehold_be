@@ -69,6 +69,7 @@ router.get("/", async (req, res) => {
     if (tenants) {
       res.status(200).json(tenants);
     } else {
+      res.status(500).json({ message: "Internal Server error" });
     }
   } catch (err) {
     console.error(err);
