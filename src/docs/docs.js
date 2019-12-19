@@ -1,5 +1,3 @@
-// TODO: - update tenant History Models, endpoints, and table
-
 // #region - variables for models
         
   // Users
@@ -69,18 +67,10 @@
   // Tenant History
   const tenantHistory = {
     "id": 2,
-    "propertyId": 1,
-    "propertyName": "Name for the Property",
     "tenantId": 3,
-    "name": {
-      "firstname": "Tenant"
-    },
-    "email": "tenant@email.com",
-    "phone":null,
-    "historyStartdate": "01/01/2010",
-    "historyEnddate": null,
-    "historyRawStartdate": "2010-01-01T05:00:00.000Z",
-    "historyRawEnddate": null
+    "propertyId": 1,
+    "startDate": "01/01/2010",
+    "endDate": null,
   };
 
   // Work Orders
@@ -404,7 +394,6 @@ const docs = {
         expectedFailedReturn: { message: 'Failed to delete property.' }
       }
     },
-// TODO: - update these endpoints
     TenantHistory: {
       Add: {
         header: "Add Entry",
@@ -424,14 +413,10 @@ const docs = {
         }, 
         expectedReturn: {
           id: 9,
-          propertyId: 1,
-          propertyName: 'Name for the Property',
-          tenantId: 5,
-          name: { firstname: 'Second', lastname: 'Tenant' },
-          email: 'tenant2@email.com',
-          phone: null,
-          historyStartdate: '2018-12-31T05:00:00.000Z',
-          historyEnddate: null 
+          "tenantId": 5,
+          "propertyId": 1,
+          "startDate": "12/31/2018",
+          "endDate": null,      
         },
         expectedFailedReturn: { message: 'Failed to create new entry.' }
       },
@@ -462,18 +447,7 @@ const docs = {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         }, 
-        expectedReturn: [
-          {
-            "id":2,
-            "tenantId":3,
-            "name":{"firstname":"Tenant"},
-            "email":"tenant@email.com",
-            "phone":null,
-            "historyStartdate":"01/01/2010",
-            "historyEnddate":null,
-            "historyRawStartdate":"2010-01-01T05:00:00.000Z"
-          }
-        ],
+        expectedReturn: [ tenantHistory ],
         expectedFailedReturn: { message: 'Failed to get results for given property id.' }
       },
       GetByTenant: {
@@ -488,24 +462,7 @@ const docs = {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         }, 
-        expectedReturn: [
-          {
-            "id":1,
-            "propertyId":2,
-            "propertyName":"Sample",
-            "historyStartdate":"01/01/2001",
-            "historyEnddate":"12/31/2009",
-            "historyRawStartdate":"2001-01-01T05:00:00.000Z"
-          },
-          {
-            "id":2,
-            "propertyId":1,
-            "propertyName":"Name for the Property",
-            "historyStartdate":"01/01/2010",
-            "historyEnddate":null,
-            "historyRawStartdate":"2010-01-01T05:00:00.000Z"
-          }
-        ],
+        expectedReturn: [ tenantHistory ],
         expectedFailedReturn: { message: 'Failed to get results for given tenant id.' }
       },
       Update: {
@@ -516,23 +473,18 @@ const docs = {
         type: "put",
         description: "Update Entry for Tenant History by Id",
         expectedInput: {
-          'historyStartdate': "01-01-2001",
-          'historyEnddate': "12-31-2010"
+          'endDate': "12-31-2010"
         },
         sampleRequest: {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         }, 
         expectedReturn: {
-          id: 1,
-          propertyId: 2,
-          propertyName: 'Sample',
-          tenantId: 3,
-          name: { firstname: 'Tenant' },
-          email: 'tenant@email.com',
-          phone: null,
-          historyStartdate: '2001-01-01T05:00:00.000Z',
-          historyEnddate: '2010-12-31T05:00:00.000Z' 
+          "id": 2,
+          "tenantId": 3,
+          "propertyId": 1,
+          "startDate": "01/01/2010",
+          "endDate": "12/31/2010",      
         },
         expectedFailedReturn: [
           { message: 'Could not find entry with given id.' },
@@ -551,17 +503,7 @@ const docs = {
           axiosThen: "response => console.log&lpar;response&rpar;",
           axiosCatch: "err => console.error&lpar;err&rpar;",
         }, 
-        expectedReturn: {
-          id: 2,
-          propertyId: 1,
-          propertyName: 'Name for the Property',
-          tenantId: 3,
-          name: { firstname: 'Tenant' },
-          email: 'tenant@email.com',
-          phone: null,
-          historyStartdate: '2010-01-01T05:00:00.000Z',
-          historyEnddate: null
-        },
+        expectedReturn: tenantHistory,
         expectedFailedReturn: [
           { message: 'Could not delete entry.' },
           { message: 'Could not find entry with given id.' },
@@ -632,7 +574,6 @@ const docs = {
           landlordId: "integer -> references id in table 'users'"
         }
       },
-// TODO: - update below tables
       tenantHistory: {
         header: "Tenant History Table",
         todo: "Updating This",
@@ -641,10 +582,11 @@ const docs = {
           id: "integer -> increment number assigned by database", 
           tenantId: "integer -> references id in table \'users\'",
           propertyId: "integer -> references id in table \'properties\'",
-          historyStartdate: "date, can be 'null'",
-          historyEnddate: "date, can be 'null'"
+          startDate: "date, can be 'null'",
+          endDate: "date, can be 'null'"
         }
       },
+      // TODO: - update below tables
       // workOther: {
       //   header: "Work Order Table",
       //   todo: "",
