@@ -287,3 +287,61 @@ describe("GET /api/tenants", () => {
     });
   });
 });
+
+describe("GET /api/tenants/:id", () => {
+  const endpoint = "/api/tenants/";
+
+  it("should return 401 if logged in", async () => {
+    const res = await request.get(endpoint + 1);
+
+    expect(res.status).toBe(401);
+  });
+
+  // This test is temporary as we don't have tenant accounts in place
+  it("should return 401 if not logged in as a landlord", async () => {
+    const { tenants } = await testFixture();
+
+    mockVerifyId(tenants[0].email);
+    const res = await request
+      .get(endpoint + 1)
+      .set("Authorization", "Bearer 1234");
+
+    expect(res.status).toBe(401);
+  });
+
+  it("should return 401 if the tenant does not belong to the landlord", async () => {
+    const { landlord2 } = await testFixture();
+
+    mockVerifyId(landlord2.email);
+
+    const res = await request
+      .get(endpoint + 3)
+      .set("Authorization", "Bearer 1234");
+
+    expect(res.status).toBe(401);
+  });
+
+  it("should return 200 when successful", async () => {
+    const { landlord } = await testFixture();
+
+    mockVerifyId(landlord.email);
+
+    const res = await request
+      .get(endpoint + 3)
+      .set("Authorization", "Bearer 1234");
+
+    expect(res.status).toBe(200);
+  });
+
+  it("should return the desired tenant", async () => {
+    const { landlord, tenants } = await testFixture();
+
+    mockVerifyId(landlord.email);
+
+    const res = await request
+      .get(endpoint + 3)
+      .set("Authorization", "Bearer 1234");
+
+    expect(res.body).toEqual(tenants[0]);
+  });
+});
