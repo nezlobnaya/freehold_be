@@ -52,10 +52,18 @@ async function updateByEmail(email, update, returning = landlordReturning) {
   return user ? { updated: true, user } : { updated: false };
 }
 
+function getAllTenantsByPropertyId(id) {
+  return db
+    .from(table)
+    .select("*")
+    .where({ residenceId: id });
+}
+
 module.exports = {
   create,
   createTenant,
   findByEmail,
   findById,
-  updateByEmail
+  updateByEmail,
+  getAllTenantsByPropertyId
 };

@@ -1,4 +1,5 @@
 const Property = require("../../models/property");
+const User = require("../../models/user");
 
 const create = async (req, res) => {
   const input = req.body;
@@ -67,9 +68,28 @@ const updateById = async (req, res) => {
   }
 };
 
+const getAllTenantsById = async (req, res) => {
+  const { id } = req.property;
+
+  try {
+    const tenants = await User.getAllTenantsByPropertyId(id);
+
+    if (tenants) {
+      return res.status(200).json(tenants);
+    } else {
+      return res.sendStatus(500);
+    }
+  } catch (err) {
+    console.error(err);
+
+    return res.sendStatus(500);
+  }
+};
+
 module.exports = {
   create,
   getAllByUser,
   getById,
+  getAllTenantsById,
   updateById
 };
