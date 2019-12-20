@@ -400,32 +400,6 @@ describe("PUT /api/tenants/:id", () => {
   });
 
   describe("should return 400 if input is invalid", () => {
-    // it("should return 400 if email is null", async () => {
-    // const { landlord2 } = await testFixture();
-
-    // const input = {
-    //   firstName: "fred",
-    //   lastName: "frederson"
-    // };
-
-    // mockVerifyId(landlord2.email);
-
-    // const res = await request
-    //   .put(endpoint)
-    //   .send(input)
-    //   .set("Authorization", "Bearer 1234");
-
-    // expect(res.status).toBe(400);
-    // expect(res.body).toEqual({
-    //   errors: {
-    //     email: 'Email cannot be null',
-    //   }
-    // });
-
-    // });
-
-    // it.skip("should return 400 if email is an empty string", () => {});
-
     // TODO: Come back and delete this test when we add in the ability to change
     // a users email address
     it("should return 400 if the email key is present", async () => {
