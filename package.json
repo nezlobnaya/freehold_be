@@ -7,11 +7,16 @@
     "start": "node src/index.js",
     "start:dev": "nodemon npm run start",
     "migrate:latest": "npx knex migrate:latest",
-    "seed:run": "npx knex seed:run",
-    "migrate:test": "cross-env NODE_ENV=testing npx knex migrate:latest",
+    "migrate:rollback": "npx knex migrate:rollback",
+    "migrate-test:latest": "cross-env NODE_ENV=test npm run migrate:latest",
+    "migrate-test:rollback": "cross-env NODE_ENV=test npm run migrate:rollback",
+    "seed": "npx knex seed:run",
     "res": "npm run migrate:latest && npm run seed:run && npm run migrate:test",
     "test": "jest --runInBand",
-    "test:watch": "npm run test -- --watchAll"
+    "test:watch": "npm run test -- --watchAll",
+    "lint": "eslint --ignore-path .gitignore .",
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|json)\"",
+    "validate": ""
   },
   "repository": {
     "type": "git",
@@ -51,16 +56,5 @@
     "nodemon": "^1.19.4",
     "prettier": "^1.18.2",
     "supertest": "^4.0.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
   }
 }
