@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors")({ origin: true });
 const helmet = require("helmet");
 const morgan = require("morgan");
-const path = require("path");
+// const path = require("path"); // path may no longer be needed
 
 // import routes
 const authRouter = require("./routes/auth/");
@@ -25,7 +25,7 @@ if (process.env.NODE_ENV !== "test") {
 }
 
 app.get("/protected", bearerAuth, requireAuth, (req, res) => {
-  res.send(`Yay! your email is ${req.user}`);
+  res.send(`Yay! your email is ${req.user.email}`);
 });
 
 // Routes
@@ -41,5 +41,10 @@ app.get("/", (req, res) => {
   res.setHeader("Content-Type", "text/html");
   res.send(docs);
 });
+
+// Redirect any other route
+app.get('/*', function(req, res) {
+  res.redirect('/');
+ });
 
 module.exports = app;
