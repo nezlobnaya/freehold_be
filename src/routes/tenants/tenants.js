@@ -98,8 +98,70 @@ router.get("/:id", requireLandlord, async (req, res) => {
   }
 });
 
+// must be placed after bearerAuth, requireAuth
+const canAccessTenant = msg => async (req, res, next) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: "Expected tenant id" });
+  }
+
+  try {
+    const hasPermission = await User.canAccessTenant(req.user.id, id);
+
+    if (hasPermission) {
+      next();
+    } else {
+      return res.status(401).json({ message: msg });
+    }
+  } catch (err) {
+    console.log(err);
+
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
+const validateTenantUpdate = (req, res, next) => {
+  const input = req.body;
+
+  let errors = {};
+
+  if (input.hasOwnProperty("email")) {
+    errors.email = "The email field is not editable at this time";
+  }
+
+  if (Object.keys(errors).length > 0) {
+    return res.status(400).json({ errors });
+  }
+
+  next();
+};
+
 // update tenant info
-router.put("/:id", (req, res) => {});
+router.put(
+  "/:id",
+  requireLandlord,
+  canAccessTenant("You are not authorized to edit that tenant"),
+  validateTenantUpdate,
+  async (req, res) => {
+    try {
+      const { updated, user } = await User.updateTenantById(
+        req.params.id,
+        req.body
+      );
+
+      if (updated) {
+        return res.status(200).json(user);
+      } else {
+        return res.status(500).json({ message: "Internal Server Error" });
+      }
+    } catch (err) {
+      console.error(err);
+
+      res.status(500).json({ message: "Internal Server Eerror" });
+    }
+  }
+);
 
 /* eslint-enable */
 
