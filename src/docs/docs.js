@@ -142,12 +142,14 @@ function fromJSON(obj) {
 const docs = {
   header: "Property Manager Backend",
   address: "https://pt6-propman.herokuapp.com", // website address
-  changes: [ // changes should be an array of strings, these strings will become list items
+  changes: [ 
+    // changes should be an array of strings, these strings will become list items
     'Updated User Models, Endpoints, and Table Example',
     'Updated Property Models, Endpoints, and Table Example',
     'Updated Tenant History Models, Endpoints, and Table Example'
   ],
-  planning: [ // planning should be an array of html strings, these strings will be joined with a line break between each. 
+  planning: [ 
+    // planning should be an array of html strings, these strings will be joined with a line break between each. 
     '<h2>PropMan Links</h2>',
     'Front-End: <a href="https://propman.netlify.com/">Propman - Property Management</a> <br />',
     'Back-End: <a href="https://pt6-propman.herokuapp.com/">Property Manager Backend</a> <br />',
@@ -166,14 +168,14 @@ const docs = {
     '<a href="https://www.figma.com/file/Mtjt9s7kxfGmh6fIgEszRY/PropMan">PropMan – Figma</a> <br />',
     '<a href="https://docs.google.com/document/d/1bYrgvbAEnnRviKBgIuJjOvdBhLfcCzw5stIwvk0ErM8">Labs Sprint Rubric</a> <br />'
   ],
-  colorkey: [
-    '<div style="float: right;">',
-    '<span class="codesnip">Code - lightgreen</span> <br />',
-    '<span class="todo">ToDo - Yellow</span> <br />',
-    '<span class="alert">Alert - red</span> <br />',
-    '<span class="comment">Commnet - lightseagreen</span>',
-    '</div>'
-  ],
+  colorkey: {
+    // colorkey in docs file should be an object
+    // css class name: "Comment String"
+    codesnip: "Code - lightgreen",
+    todo: "ToDo - yellow",
+    alert: "Alert - red",
+    comment: "Commnet - lightseagreen"
+  },
   menu: {
     planning: {
       tag: "h1",
