@@ -1,95 +1,95 @@
-const Property = require("../../models/property");
-const User = require("../../models/user");
+const Property = require('../../models/property')
+const User = require('../../models/user')
 
 const create = async (req, res) => {
-  const input = req.body;
+  const input = req.body
 
   try {
-    const property = await Property.addProperty(input, req.user.id);
+    const property = await Property.addProperty(input, req.user.id)
     if (property) {
-      res.status(201).json(property);
+      res.status(201).json(property)
     } else {
-      res.sendStatus(400);
+      res.sendStatus(400)
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(err)
+    res.status(500).json({error: 'Internal server error'})
   }
-};
+}
 
 const getAllByUser = async (req, res) => {
   try {
-    const properties = await Property.getPropertiesByUser(req.user.id);
+    const properties = await Property.getPropertiesByUser(req.user.id)
 
-    res.status(200).json(properties);
+    res.status(200).json(properties)
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(err)
+    res.status(500).json({error: 'Internal server error'})
   }
-};
+}
 
 const getById = async (req, res) => {
-  const { id } = req.params;
+  const {id} = req.params
 
   try {
-    const property = await Property.getProperty(id);
+    const property = await Property.getProperty(id)
 
     if (property) {
       if (!req.user.id === property.landlordId) {
-        res.sendStatus(401);
-        return;
+        res.sendStatus(401)
+        return
       }
 
-      res.status(200).json(property);
+      res.status(200).json(property)
     } else {
-      res.status(404).json({ error: "No property found with that id" });
+      res.status(404).json({error: 'No property found with that id'})
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(err)
+    res.status(500).json({error: 'Internal server error'})
   }
-};
+}
 
 const updateById = async (req, res) => {
-  const { id } = req.params;
-  const changes = req.body;
+  const {id} = req.params
+  const changes = req.body
 
   try {
-    const results = await Property.updateProperty(changes, id);
+    const results = await Property.updateProperty(changes, id)
 
     if (results.updated) {
-      res.status(200).json(results.property);
+      res.status(200).json(results.property)
     } else {
-      res.status(404).json({ message: "No property found with that id" });
+      res.status(404).json({message: 'No property found with that id'})
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Internal server error" });
+    console.error(err)
+    res.status(500).json({error: 'Internal server error'})
   }
-};
+}
 
 const getAllTenantsById = async (req, res) => {
-  const { id } = req.property;
+  const {id} = req.property
 
   try {
-    const tenants = await User.getAllTenantsByPropertyId(id);
+    const tenants = await User.getAllTenantsByPropertyId(id)
 
     if (tenants) {
-      return res.status(200).json(tenants);
+      return res.status(200).json(tenants)
     } else {
-      return res.sendStatus(500);
+      return res.sendStatus(500)
     }
   } catch (err) {
-    console.error(err);
+    console.error(err)
 
-    return res.sendStatus(500);
+    return res.sendStatus(500)
   }
-};
+}
 
 module.exports = {
   create,
   getAllByUser,
   getById,
   getAllTenantsById,
-  updateById
-};
+  updateById,
+}

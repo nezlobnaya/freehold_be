@@ -1,168 +1,163 @@
-const express = require("express");
-const Property = require("../../models/property");
-const User = require("../../models/user");
+const express = require('express')
+const Property = require('../../models/property')
+const User = require('../../models/user')
 
-const bearerAuth = require("../../lib/bearer-auth");
-const requireAuth = require("../../lib/require-auth");
-const { requireLandlord } = require("../../middleware");
+const bearerAuth = require('../../lib/bearer-auth')
+const requireAuth = require('../../lib/require-auth')
+const {requireLandlord} = require('../../middleware')
 
-const router = express.Router();
+const router = express.Router()
 
-router.use(bearerAuth, requireAuth);
+router.use(bearerAuth, requireAuth)
 
 const canAddTenant = (req, res, next) => {
   // Sets the default user to an empty object to avoid `property is not a valid
   // key on undefined`
-  const { user = {} } = req;
+  const {user = {}} = req
 
-  if (user.type === "landlord") {
-    next();
+  if (user.type === 'landlord') {
+    next()
   } else {
     res
       .status(401)
-      .json({ message: "Only landlords are authorized to create tenants" });
+      .json({message: 'Only landlords are authorized to create tenants'})
   }
-};
-
-// WIP
-/* eslint-disable */
+}
 
 // create tenant
-router.post("/", canAddTenant, async (req, res) => {
+router.post('/', canAddTenant, async (req, res) => {
   try {
     /* Start potential middleware */
-    const property = await Property.getProperty(req.body.residenceId);
+    const property = await Property.getProperty(req.body.residenceId)
 
     if (property.landlordId !== req.user.id) {
       return res.status(401).json({
         message:
-          "Not authorized to create association with another landlords property"
-      });
+          'Not authorized to create association with another landlords property',
+      })
     }
 
-    await Property.updateProperty({ status: "occupied" }, req.body.residenceId);
+    await Property.updateProperty({status: 'occupied'}, req.body.residenceId)
 
     /* end potential middleware */
 
     const tenant = await User.createTenant({
       ...req.body,
       landlordId: req.user.id,
-      type: "tenant"
-    });
+      type: 'tenant',
+    })
 
     if (tenant) {
-      return res.status(201).json(tenant);
+      return res.status(201).json(tenant)
     } else {
-      res.status(400).json({ message: "Something unexpected happened" });
+      res.status(400).json({message: 'Something unexpected happened'})
     }
   } catch (err) {
-    console.error(err);
+    console.error(err)
 
-    return res.status(500).json({ message: "Something unexpected happened" });
+    return res.status(500).json({message: 'Something unexpected happened'})
   }
-});
+})
 
 // get all tenants
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const tenants = await User.getAllTenantsByLandlordId(req.user.id);
+    const tenants = await User.getAllTenantsByLandlordId(req.user.id)
 
     if (tenants) {
-      res.status(200).json(tenants);
+      res.status(200).json(tenants)
     } else {
-      res.status(500).json({ message: "Internal Server error" });
+      res.status(500).json({message: 'Internal Server error'})
     }
   } catch (err) {
-    console.error(err);
+    console.error(err)
 
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({message: 'Internal Server Error'})
   }
-});
+})
 
 // get tenant by id
-router.get("/:id", requireLandlord, async (req, res) => {
-  const { id } = req.params;
+router.get('/:id', requireLandlord, async (req, res) => {
+  const {id} = req.params
 
   try {
-    const user = await User.findTenantById(id);
+    const user = await User.findTenantById(id)
 
     if (user.landlordId !== req.user.id) {
-      return res.sendStatus(401);
+      return res.sendStatus(401)
     }
 
-    res.status(200).json(user);
+    res.status(200).json(user)
   } catch (err) {
-    console.error(err);
+    console.error(err)
 
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({message: 'Internal server error'})
   }
-});
+})
 
 // must be placed after bearerAuth, requireAuth
 const canAccessTenant = msg => async (req, res, next) => {
-  const { id } = req.params;
+  const {id} = req.params
 
   if (!id) {
-    return res.status(400).json({ message: "Expected tenant id" });
+    return res.status(400).json({message: 'Expected tenant id'})
   }
 
   try {
-    const hasPermission = await User.canAccessTenant(req.user.id, id);
+    const hasPermission = await User.canAccessTenant(req.user.id, id)
 
     if (hasPermission) {
-      next();
+      next()
     } else {
-      return res.status(401).json({ message: msg });
+      return res.status(401).json({message: msg})
     }
   } catch (err) {
-    console.log(err);
+    console.log(err)
 
-    return res.status(500).json({ message: "Internal Server Error" });
+    return res.status(500).json({message: 'Internal Server Error'})
   }
-};
+}
 
 const validateTenantUpdate = (req, res, next) => {
-  const input = req.body;
+  const input = req.body
 
-  let errors = {};
+  let errors = {}
 
-  if (input.hasOwnProperty("email")) {
-    errors.email = "The email field is not editable at this time";
+  // eslint-disable-next-line
+  if (input.hasOwnProperty('email')) {
+    errors.email = 'The email field is not editable at this time'
   }
 
   if (Object.keys(errors).length > 0) {
-    return res.status(400).json({ errors });
+    return res.status(400).json({errors})
   }
 
-  next();
-};
+  next()
+}
 
-// update tenant info
 router.put(
-  "/:id",
+  '/:id',
   requireLandlord,
-  canAccessTenant("You are not authorized to edit that tenant"),
+  canAccessTenant('You are not authorized to edit that tenant'),
   validateTenantUpdate,
   async (req, res) => {
     try {
-      const { updated, user } = await User.updateTenantById(
+      const {updated, user} = await User.updateTenantById(
         req.params.id,
-        req.body
-      );
+        req.body,
+      )
 
       if (updated) {
-        return res.status(200).json(user);
+        return res.status(200).json(user)
       } else {
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({message: 'Internal Server Error'})
       }
     } catch (err) {
-      console.error(err);
+      console.error(err)
 
-      res.status(500).json({ message: "Internal Server Eerror" });
+      res.status(500).json({message: 'Internal Server Eerror'})
     }
-  }
-);
+  },
+)
 
-/* eslint-enable */
-
-module.exports = router;
+module.exports = router

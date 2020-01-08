@@ -1,17 +1,17 @@
-const functions = require("./functions.js");
+const functions = require('./functions.js')
 
-let display = "\n";
-Object.keys(functions).forEach(function (item) {
-  display = display + 
-    "\n" + 
-    functions[item].toString() + "\n";
-});
+let display = '\n'
+Object.keys(functions).forEach(function(item) {
+  display = display + '\n' + functions[item].toString() + '\n'
+})
 
-module.exports = "<footer>" +
-  // footer + 
-  "</footer> \n" +
-  "<script> \n" +
-    display + "\n" +
-  "</script> \n" +
-  "</body> \n" +
-  "</html>";
+module.exports =
+  '<footer>' +
+  // footer +
+  '</footer> \n' +
+  '<script> \n' +
+  display +
+  '\n' +
+  '</script> \n' +
+  '</body> \n' +
+  '</html>'
