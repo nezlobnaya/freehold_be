@@ -615,7 +615,7 @@ const docs = {
           endDate: "date, can be 'null'",
         },
       },
-      workOrder: {
+      workOrders: {
         header: "Work Order Table",
         todo: "",
         comment: "",
@@ -624,7 +624,7 @@ const docs = {
           title: "string -> Work Order Title",
           description: "text -> Description of the issue.",
           type: "enum -> electrical, plumbing, HVAC, pest control, appliances",
-          startdate: "date -> from a timestamp",
+          startDate: "date -> from a timestamp",
           endDate: "date -> can be 'null'",
           propertyId: "integer -> references id in table 'properties'",
           createdBy: "integer -> references id in table 'users'"
