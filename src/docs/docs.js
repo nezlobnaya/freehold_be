@@ -144,9 +144,8 @@ const docs = {
   address: "https://pt6-propman.herokuapp.com", // website address
   changes: [ 
     // changes should be an array of strings, these strings will become list items
-    'Updated User Models, Endpoints, and Table Example',
-    'Updated Property Models, Endpoints, and Table Example',
-    'Updated Tenant History Models, Endpoints, and Table Example'
+    'Updateing User endpoints for Tenants',
+    'Adding Work Order Models, Endpoints, and Table Example'
   ],
   planning: [ 
     // planning should be an array of html strings, these strings will be joined with a line break between each. 
@@ -613,37 +612,36 @@ const docs = {
           endDate: "date, can be 'null'"
         }
       },
-      // TODO: - update below tables
-      // workOther: {
-      //   header: "Work Order Table",
-      //   todo: "",
-      //   comment: "",
-      //   table: {
-      //     id: "integer -> increment number assigned by database", 
-      //     workorder: "string -> Work Order Title",
-      //     woDescription: "text -> Description of the issue.",
-      //     woType: "string -> type like: plumbing or electrical",
-      //     woStartdate: "date -> from a timestamp or date selection?",
-      //     woEnddate: "date, can be 'null'",
-      //     propertyId: "integer -> references id in table 'properties'",
-      //   }
-      // },
-      // woHistory: {
-      //   header: "Work Order History Table",
-      //   todo: "Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed'",
-      //   comment: "Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent",
-      //   table: {
-      //     id: "integer -> increment number assigned by database", 
-      //     woId: "integer -> references id in table \'workorders\'",
-      //     woStatus: 'string -> status of work order', 
-      //     woUrgency: "integer -> Scale of 1 to 5",
-      //     woUpdate: { 
-      //       assignedTo: "string -> Name of Company task assigned to",
-      //       comment: "string -> optional comment"
-      //     },
-      //     woUpdatedate: "timestamp"
-      //   }
-      // },
+      workOther: {
+        header: "Work Order Table",
+        todo: "",
+        comment: "",
+        table: {
+          id: "integer -> increment number assigned by database", 
+          workorder: "string -> Work Order Title",
+          woDescription: "text -> Description of the issue.",
+          woType: "string -> type like: plumbing or electrical",
+          woStartdate: "date -> from a timestamp or date selection?",
+          woEnddate: "date, can be 'null'",
+          propertyId: "integer -> references id in table 'properties'",
+        }
+      },
+      woHistory: {
+        header: "Work Order History Table",
+        todo: "Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed'",
+        comment: "Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent",
+        table: {
+          id: "integer -> increment number assigned by database", 
+          woId: "integer -> references id in table \'workorders\'",
+          woStatus: 'string -> status of work order', 
+          woUrgency: "integer -> Scale of 1 to 5",
+          woUpdate: { 
+            assignedTo: "string -> Name of Company task assigned to",
+            comment: "string -> optional comment"
+          },
+          woUpdatedate: "timestamp"
+        }
+      },
       // other: {
       //   header: "Other Table",
       //   todo: "",
