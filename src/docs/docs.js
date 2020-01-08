@@ -587,7 +587,7 @@ const docs = {
       properties: {
         header: "Properties Table",
         todo: "",
-        comment: "Status options may include: open, closed, occupied, forRent, or forSale.",
+        comment: "Status options may include: 'vacant' or 'occupied'", // changed from open, closed, occupied, forRent, or forSale
         table: {
           id: "integer -> increment number assigned by database", 
           name: "string, not Null",
