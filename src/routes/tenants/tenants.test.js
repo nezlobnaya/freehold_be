@@ -345,3 +345,119 @@ describe('GET /api/tenants/:id', () => {
     expect(res.body).toEqual(tenants[0])
   })
 })
+
+describe('PUT /api/tenants/:id', () => {
+  const endpoint = '/api/tenants/3'
+
+  it('should return 401 if user is not logged in', async () => {
+    const input = {
+      firstName: 'fred',
+      lastname: 'frederson',
+    }
+
+    const res = await request.put(endpoint).send(input)
+
+    expect(res.status).toBe(401)
+  })
+
+  it('should return 401 if user is not a landlord', async () => {
+    const {tenants} = await testFixture()
+
+    const input = {
+      firstName: 'fred',
+      lastname: 'frederson',
+    }
+
+    mockVerifyId(tenants[1].email)
+
+    const res = await request
+      .put(endpoint)
+      .send(input)
+      .set('Authorization', 'Bearer 1234')
+
+    expect(res.status).toBe(401)
+  })
+
+  it('should return 401 if the landlord is not authorized for the tenant', async () => {
+    const {landlord2} = await testFixture()
+
+    const input = {
+      firstName: 'fred',
+      lastName: 'frederson',
+    }
+
+    mockVerifyId(landlord2.email)
+
+    const res = await request
+      .put(endpoint)
+      .send(input)
+      .set('Authorization', 'Bearer 1234')
+
+    expect(res.status).toBe(401)
+    expect(res.body).toEqual({
+      message: 'You are not authorized to edit that tenant',
+    })
+  })
+
+  describe('should return 400 if input is invalid', () => {
+    // TODO: Come back and delete this test when we add in the ability to change
+    // a users email address
+    it('should return 400 if the email key is present', async () => {
+      const {landlord} = await testFixture()
+
+      mockVerifyId(landlord.email)
+      const responses = await Promise.all([
+        request
+          .put(endpoint)
+          .send({email: ''})
+          .set('Authorization', 'Bearer 1234'),
+        request
+          .put(endpoint)
+          .send({email: null})
+          .set('Authorization', 'Bearer 1234'),
+        request
+          .put(endpoint)
+          .send({email: 'someother@email.com'})
+          .set('Authorization', 'Bearer 1234'),
+      ])
+
+      const error = {
+        errors: {
+          email: 'The email field is not editable at this time',
+        },
+      }
+
+      responses.forEach(response => {
+        expect(response.status).toBe(400)
+        expect(response.body).toEqual(error)
+      })
+    })
+  })
+
+  it('should return a 200 when successful', async () => {
+    const {landlord} = await testFixture()
+    const input = {firstName: 'fred', lastName: 'frederson'}
+
+    mockVerifyId(landlord.email)
+    const res = await request
+      .put(endpoint)
+      .send(input)
+      .set('Authorization', 'Bearer 1234')
+
+    expect(res.status).toBe(200)
+  })
+
+  it('should return the tenant object when successful', async () => {
+    const {landlord, tenants} = await testFixture()
+    const input = {firstName: 'fred', lastName: 'frederson'}
+
+    mockVerifyId(landlord.email)
+
+    const res = await request
+      .put(endpoint)
+      .send(input)
+      .set('Authorization', 'Bearer 1234')
+
+    expect(res.body).toEqual({...tenants[0], ...input})
+  })
+})

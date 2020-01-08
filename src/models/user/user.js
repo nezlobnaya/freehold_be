@@ -70,13 +70,31 @@ function getAllTenantsByLandlordId(id) {
     .where({landlordId: id})
 }
 
+async function canAccessTenant(landlordId, tenantId) {
+  const tenant = await findById(tenantId, 'landlordId')
+
+  return tenant.landlordId === landlordId
+}
+
+async function updateTenantById(id, update) {
+  const [tenant] = await db
+    .from(table)
+    .update(update)
+    .where({id})
+    .returning('*')
+
+  return tenant ? {updated: true, user: tenant} : {updated: false}
+}
+
 module.exports = {
+  canAccessTenant,
   create,
   createTenant,
   findByEmail,
   findById,
   findTenantById,
   updateByEmail,
+  updateTenantById,
   getAllTenantsByPropertyId,
   getAllTenantsByLandlordId,
 }
