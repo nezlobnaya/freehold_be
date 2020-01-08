@@ -5,7 +5,13 @@ exports.up = function(knex) {
 
     tbl.string('title').notNullable() // Work Order Title
     tbl.text('description') // Description of the issue
-    tbl.enum('type', ['electrical', 'plumbing', 'HVAC', 'pest control', 'appliances'])
+    tbl.enum('type', [
+      'electrical',
+      'plumbing',
+      'HVAC',
+      'pest control',
+      'appliances',
+    ])
     tbl.date('startDate').notNullable()
     tbl.date('endDate')
     tbl
