@@ -1,9 +1,9 @@
 {
   "*.js": [
-    "eslint"
+    "npm run lint"
   ],
   "**/*.+(js|json)": [
-    "prettier --write",
+    "npm run format",
     "git add"
   ]
 }

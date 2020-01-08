@@ -1,3 +1,3 @@
-const PropertiesController = require("./properties");
+const PropertiesController = require('./properties')
 
-module.exports = PropertiesController;
+module.exports = PropertiesController

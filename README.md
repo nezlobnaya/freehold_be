@@ -11,15 +11,16 @@ To get the server running locally:
 3. Install PostgreSQL
 
 - If you're on Mac:
+
 4. `createdb propman` this creates the development database
 5. `createdb propman-test` this creates the test database
 
 - If you're on Windows:
+
 5. a. Open pgadmin  
    b. Create database named `propman`
 
-6. Run `npm run res` (which runs `npx knex migrate:latest` and `npx knex
-   seed:run` )
+6. Run `npm run res` (which runs `npx knex migrate:latest` and `npx knex seed:run` )
 
 ## Available Scripts
 
@@ -37,12 +38,13 @@ To get the server running locally:
 
 🚫 Sections have been commented out that need to be updated.
 
---- 
+---
 
 ### Backend framework goes here
 
 🚫 Why did you choose this framework?
-<!-- 
+
+<!--
 -    Point One
 -    Point Two
 -    Point Three
@@ -51,7 +53,8 @@ To get the server running locally:
 ## 2️⃣ Endpoints
 
 🚫This is a placeholder, replace the endpoints, access controll, and descriptioin to match your project
-<!-- 
+
+<!--
 #### Organization Routes
 
 | Method | Endpoint                | Access Control | Description                                  |
@@ -71,7 +74,8 @@ To get the server running locally:
 # Data Model
 
 🚫This is just an example. Replace this with your data model
-<!-- 
+
+<!--
 #### 2️⃣ ORGANIZATIONS
 
 ---
@@ -110,7 +114,8 @@ To get the server running locally:
 ## 2️⃣ Actions
 
 🚫 This is an example, replace this with the actions that pertain to your backend
-<!-- 
+
+<!--
 `getOrgs()` -> Returns all organizations
 
 `getOrg(orgId)` -> Returns a single organization by ID
@@ -131,7 +136,7 @@ To get the server running locally:
 
 `updateUser(userId, changes object)` -> Updates a single user by ID.
 
-`deleteUser(userId)` -> deletes everything dependent on the user 
+`deleteUser(userId)` -> deletes everything dependent on the user
 -->
 
 ## 3️⃣ Environment Variables
@@ -143,38 +148,41 @@ create a .env file that includes the following:
 <!-- will we have a STAGING_DB?
     *  STAGING_DB - optional development db for using functionality
 -->
-  ```
-  PORT=4000         // Port number for express server to run on
-  NODE_ENV          // set to "development" until ready for "production"
-  DB_HOST=localhost // Location of the database
-  DB_PORT=5432      // Port the database is running on
-  DB_USER=postgres  // THIS IS YOUR LOCAL DB USER NAME (probably postgres)
-  DB_PASSWORD=pass  // THIS IS YOUR LOCAL DATABASE/PSQL PASSWORD
-  DB_NAME=propman   // THIS IS YOUR LOCAL DATABASE NAME
 
-  TEST_DB_HOST=localhost
-  TEST_DB_PORT=5432
-  TEST_DB_USER=postgres
-  TEST_DB_PASSWORD=postgres
-  TEST_DB_NAME=propman-test
+```
+PORT=4000         // Port number for express server to run on
+NODE_ENV          // set to "development" until ready for "production"
+DB_HOST=localhost // Location of the database
+DB_PORT=5432      // Port the database is running on
+DB_USER=postgres  // THIS IS YOUR LOCAL DB USER NAME (probably postgres)
+DB_PASSWORD=pass  // THIS IS YOUR LOCAL DATABASE/PSQL PASSWORD
+DB_NAME=propman   // THIS IS YOUR LOCAL DATABASE NAME
 
-  GOOGLE_APPLICATION_CREDENTIALS=./firebase/admin.json
-  FIREBASE_URL=example-url
-  FIREBASE_API_KEY=examplekey
-  FIREBASE_AUTH_DOMAIN=exampleapp.firebaseapp.com
-  FIREBASE_DATABASE_URL=exampledb.firebaseio.com
-  FIREBASE_PROJECT_ID=example-project
-  FIREBASE_STORAGE_BUCKET=exmaple.appspot.com
-  FIREBASE_MESSAGING_SENDER_ID=1234
-  FIREBASE_APP_ID=1234
-  FIREABASE_MEASUREMENT_ID=example-g-id
+TEST_DB_HOST=localhost
+TEST_DB_PORT=5432
+TEST_DB_USER=postgres
+TEST_DB_PASSWORD=postgres
+TEST_DB_NAME=propman-test
 
-  JWT_SECRET="Your Secret." // you can generate this by using a python shell or add in a temporary secret.
-  ```
+GOOGLE_APPLICATION_CREDENTIALS=./firebase/admin.json
+FIREBASE_URL=example-url
+FIREBASE_API_KEY=examplekey
+FIREBASE_AUTH_DOMAIN=exampleapp.firebaseapp.com
+FIREBASE_DATABASE_URL=exampledb.firebaseio.com
+FIREBASE_PROJECT_ID=example-project
+FIREBASE_STORAGE_BUCKET=exmaple.appspot.com
+FIREBASE_MESSAGING_SENDER_ID=1234
+FIREBASE_APP_ID=1234
+FIREABASE_MEASUREMENT_ID=example-g-id
+
+JWT_SECRET="Your Secret." // you can generate this by using a python shell or add in a temporary secret.
+```
+
 <!-- Currently not using Sendgrid or Stripe at this time
   *  SENDGRID_API_KEY - this is generated in your Sendgrid account
-  *  stripe_secret - this is generated in the Stripe dashboard 
+  *  stripe_secret - this is generated in the Stripe dashboard
 -->
+
 ## Contributing
 
 When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
@@ -187,11 +195,12 @@ something that cannot be automatically fixed.
 
 ### Issue/Bug Request
 
- **If you are having an issue with the existing project code, please submit a bug report under the following guidelines:**
- - Check first to see if your issue has already been reported.
- - Check to see if the issue has recently been fixed by attempting to reproduce the issue using the latest master branch in the repository.
- - Create a live example of the problem.
- - Submit a detailed bug report including your environment & browser, steps to reproduce the issue, actual and expected outcomes,  where you believe the issue is originating from, and any potential solutions you have considered.
+**If you are having an issue with the existing project code, please submit a bug report under the following guidelines:**
+
+- Check first to see if your issue has already been reported.
+- Check to see if the issue has recently been fixed by attempting to reproduce the issue using the latest master branch in the repository.
+- Create a live example of the problem.
+- Submit a detailed bug report including your environment & browser, steps to reproduce the issue, actual and expected outcomes, where you believe the issue is originating from, and any potential solutions you have considered.
 
 ### Feature Requests
 
@@ -218,4 +227,5 @@ These contribution guidelines have been adapted from [this good-Contributing.md-
 ## Documentation
 
 See [Frontend Documentation](https://github.com/Lambda-School-Labs/property-manager-fe/blob/master/README.md) for details on the fronend of our project.
+
 <!-- Add DS iOS and/or Andriod links here if applicable. (Currently not applicable. An iOS and/or Andriod app would be a good future feature.) -->

@@ -1,3 +1,3 @@
-const Property = require("./property");
+const Property = require('./property')
 
-module.exports = Property;
+module.exports = Property

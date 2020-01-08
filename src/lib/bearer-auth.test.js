@@ -1,53 +1,53 @@
-const bearerAuth = require("./bearer-auth");
-const { Db, Models, Express } = require("../test-utils");
+const bearerAuth = require('./bearer-auth')
+const {Db, Models, Express} = require('../test-utils')
 
 // For mocking purposed
-const admin = require("./admin");
+const admin = require('./admin')
 
-const defaultUser = Models.createUser();
+const defaultUser = Models.createUser()
 
 beforeEach(async () => {
-  await Db.reset();
-});
+  await Db.reset()
+})
 
 afterAll(async () => {
-  await Db.destroyConn();
-});
+  await Db.destroyConn()
+})
 
-describe("bearerAuth", () => {
-  it("should call next when the token is valid", async () => {
+describe('bearerAuth', () => {
+  it('should call next when the token is valid', async () => {
     // arrange
-    await Db.insertUsers(defaultUser);
-    const req = Express.mockRequest();
-    const res = Express.mockResponse();
-    const next = jest.fn();
+    await Db.insertUsers(defaultUser)
+    const req = Express.mockRequest()
+    const res = Express.mockResponse()
+    const next = jest.fn()
 
-    admin.verifyIdToken.mockResolvedValue({ email: defaultUser.email });
+    admin.verifyIdToken.mockResolvedValue({email: defaultUser.email})
 
     // act
-    await bearerAuth(req, res, next);
+    await bearerAuth(req, res, next)
 
     // assert
-    expect(next).toHaveBeenCalledTimes(1);
-  });
+    expect(next).toHaveBeenCalledTimes(1)
+  })
 
-  it("should set the correct user on `req.user`", async () => {
-    const [insertedUser] = await Db.insertUsers(defaultUser);
-    const req = Express.mockRequest();
-    const res = Express.mockResponse();
-    const next = jest.fn();
+  it('should set the correct user on `req.user`', async () => {
+    const [insertedUser] = await Db.insertUsers(defaultUser)
+    const req = Express.mockRequest()
+    const res = Express.mockResponse()
+    const next = jest.fn()
 
-    admin.verifyIdToken.mockResolvedValue({ email: defaultUser.email });
+    admin.verifyIdToken.mockResolvedValue({email: defaultUser.email})
 
     // eslint-disable-next-line
-    const { residenceId, landlordId, ...rest } = insertedUser;
+    const {residenceId, landlordId, ...rest} = insertedUser
 
     // act
-    await bearerAuth(req, res, next);
+    await bearerAuth(req, res, next)
 
     // assert
-    expect(req.user).toEqual(rest);
-  });
+    expect(req.user).toEqual(rest)
+  })
 
   // Because we have a modular auth system a different piece of middleware is
   // responsible for checking if the user is authorized. This allows the bearer
@@ -55,23 +55,23 @@ describe("bearerAuth", () => {
   // token when Bearer is used
   it("should call next when Bearer auth isn't used", async () => {
     const req = Express.mockRequest({
-      header: { authorization: "Basic 1234" }
-    });
-    const res = Express.mockResponse();
-    const next = jest.fn();
+      header: {authorization: 'Basic 1234'},
+    })
+    const res = Express.mockResponse()
+    const next = jest.fn()
 
-    await bearerAuth(req, res, next);
-    expect(next).toHaveBeenCalledTimes(1);
-  });
+    await bearerAuth(req, res, next)
+    expect(next).toHaveBeenCalledTimes(1)
+  })
 
   it("should send a 401 when the token isn't valid", async () => {
-    const req = Express.mockRequest();
-    const res = Express.mockResponse();
-    const next = jest.fn();
+    const req = Express.mockRequest()
+    const res = Express.mockResponse()
+    const next = jest.fn()
 
-    admin.verifyIdToken.mockRejectedValue({ error: "not a valid token" });
-    await bearerAuth(req, res, next);
-    expect(res.status).toHaveBeenCalledWith(401);
-    expect(res.send).toHaveBeenCalledWith({ error: "You are not authorized" });
-  });
-});
+    admin.verifyIdToken.mockRejectedValue({error: 'not a valid token'})
+    await bearerAuth(req, res, next)
+    expect(res.status).toHaveBeenCalledWith(401)
+    expect(res.send).toHaveBeenCalledWith({error: 'You are not authorized'})
+  })
+})

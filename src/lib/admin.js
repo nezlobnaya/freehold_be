@@ -1,5 +1,5 @@
-const admin = require("firebase-admin");
+const admin = require('firebase-admin')
 
-admin.initializeApp();
+admin.initializeApp()
 
-module.exports = admin;
+module.exports = admin

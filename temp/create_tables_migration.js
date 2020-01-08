@@ -3,49 +3,49 @@ exports.up = function(knex) {
     knex.schema
 
       // users
-      .createTable("users", tbl => {
-        tbl.increments();
-        tbl.string("firstName");
-        tbl.string("lastName");
+      .createTable('users', tbl => {
+        tbl.increments()
+        tbl.string('firstName')
+        tbl.string('lastName')
         tbl
-          .string("email")
+          .string('email')
           .notNullable()
-          .unique();
+          .unique()
 
-        tbl.string("street");
-        tbl.string("city");
-        tbl.string("state");
-        tbl.string("zip");
-        tbl.enu("type", ["landlord", "tenant", "dev"]).notNullable();
-        tbl.string("phone");
+        tbl.string('street')
+        tbl.string('city')
+        tbl.string('state')
+        tbl.string('zip')
+        tbl.enu('type', ['landlord', 'tenant', 'dev']).notNullable()
+        tbl.string('phone')
       })
 
       // properties
-      .createTable("properties", tbl => {
-        tbl.increments();
+      .createTable('properties', tbl => {
+        tbl.increments()
 
-        tbl.string("name").notNullable();
+        tbl.string('name').notNullable()
 
         // Address related fields
-        tbl.string("street").notNullable();
-        tbl.string("city").notNullable();
-        tbl.string("state").notNullable();
-        tbl.string("zip").notNullable();
+        tbl.string('street').notNullable()
+        tbl.string('city').notNullable()
+        tbl.string('state').notNullable()
+        tbl.string('zip').notNullable()
 
-        tbl.string("image");
-        tbl.enum("status", ["vacant", "occupied"]).notNullable();
+        tbl.string('image')
+        tbl.enum('status', ['vacant', 'occupied']).notNullable()
 
-        tbl.date("propertyStartdate");
-        tbl.date("propertyEnddate");
+        tbl.date('propertyStartdate')
+        tbl.date('propertyEnddate')
 
         tbl
-          .integer("landlordId")
+          .integer('landlordId')
           .unsigned()
-          .references("id")
-          .inTable("users")
-          .onUpdate("CASCADE")
-          .onDelete("CASCADE")
-          .notNullable();
+          .references('id')
+          .inTable('users')
+          .onUpdate('CASCADE')
+          .onDelete('CASCADE')
+          .notNullable()
       })
 
       // MOVE INTO OWN MIGRATION
@@ -56,69 +56,69 @@ exports.up = function(knex) {
       // })
 
       // tenanthistory
-      .createTable("tenanthistory", tbl => {
-        tbl.increments();
+      .createTable('tenanthistory', tbl => {
+        tbl.increments()
         tbl
-          .integer("tenantId")
+          .integer('tenantId')
           .unsigned()
-          .references("id")
-          .inTable("users");
+          .references('id')
+          .inTable('users')
         tbl
-          .integer("propertyId")
+          .integer('propertyId')
           .unsigned()
-          .references("id")
-          .inTable("properties");
-        tbl.date("historyStartdate");
-        tbl.date("historyEnddate");
+          .references('id')
+          .inTable('properties')
+        tbl.date('historyStartdate')
+        tbl.date('historyEnddate')
       })
 
       // workorders
-      .createTable("workorders", tbl => {
-        tbl.increments();
-        tbl.string("title").notNullable();
-        tbl.text("description").notNullable();
-        tbl.string("type").notNullable();
-        tbl.date("startDate").notNullable();
-        tbl.date("endDate");
+      .createTable('workorders', tbl => {
+        tbl.increments()
+        tbl.string('title').notNullable()
+        tbl.text('description').notNullable()
+        tbl.string('type').notNullable()
+        tbl.date('startDate').notNullable()
+        tbl.date('endDate')
         tbl
-          .integer("propertyId")
+          .integer('propertyId')
           .unsigned()
-          .references("id")
-          .inTable("properties")
-          .onUpdate("CASCADE")
-          .onDelete("CASCADE")
-          .notNullable();
+          .references('id')
+          .inTable('properties')
+          .onUpdate('CASCADE')
+          .onDelete('CASCADE')
+          .notNullable()
         tbl
-          .integer("createdBy")
+          .integer('createdBy')
           .unsigned()
-          .references("id")
-          .inTable("users")
-          .notNullable();
+          .references('id')
+          .inTable('users')
+          .notNullable()
       })
 
       // wohistory
-      .createTable("wohistory", tbl => {
-        tbl.increments();
+      .createTable('wohistory', tbl => {
+        tbl.increments()
         tbl
-          .integer("woId")
+          .integer('woId')
           .unsigned()
-          .references("id")
-          .inTable("workorders")
-          .onUpdate("CASCADE")
-          .onDelete("CASCADE");
-        tbl.string("woStatus");
-        tbl.integer("woUrgency");
-        tbl.json("woUpdate");
-        tbl.timestamp("woUpdatedate").defaultTo(knex.fn.now());
+          .references('id')
+          .inTable('workorders')
+          .onUpdate('CASCADE')
+          .onDelete('CASCADE')
+        tbl.string('woStatus')
+        tbl.integer('woUrgency')
+        tbl.json('woUpdate')
+        tbl.timestamp('woUpdatedate').defaultTo(knex.fn.now())
       })
-  );
-};
+  )
+}
 
 exports.down = function(knex) {
   return knex.schema
-    .dropTableIfExists("wohistory")
-    .dropTableIfExists("workorders")
-    .dropTableIfExists("tenanthistory")
-    .dropTableIfExists("properties")
-    .dropTableIfExists("users");
-};
+    .dropTableIfExists('wohistory')
+    .dropTableIfExists('workorders')
+    .dropTableIfExists('tenanthistory')
+    .dropTableIfExists('properties')
+    .dropTableIfExists('users')
+}

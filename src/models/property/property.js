@@ -1,4 +1,4 @@
-const db = require("../../../database/db");
+const db = require('../../../database/db')
 
 module.exports = {
   // Create
@@ -10,17 +10,17 @@ module.exports = {
   // Update
   updateProperty,
   // Delete
-  deleteProperty
-};
+  deleteProperty,
+}
 
 //#region - CREATE
 
 // addProperty(input) - inserts input to properties and return results for a property by id inserted
 async function addProperty(input, userId) {
-  const results = await db("properties")
-    .returning("id")
-    .insert({ ...input, landlordId: userId });
-  return getProperty(results[0]);
+  const results = await db('properties')
+    .returning('id')
+    .insert({...input, landlordId: userId})
+  return getProperty(results[0])
 }
 
 //#endregion
@@ -30,38 +30,38 @@ async function addProperty(input, userId) {
 // getProperty() - return results for a property by id
 async function getProperty(id) {
   const [property] = await db
-    .from("properties")
-    .select("*")
-    .where({ id });
+    .from('properties')
+    .select('*')
+    .where({id})
 
-  return property || null;
+  return property || null
 }
 
 // getAllProperties() - return all properties
 function getAllProperties() {
-  return db("properties as p")
-    .join("users as u", "u.id", "p.landlordId")
+  return db('properties as p')
+    .join('users as u', 'u.id', 'p.landlordId')
     .select(
-      "p.id",
-      "name",
-      "p.street",
-      "p.city",
-      "p.state",
-      "p.zip",
-      "p.image",
-      "status",
-      "u.firstName",
-      "u.lastName",
-      "u.email"
-    );
+      'p.id',
+      'name',
+      'p.street',
+      'p.city',
+      'p.state',
+      'p.zip',
+      'p.image',
+      'status',
+      'u.firstName',
+      'u.lastName',
+      'u.email',
+    )
 }
 
 // getPropertiesByUser - return all properties for a specific user by the user's email
 async function getPropertiesByUser(landlordId) {
   return db
-    .from("properties as p")
-    .where({ "p.landlordId": landlordId })
-    .select("*");
+    .from('properties as p')
+    .where({'p.landlordId': landlordId})
+    .select('*')
 }
 
 //#endregion - Get
@@ -70,12 +70,12 @@ async function getPropertiesByUser(landlordId) {
 
 async function updateProperty(changes, id) {
   const [property] = await db
-    .from("properties")
+    .from('properties')
     .update(changes)
-    .where({ id })
-    .returning("*");
+    .where({id})
+    .returning('*')
 
-  return property ? { updated: true, property } : { updated: false };
+  return property ? {updated: true, property} : {updated: false}
 }
 
 //#endregion
@@ -83,11 +83,11 @@ async function updateProperty(changes, id) {
 //#region - Delete
 
 async function deleteProperty(id) {
-  const results = await db("properties")
-    .where({ id })
-    .del();
+  const results = await db('properties')
+    .where({id})
+    .del()
 
-  return results === 1 ? { deleted: true } : { deleted: false };
+  return results === 1 ? {deleted: true} : {deleted: false}
 }
 
 //#endregion

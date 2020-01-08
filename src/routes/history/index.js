@@ -1,3 +1,3 @@
-const historyRouter = require("./tenantHistory-router");
+const historyRouter = require('./tenantHistory-router')
 
-module.exports = historyRouter;
+module.exports = historyRouter

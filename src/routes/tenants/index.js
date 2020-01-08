@@ -1,3 +1,3 @@
-const tenantsRouter = require('./tenants');
+const tenantsRouter = require('./tenants')
 
-module.exports = tenantsRouter;
+module.exports = tenantsRouter

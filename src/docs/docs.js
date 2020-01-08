@@ -4,150 +4,154 @@ TODO: Still refactoring some things so they can be edited in this document.
 */
 
 // #region - variables for models
-        
-  // Users
-  const landlordModel = { 
-    userId: 1,
-    email: "landlord@email.com",
-    firstName: "Firstname",
-    lastName: "Lastname",
-    type: "landlord",
-    phone: "123-456-7890"
-  }
-  const devModel = { 
-    userId: 2,
-    email: "dev@email.com",
-    type: "dev"
-  }
-  const tenantModel = { 
-    userId: 3,
-    email: "tenant@email.com",
-    type: "tenant"
-  }
-  const registerInput = {
-    "email": "example@gmail.com",
-    "password": "badpassword",
-  }
-  const registerReturn = {
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-  }
-  const LoginInput = {
-    "email": "example@gmail.com",
-    "password": "badpassword",
-  }
-  const LoginReturn = {
-    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-  }
 
-  // Properties
-  const property1 = {
-    id: 1,
-    name: "Name for the Property",
-    street: "1 First St",
-    city: "Salt Lake City",
-    state: "Utah",
-    zip: "84101",
-    status: "occupied",
-    image: null,
-    landlordId: 1
-  }
-  const property2 = {
-    id: 2,
-    name: "Sample",
-    street: "2 Second St",
-    city: "Salt Lake City",
-    state: "Utah",
-    zip: "84101",
-    status: "vacant",
-    image: null,
-    landlordId: 1
-  }
-  const addPropertyInput = {
-    name: "Property Name",
-    street: "1 First St",
-    city: "Salt Lake City",
-    state: "Utah",
-    zip: "84101",
-    status: "occupied",
-    landlordId: 1
-  }
-  const addPropertyReturn = {
-    id: 3,
-    name: "Property Name",
-    street: "1 First St",
-    city: "Salt Lake City",
-    state: "Utah",
-    zip: "84101",
-    status: "occupied",
-    image: null,
-    landlordId: 1
-  }
-  const updatePropertyInput = {
-    "propertyName": "Property Updated",
-    "propertyStatus": "vacant"
-  }
-  const updatePropertyReturn = {
-    id: 1,
-    name: "Property Updated",
-    street: "1 First St",
-    city: "Salt Lake City",
-    state: "Utah",
-    zip: "84101",
-    status: "vacant",
-    image: null,
-    landlordId: 1
-  }
+// Users
+const landlordModel = {
+  userId: 1,
+  email: 'landlord@email.com',
+  firstName: 'Firstname',
+  lastName: 'Lastname',
+  type: 'landlord',
+  phone: '123-456-7890',
+}
+const devModel = {
+  userId: 2,
+  email: 'dev@email.com',
+  type: 'dev',
+}
+const tenantModel = {
+  userId: 3,
+  email: 'tenant@email.com',
+  type: 'tenant',
+}
+const registerInput = {
+  email: 'example@gmail.com',
+  password: 'badpassword',
+}
+const registerReturn = {
+  token:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+}
+const LoginInput = {
+  email: 'example@gmail.com',
+  password: 'badpassword',
+}
+const LoginReturn = {
+  token:
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+}
 
-  // Tenant History
-  const tenantHistory = {
-    "id": 2,
-    "tenantId": 3,
-    "propertyId": 1,
-    "startDate": "01/01/2010",
-    "endDate": null,
-  }
-  const addTenantHistoryInput = {
-    'tenantId': 5,
-    'propertyId': 1,
-    'historyStartdate': "12-31-2018"
-  }
-  const addTenantHistoryReturn = {
-    id: 9,
-    "tenantId": 5,
-    "propertyId": 1,
-    "startDate": "12/31/2018",
-    "endDate": null,      
-  }
-  const updateTenantHistoryInput = {
-    'endDate': "12-31-2010"
-  }
-  const updateTenantHistoryReturn = {
-    "id": 2,
-    "tenantId": 3,
-    "propertyId": 1,
-    "startDate": "01/01/2010",
-    "endDate": "12/31/2010",      
-  }
+// Properties
+const property1 = {
+  id: 1,
+  name: 'Name for the Property',
+  street: '1 First St',
+  city: 'Salt Lake City',
+  state: 'Utah',
+  zip: '84101',
+  status: 'occupied',
+  image: null,
+  landlordId: 1,
+}
+const property2 = {
+  id: 2,
+  name: 'Sample',
+  street: '2 Second St',
+  city: 'Salt Lake City',
+  state: 'Utah',
+  zip: '84101',
+  status: 'vacant',
+  image: null,
+  landlordId: 1,
+}
+const addPropertyInput = {
+  name: 'Property Name',
+  street: '1 First St',
+  city: 'Salt Lake City',
+  state: 'Utah',
+  zip: '84101',
+  status: 'occupied',
+  landlordId: 1,
+}
+const addPropertyReturn = {
+  id: 3,
+  name: 'Property Name',
+  street: '1 First St',
+  city: 'Salt Lake City',
+  state: 'Utah',
+  zip: '84101',
+  status: 'occupied',
+  image: null,
+  landlordId: 1,
+}
+const updatePropertyInput = {
+  propertyName: 'Property Updated',
+  propertyStatus: 'vacant',
+}
+const updatePropertyReturn = {
+  id: 1,
+  name: 'Property Updated',
+  street: '1 First St',
+  city: 'Salt Lake City',
+  state: 'Utah',
+  zip: '84101',
+  status: 'vacant',
+  image: null,
+  landlordId: 1,
+}
 
-  // Work Orders
+// Tenant History
+const tenantHistory = {
+  id: 2,
+  tenantId: 3,
+  propertyId: 1,
+  startDate: '01/01/2010',
+  endDate: null,
+}
+const addTenantHistoryInput = {
+  tenantId: 5,
+  propertyId: 1,
+  historyStartdate: '12-31-2018',
+}
+const addTenantHistoryReturn = {
+  id: 9,
+  tenantId: 5,
+  propertyId: 1,
+  startDate: '12/31/2018',
+  endDate: null,
+}
+const updateTenantHistoryInput = {
+  endDate: '12-31-2010',
+}
+const updateTenantHistoryReturn = {
+  id: 2,
+  tenantId: 3,
+  propertyId: 1,
+  startDate: '01/01/2010',
+  endDate: '12/31/2010',
+}
 
-  // Work Order History
+// Work Orders
+
+// Work Order History
 
 //#endregion
 
 function fromJSON(obj) {
-  return JSON.stringify(obj, undefined, 2);
+  return JSON.stringify(obj, undefined, 2)
 }
 
 const docs = {
-  header: "Property Manager Backend",
-  address: "https://pt6-propman.herokuapp.com", // website address
-  changes: [ // changes should be an array of strings, these strings will become list items
+  header: 'Property Manager Backend',
+  address: 'https://pt6-propman.herokuapp.com', // website address
+  changes: [
+    // changes should be an array of strings, these strings will become list items
     'Updated User Models, Endpoints, and Table Example',
     'Updated Property Models, Endpoints, and Table Example',
-    'Updated Tenant History Models, Endpoints, and Table Example'
+    'Updated Tenant History Models, Endpoints, and Table Example',
   ],
-  planning: [ // planning should be an array of html strings, these strings will be joined with a line break between each. 
+  planning: [
+    // planning should be an array of html strings, these strings will be joined with a line break between each.
     '<h2>PropMan Links</h2>',
     'Front-End: <a href="https://propman.netlify.com/">Propman - Property Management</a> <br />',
     'Back-End: <a href="https://pt6-propman.herokuapp.com/">Property Manager Backend</a> <br />',
@@ -164,7 +168,7 @@ const docs = {
     '<a href="https://github.com/Lambda-School-Labs/property-manager-be">Back-End</a> <br />',
     '<br />',
     '<a href="https://www.figma.com/file/Mtjt9s7kxfGmh6fIgEszRY/PropMan">PropMan – Figma</a> <br />',
-    '<a href="https://docs.google.com/document/d/1bYrgvbAEnnRviKBgIuJjOvdBhLfcCzw5stIwvk0ErM8">Labs Sprint Rubric</a> <br />'
+    '<a href="https://docs.google.com/document/d/1bYrgvbAEnnRviKBgIuJjOvdBhLfcCzw5stIwvk0ErM8">Labs Sprint Rubric</a> <br />',
   ],
   colorkey: [
     '<div style="float: right;">',
@@ -172,108 +176,101 @@ const docs = {
     '<span class="todo">ToDo - Yellow</span> <br />',
     '<span class="alert">Alert - red</span> <br />',
     '<span class="comment">Commnet - lightseagreen</span>',
-    '</div>'
+    '</div>',
   ],
   menu: {
     planning: {
-      tag: "h1",
+      tag: 'h1',
       onclick: "{showContent('planning')}",
-      content: "Planning",
+      content: 'Planning',
     },
     developmentBE: {
-      tag: "h1",
+      tag: 'h1',
       onclick: "{showContent('developmentBE')}",
-      content: "Development Back End",
+      content: 'Development Back End',
       subSections: [
         {
-          section: "models",
-          tag: "h2",
-          class: "moreInfo",
+          section: 'models',
+          tag: 'h2',
+          class: 'moreInfo',
           onclick: "{showContent('models')}",
-          content: "<button>v</button> Models",
+          content: '<button>v</button> Models',
         },
         {
-          section: "endpoints",
-          tag: "h2",
-          class: "moreInfo",
+          section: 'endpoints',
+          tag: 'h2',
+          class: 'moreInfo',
           onclick: "{showContent('endpoints')}",
           event: 'displayEndpoints',
-          content: "<button>v</button> Endpoints",
+          content: '<button>v</button> Endpoints',
           subHeaders: [
             {
-              section: "userEndpoints",
-              tag: "h3",
-              class: "moreInfo",
+              section: 'userEndpoints',
+              tag: 'h3',
+              class: 'moreInfo',
               onclick: "{showContent('userEndpoints')}",
               docs: 'docs.endpoints.User',
-              content: "User Endpoints",
+              content: 'User Endpoints',
             },
             {
-              section: "propertyEndpoints",
-              tag: "h3",
-              class: "moreInfo",
+              section: 'propertyEndpoints',
+              tag: 'h3',
+              class: 'moreInfo',
               onclick: "{showContent('propertyEndpoints')}",
               docs: 'docs.endpoints.Property',
-              content: "Property Endpoints",
+              content: 'Property Endpoints',
             },
             {
-              section: "tenantHistoryEndpoints",
-              tag: "h3",
-              class: "moreInfo",
+              section: 'tenantHistoryEndpoints',
+              tag: 'h3',
+              class: 'moreInfo',
               onclick: "{showContent('tenantHistoryEndpoints')}",
               docs: 'docs.endpoints.TenantHistory',
-              content: "Tenant History Endpoints",
+              content: 'Tenant History Endpoints',
             },
             {
-              section: "sampleEndpoints",
-              tag: "h3",
-              class: "moreInfo",
+              section: 'sampleEndpoints',
+              tag: 'h3',
+              class: 'moreInfo',
               onclick: "{showContent('sampleEndpoints')}",
               docs: 'docs.endpoints.Sample',
-              content: "Sample Endpoints",
+              content: 'Sample Endpoints',
             },
-          ]
+          ],
         },
         {
-          section: "database",
-          tag: "h2",
-          class: "moreInfo",
+          section: 'database',
+          tag: 'h2',
+          class: 'moreInfo',
           onclick: "{showContent('database')}",
           event: 'displayDatabase',
-          content: "<button>v</button> Database Structures",
+          content: '<button>v</button> Database Structures',
           subHeaders: [
             {
-              section: "tables",
-              tag: "h3",
-              class: "moreInfo",
+              section: 'tables',
+              tag: 'h3',
+              class: 'moreInfo',
               onclick: "{showContent('tables')}",
               docs: 'docs.database.tables',
-              content: "Tables",
-            }
-          ]
-        }
-      ]
+              content: 'Tables',
+            },
+          ],
+        },
+      ],
     },
   },
   models: {
-    'User': {
-      function: "modelsUsers()",
-      examples: [
-        landlordModel,
-        devModel,
-        tenantModel
-      ]
+    User: {
+      function: 'modelsUsers()',
+      examples: [landlordModel, devModel, tenantModel],
     },
-    'Property': {
-      function: "modelsProperty()",
-      examples: [
-        property1,
-        property2
-      ]
+    Property: {
+      function: 'modelsProperty()',
+      examples: [property1, property2],
     },
     'Tenant History': {
-      function: "modelsTenantHistory()",
-      examples: [ tenantHistory ]
+      function: 'modelsTenantHistory()',
+      examples: [tenantHistory],
     },
     // 'Work Orders': {
     //   function: "test()",
@@ -291,34 +288,34 @@ const docs = {
   endpoints: {
     User: {
       Register: {
-        header: "User Endpoints - Register",
-        todo: "",
-        comment: "",
-        endpoint: "/api/auth/register",
-        type: "POST",
-        description: "Register a new user",
+        header: 'User Endpoints - Register',
+        todo: '',
+        comment: '',
+        endpoint: '/api/auth/register',
+        type: 'POST',
+        description: 'Register a new user',
         expectedInput: registerInput,
         sampleRequest: {
-          axiosThen: "token => console.log&lpar;token&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
+          axiosThen: 'token => console.log&lpar;token&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
         expectedReturn: registerReturn,
-        expectedFailedReturn: "" // TODO: if Fails
+        expectedFailedReturn: '', // TODO: if Fails
       },
       Login: {
-        header: "User Endpoints - Login",
-        todo: "",
-        comment: "",
-        endpoint: "/api/auth/login",
-        type: "POST",
-        description: "Login user",
+        header: 'User Endpoints - Login',
+        todo: '',
+        comment: '',
+        endpoint: '/api/auth/login',
+        type: 'POST',
+        description: 'Login user',
         expectedInput: LoginInput,
         sampleRequest: {
-          axiosThen: "token => console.log&lpar;token&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
+          axiosThen: 'token => console.log&lpar;token&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
         expectedReturn: LoginReturn,
-        expectedFailedReturn: "" // TODO: if Fails
+        expectedFailedReturn: '', // TODO: if Fails
       },
       // 'Update User': {
       //   header: "User Endpoints - Update User",
@@ -347,218 +344,225 @@ const docs = {
     },
     Property: {
       Add: {
-        header: "Add a Property",
-        todo: "",
-        comment: "",
-        endpoint: "/api/properties/",
-        type: "post",
-        description: "Adds a Property to the database.",
+        header: 'Add a Property',
+        todo: '',
+        comment: '',
+        endpoint: '/api/properties/',
+        type: 'post',
+        description: 'Adds a Property to the database.',
         expectedInput: addPropertyInput,
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
         expectedReturn: addPropertyReturn,
-        expectedFailedReturn: { message: 'Failed to create new property.' }
+        expectedFailedReturn: {message: 'Failed to create new property.'},
       },
       Get: {
-        header: "Get a Property",
-        todo: "",
-        comment: "",
-        endpoint: "/api/properties/:id",
-        type: "get",
-        description: "Returns an object based on the Property id.",
-        expectedInput: "",
+        header: 'Get a Property',
+        todo: '',
+        comment: '',
+        endpoint: '/api/properties/:id',
+        type: 'get',
+        description: 'Returns an object based on the Property id.',
+        expectedInput: '',
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
         expectedReturn: property1,
-        expectedFailedReturn: { message: 'Failed to get results.' }
+        expectedFailedReturn: {message: 'Failed to get results.'},
       },
       GetAll: {
-        header: "Get All Properties",
-        todo: "",
-        comment: "",
-        endpoint: "/api/properties/",
-        type: "GET",
-        description: "Returns an array of all Properties in the database.",
-        expectedInput: "",
+        header: 'Get All Properties',
+        todo: '',
+        comment: '',
+        endpoint: '/api/properties/',
+        type: 'GET',
+        description: 'Returns an array of all Properties in the database.',
+        expectedInput: '',
         sampleRequest: {
-          axiosThen: "token => console.log&lpar;token&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
+          axiosThen: 'token => console.log&lpar;token&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
         expectedReturn: fromJSON([property1, property2]),
-        expectedFailedReturn: { message: 'Failed to get results.' }
+        expectedFailedReturn: {message: 'Failed to get results.'},
       },
       GetAllUser: {
-        header: "Get All Properties for User",
-        todo: "",
-        comment: "",
-        endpoint: "/api/properties/user/:email",
-        type: "GET",
-        description: "Returns an array of all Properties for User.",
-        expectedInput: "",
+        header: 'Get All Properties for User',
+        todo: '',
+        comment: '',
+        endpoint: '/api/properties/user/:email',
+        type: 'GET',
+        description: 'Returns an array of all Properties for User.',
+        expectedInput: '',
         sampleRequest: {
-          axiosThen: "token => console.log&lpar;token&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
+          axiosThen: 'token => console.log&lpar;token&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
         expectedReturn: fromJSON([property1, property2]),
-        expectedFailedReturn: { message: 'Failed to get results.' }
+        expectedFailedReturn: {message: 'Failed to get results.'},
       },
       Update: {
-        header: "Update a Property",
-        todo: "",
-        comment: "",
-        endpoint: "/api/properties/:id",
-        type: "put",
-        description: "Updates a Property based on property id.",
+        header: 'Update a Property',
+        todo: '',
+        comment: '',
+        endpoint: '/api/properties/:id',
+        type: 'put',
+        description: 'Updates a Property based on property id.',
         expectedInput: updatePropertyInput,
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
         expectedReturn: updatePropertyReturn,
-        expectedFailedReturn: { message: 'Failed to update the property.' }
+        expectedFailedReturn: {message: 'Failed to update the property.'},
       },
       Delete: {
-        header: "Delete a Property",
-        todo: "",
-        comment: "Currently this will not delete if property is linked in another database. This function should be added, or maybe a way to archive property.",
-        endpoint: "/api/properties/:id",
-        type: "delete",
-        description: "Deletes a Property based on property id, and returns the property information.",
-        expectedInput: "",
+        header: 'Delete a Property',
+        todo: '',
+        comment:
+          'Currently this will not delete if property is linked in another database. This function should be added, or maybe a way to archive property.',
+        endpoint: '/api/properties/:id',
+        type: 'delete',
+        description:
+          'Deletes a Property based on property id, and returns the property information.',
+        expectedInput: '',
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
         expectedReturn: property2,
-        expectedFailedReturn: { message: 'Failed to delete property.' }
-      }
+        expectedFailedReturn: {message: 'Failed to delete property.'},
+      },
     },
     TenantHistory: {
       Add: {
-        header: "Add Entry",
-        todo: "",
-        comment: "",
-        endpoint: "/api/history/",
-        type: "post",
-        description: "Add Entry for Tenant History",
+        header: 'Add Entry',
+        todo: '',
+        comment: '',
+        endpoint: '/api/history/',
+        type: 'post',
+        description: 'Add Entry for Tenant History',
         expectedInput: addTenantHistoryInput,
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
         expectedReturn: addTenantHistoryReturn,
-        expectedFailedReturn: { message: 'Failed to create new entry.' }
+        expectedFailedReturn: {message: 'Failed to create new entry.'},
       },
       Get: {
-        header: "Get by Id",
-        todo: "",
-        comment: "",
-        endpoint: "/api/history/:id",
-        type: "get",
-        description: "Get tenant history results for given id.",
-        expectedInput: "",
+        header: 'Get by Id',
+        todo: '',
+        comment: '',
+        endpoint: '/api/history/:id',
+        type: 'get',
+        description: 'Get tenant history results for given id.',
+        expectedInput: '',
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
         expectedReturn: tenantHistory,
-        expectedFailedReturn: { message: 'Failed to get results for given id.' }
+        expectedFailedReturn: {message: 'Failed to get results for given id.'},
       },
       GetByProperty: {
-        header: "Get Results by Property",
-        todo: "",
-        comment: "",
-        endpoint: "/api/history/property/:id",
-        type: "get",
-        description: "Get all tenant history results for property, by property id.",
-        expectedInput: "",
+        header: 'Get Results by Property',
+        todo: '',
+        comment: '',
+        endpoint: '/api/history/property/:id',
+        type: 'get',
+        description:
+          'Get all tenant history results for property, by property id.',
+        expectedInput: '',
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
-        expectedReturn: [ tenantHistory ],
-        expectedFailedReturn: { message: 'Failed to get results for given property id.' }
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: [tenantHistory],
+        expectedFailedReturn: {
+          message: 'Failed to get results for given property id.',
+        },
       },
       GetByTenant: {
-        header: "Get Results by Tenant",
-        todo: "",
-        comment: "",
-        endpoint: "/api/history/tenant/:id",
-        type: "get",
-        description: "Get all tenant history results for tenant.",
-        expectedInput: "",
+        header: 'Get Results by Tenant',
+        todo: '',
+        comment: '',
+        endpoint: '/api/history/tenant/:id',
+        type: 'get',
+        description: 'Get all tenant history results for tenant.',
+        expectedInput: '',
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
-        expectedReturn: [ tenantHistory ],
-        expectedFailedReturn: { message: 'Failed to get results for given tenant id.' }
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: [tenantHistory],
+        expectedFailedReturn: {
+          message: 'Failed to get results for given tenant id.',
+        },
       },
       Update: {
-        header: "Update Entry",
-        todo: "",
-        comment: "",
-        endpoint: "/api/history/:id",
-        type: "put",
-        description: "Update Entry for Tenant History by Id",
+        header: 'Update Entry',
+        todo: '',
+        comment: '',
+        endpoint: '/api/history/:id',
+        type: 'put',
+        description: 'Update Entry for Tenant History by Id',
         expectedInput: updateTenantHistoryInput,
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
         expectedReturn: updateTenantHistoryReturn,
         expectedFailedReturn: [
-          { message: 'Could not find entry with given id.' },
-          { message: 'Failed to update the entry.' }
-      ]
+          {message: 'Could not find entry with given id.'},
+          {message: 'Failed to update the entry.'},
+        ],
       },
       Delete: {
-        header: "Delete Entry",
-        todo: "",
-        comment: "",
-        endpoint: "/api/history/:id",
-        type: "delete",
-        description: "Delete Entry for Tenant History by Id",
-        expectedInput: "",
+        header: 'Delete Entry',
+        todo: '',
+        comment: '',
+        endpoint: '/api/history/:id',
+        type: 'delete',
+        description: 'Delete Entry for Tenant History by Id',
+        expectedInput: '',
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
         expectedReturn: tenantHistory,
         expectedFailedReturn: [
-          { message: 'Could not delete entry.' },
-          { message: 'Could not find entry with given id.' },
-          { message: 'Failed to delete entry.' }
-        ]
-      }
+          {message: 'Could not delete entry.'},
+          {message: 'Could not find entry with given id.'},
+          {message: 'Failed to delete entry.'},
+        ],
+      },
     },
     Sample: {
       // Add: {
       //   header: "Add a ",
       // },
       Get: {
-        header: "This is a Sample for Documentation Only.",
-        todo: "This is still Todo.",
-        comment: "This is a comment.",
-        endpoint: "/api/sample/",
-        type: "post",
-        description: "Description of the Endpoint",
+        header: 'This is a Sample for Documentation Only.',
+        todo: 'This is still Todo.',
+        comment: 'This is a comment.',
+        endpoint: '/api/sample/',
+        type: 'post',
+        description: 'Description of the Endpoint',
         expectedInput: {
-          "sample": "this is a sample object",
-          "object": {
-            "can": "can have an object inside an object.",
-          }
+          sample: 'this is a sample object',
+          object: {
+            can: 'can have an object inside an object.',
+          },
         },
         sampleRequest: {
-          axiosThen: "response => console.log&lpar;response&rpar;",
-          axiosCatch: "err => console.error&lpar;err&rpar;",
-        }, 
-        expectedReturn: "Expected Return",
-        expectedFailedReturn: "Expected Return if Fails."
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: 'Expected Return',
+        expectedFailedReturn: 'Expected Return if Fails.',
       },
       // Update: {
       //   header: "Update a ",
@@ -566,50 +570,52 @@ const docs = {
       // Delete: {
       //   header: "Delete a ",
       // }
-    }
+    },
   },
   database: {
     tables: {
       user: {
-        header: "Users Table",
-        todo: "",
-        comment: "",
+        header: 'Users Table',
+        todo: '',
+        comment: '',
         table: {
-          id: "integer -> increment number assigned by database", 
-          email: "string, not Null, unique",
-          type: "string, not Null -> (expects one of these:) landlord, tenant, dev",
-          firstName: "string",
-          lastName: "string",
-          phone: "string"
-        }
+          id: 'integer -> increment number assigned by database',
+          email: 'string, not Null, unique',
+          type:
+            'string, not Null -> (expects one of these:) landlord, tenant, dev',
+          firstName: 'string',
+          lastName: 'string',
+          phone: 'string',
+        },
       },
       properties: {
-        header: "Properties Table",
-        todo: "",
-        comment: "Status options may include: open, closed, occupied, forRent, or forSale.",
+        header: 'Properties Table',
+        todo: '',
+        comment:
+          'Status options may include: open, closed, occupied, forRent, or forSale.',
         table: {
-          id: "integer -> increment number assigned by database", 
-          name: "string, not Null",
-          street: "string, not Null",
-          city: "string, not Null",
-          state: "string, not Null",
-          zip: "string, not Null",
-          status: "string, not Null",
-          image: "string, can be null",
-          landlordId: "integer -> references id in table 'users'"
-        }
+          id: 'integer -> increment number assigned by database',
+          name: 'string, not Null',
+          street: 'string, not Null',
+          city: 'string, not Null',
+          state: 'string, not Null',
+          zip: 'string, not Null',
+          status: 'string, not Null',
+          image: 'string, can be null',
+          landlordId: "integer -> references id in table 'users'",
+        },
       },
       tenantHistory: {
-        header: "Tenant History Table",
-        todo: "Updating This",
-        comment: "",
+        header: 'Tenant History Table',
+        todo: 'Updating This',
+        comment: '',
         table: {
-          id: "integer -> increment number assigned by database", 
-          tenantId: "integer -> references id in table \'users\'",
-          propertyId: "integer -> references id in table \'properties\'",
+          id: 'integer -> increment number assigned by database',
+          tenantId: "integer -> references id in table 'users'",
+          propertyId: "integer -> references id in table 'properties'",
           startDate: "date, can be 'null'",
-          endDate: "date, can be 'null'"
-        }
+          endDate: "date, can be 'null'",
+        },
       },
       // TODO: - update below tables
       // workOther: {
@@ -617,7 +623,7 @@ const docs = {
       //   todo: "",
       //   comment: "",
       //   table: {
-      //     id: "integer -> increment number assigned by database", 
+      //     id: "integer -> increment number assigned by database",
       //     workorder: "string -> Work Order Title",
       //     woDescription: "text -> Description of the issue.",
       //     woType: "string -> type like: plumbing or electrical",
@@ -631,11 +637,11 @@ const docs = {
       //   todo: "Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed'",
       //   comment: "Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent",
       //   table: {
-      //     id: "integer -> increment number assigned by database", 
+      //     id: "integer -> increment number assigned by database",
       //     woId: "integer -> references id in table \'workorders\'",
-      //     woStatus: 'string -> status of work order', 
+      //     woStatus: 'string -> status of work order',
       //     woUrgency: "integer -> Scale of 1 to 5",
-      //     woUpdate: { 
+      //     woUpdate: {
       //       assignedTo: "string -> Name of Company task assigned to",
       //       comment: "string -> optional comment"
       //     },
@@ -649,7 +655,7 @@ const docs = {
       //   table: {}
       // }
     },
-  }
-};
+  },
+}
 
-module.exports = docs;
+module.exports = docs

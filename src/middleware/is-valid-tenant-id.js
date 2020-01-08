@@ -1,19 +1,19 @@
-const User = require("../models/user");
+const User = require('../models/user')
 
 const isValidTenantId = async (req, res, next) => {
-  const { tenantId } = req.body;
+  const {tenantId} = req.body
 
   try {
-    const user = await User.findById(tenantId);
+    const user = await User.findById(tenantId)
 
-    if (!user || user.type !== "tenant") {
-      return res.status(404).json({ message: "No tenant exists with that id" });
+    if (!user || user.type !== 'tenant') {
+      return res.status(404).json({message: 'No tenant exists with that id'})
     }
 
-    next();
+    next()
   } catch (err) {
-    console.error(err);
+    console.error(err)
   }
-};
+}
 
-module.exports = isValidTenantId;
+module.exports = isValidTenantId

@@ -14,8 +14,10 @@
     "res": "npm run migrate:latest && npm run seed:run && npm run migrate:test",
     "test": "jest --runInBand",
     "test:watch": "npm run test -- --watchAll",
+    "test:cov": "npm run test -- --coverage --collectCoverageFrom=src/**/*.js --collectCoverageFrom=!src/docs/",
     "lint": "eslint --ignore-path .gitignore .",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(js|json)\"",
+    "pretty": "prettier --ignore-path .gitignore \"**/*.+(js|json|css|md|html)\"",
+    "format": "npm run pretty -- --write",
     "validate": ""
   },
   "repository": {
@@ -40,8 +42,7 @@
     "knex-cleaner": "^1.3.0",
     "morgan": "^1.9.1",
     "node-gyp": "^6.0.1",
-    "pg": "^7.12.1",
-    "rebuild": "^0.1.2"
+    "pg": "^7.12.1"
   },
   "devDependencies": {
     "cross-env": "^6.0.3",
