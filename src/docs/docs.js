@@ -588,10 +588,9 @@ const docs = {
         },
       },
       properties: {
-        header: 'Properties Table',
-        todo: '',
-        comment:
-          'Status options may include: open, closed, occupied, forRent, or forSale.',
+        header: "Properties Table",
+        todo: "",
+        comment: "Status options may include: 'vacant' or 'occupied'", // changed from open, closed, occupied, forRent, or forSale
         table: {
           id: 'integer -> increment number assigned by database',
           name: 'string, not Null',
@@ -599,7 +598,7 @@ const docs = {
           city: 'string, not Null',
           state: 'string, not Null',
           zip: 'string, not Null',
-          status: 'string, not Null',
+          status: 'enum ->, \'vacant\' or \'occupied\'',
           image: 'string, can be null',
           landlordId: "integer -> references id in table 'users'",
         },
@@ -616,37 +615,34 @@ const docs = {
           endDate: "date, can be 'null'",
         },
       },
-      workOther: {
-        header: 'Work Order Table',
-        todo: '',
-        comment: '',
+      workOrder: {
+        header: "Work Order Table",
+        todo: "",
+        comment: "",
         table: {
-          id: 'integer -> increment number assigned by database',
-          workorder: 'string -> Work Order Title',
-          woDescription: 'text -> Description of the issue.',
-          woType: 'string -> type like: plumbing or electrical',
-          woStartdate: 'date -> from a timestamp or date selection?',
-          woEnddate: "date, can be 'null'",
+          id: "integer -> increment number assigned by database", 
+          title: "string -> Work Order Title",
+          description: "text -> Description of the issue.",
+          type: "enum -> electrical, plumbing, HVAC, pest control, appliances",
+          startdate: "date -> from a timestamp",
+          endDate: "date -> can be 'null'",
           propertyId: "integer -> references id in table 'properties'",
-        },
+          createdBy: "integer -> references id in table 'users'"
+        }
       },
       woHistory: {
-        header: 'Work Order History Table',
-        todo:
-          "Need to review work order status options. <br> Right now: 'new, acknowledged, assigned, sending, review, or closed'",
-        comment:
-          'Scale: 1 - not urgent, 2 - least urgent, 3 - moderately urgent, 4 - urgent, 5 - most urgent',
+        header: "Work Order History Table",
+        todo: "",
+        comment: "",
         table: {
-          id: 'integer -> increment number assigned by database',
+          id: "integer -> increment number assigned by database", 
           woId: "integer -> references id in table 'workorders'",
-          woStatus: 'string -> status of work order',
-          woUrgency: 'integer -> Scale of 1 to 5',
-          woUpdate: {
-            assignedTo: 'string -> Name of Company task assigned to',
-            comment: 'string -> optional comment',
-          },
-          woUpdatedate: 'timestamp',
-        },
+          status: 'enum -> new, acknowledged, assigned, sending, review, or closed', 
+          urgency: "enum -> low, medium, or high",
+          assignedTo: "string -> Name of Company task assigned to, can be null",
+          comment: "string -> comment if needed, may be null",
+          updatedate: "timestamp"
+        }
       },
       // other: {
       //   header: "Other Table",
