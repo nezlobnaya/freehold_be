@@ -1,9 +1,17 @@
-const title = 'Property Manager Backend'
 const styles = require('./styles.js')
+let title = '',
+  displayDocs = ''
 
 // Docs
 const docs = require('../docs.js')
-let displayDocs = JSON.stringify(docs, undefined, 1)
+if (typeof docs === 'object') {
+  displayDocs = JSON.stringify(docs, undefined, 1)
+
+  // Title
+  if ('header' in docs && typeof docs.header === 'string') {
+    title = docs.header
+  }
+}
 
 module.exports =
   '<!DOCTYPE html> \n' +

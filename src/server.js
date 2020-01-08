@@ -36,9 +36,14 @@ app.use('/api/tenants', tenantsRouter)
 app.use('/api/users', usersRouter)
 
 // Base Route
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.setHeader('Content-Type', 'text/html')
   res.send(docs)
+})
+
+// Redirect any other route
+app.get('/*', function(_req, res) {
+  res.redirect('/')
 })
 
 module.exports = app
