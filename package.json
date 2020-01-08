@@ -18,7 +18,7 @@
     "lint": "eslint --ignore-path .gitignore .",
     "pretty": "prettier --ignore-path .gitignore \"**/*.+(js|json|css|md|html)\"",
     "format": "npm run pretty -- --write",
-    "validate": ""
+    "precommit": "npm run lint -- --quiet && npm run test --bail --findRelatedTests && npm run format"
   },
   "repository": {
     "type": "git",
