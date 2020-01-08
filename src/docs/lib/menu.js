@@ -1,20 +1,24 @@
-const docs = require("../docs.js");
-const menu = docs.menu;
+const docs = require('../docs.js')
+const menu = docs.menu
 
 function displayMenu(item) {
-  let display = "";
+  let display = ''
 
   // tag
   if (item.tag) {
-    display = "<" + item.tag + " ";
+    display = '<' + item.tag + ' '
 
     // class
-    if (item.class) { display = display + "class='" + item.class + "' " }
+    if (item.class) {
+      display = display + "class='" + item.class + "' "
+    }
 
     // onclick
-    if (item.onclick) { display = display + "onclick=\"" + item.onclick + "\" " }
+    if (item.onclick) {
+      display = display + 'onclick="' + item.onclick + '" '
+    }
 
-    display = display + ">"
+    display = display + '>'
   }
 
   // text
@@ -24,128 +28,142 @@ function displayMenu(item) {
 
   // close tag
   if (item.tag) {
-    display = display + "</" + item.tag + "> \n"
+    display = display + '</' + item.tag + '> \n'
   }
 
-  return display;
+  return display
 }
 
 // Models
-function displayModels(){
-  let modelsMenu = '<div id="models" class="hid"> \n <ul> \n';
+function displayModels() {
+  let modelsMenu = '<div id="models" class="hid"> \n <ul> \n'
   for (let i = 0; i < Object.keys(docs.models).length; i++) {
-    let key = Object.keys(docs.models)[i];
-    let object = docs.models[key];
-    modelsMenu = modelsMenu + 
-    "<li onclick='" + object.function + "'>" + key + " Models </li> \n";
+    let key = Object.keys(docs.models)[i]
+    let object = docs.models[key]
+    modelsMenu =
+      modelsMenu +
+      "<li onclick='" +
+      object.function +
+      "'>" +
+      key +
+      ' Models </li> \n'
   }
-  modelsMenu = modelsMenu + ' \n </ul> \n </div>';
-  return modelsMenu;
+  modelsMenu = modelsMenu + ' \n </ul> \n </div>'
+  return modelsMenu
 }
 
 // Display List
 function displayList(sec, content, event) {
   // If any value is empty
-  if (sec === "" || !sec) { return "Empty Section Information." }
-  if (content === "" || !content) { return "Empty Content Information." }
+  if (sec === '' || !sec) {
+    return 'Empty Section Information.'
+  }
+  if (content === '' || !content) {
+    return 'Empty Content Information.'
+  }
 
   // Check that sec is a string
-  if (sec && typeof sec === "string") {
+  if (sec && typeof sec === 'string') {
     // Output Div and List
-    let output = '<div id="' + sec + '" class="hid"> \n <ul> \n';
-  
-    let section = eval(content);
+    let output = '<div id="' + sec + '" class="hid"> \n <ul> \n'
 
-    // check that section returns an object 
-    if (section && typeof section === "object") {
-      let keys = Object.keys(section);
-      let count = keys.length;
-    
+    let section = eval(content)
+
+    // check that section returns an object
+    if (section && typeof section === 'object') {
+      let keys = Object.keys(section)
+      let count = keys.length
+
       for (let i = 0; i < count; i++) {
-        let key = keys[i];
-        let object = section[key];
-        let call = "[\"" + key.trim() + "\"]";
-        let callFunction = "";
+        let key = keys[i]
+        let object = section[key]
+        let call = '["' + key.trim() + '"]'
+        let callFunction = ''
 
-        if (event && typeof event === "string") {
-          callFunction = " onclick='" + event + "(" + content + call + ")'";
+        if (event && typeof event === 'string') {
+          callFunction = " onclick='" + event + '(' + content + call + ")'"
         }
 
         // Check that Object exists
-        if (object && typeof object === "object") {
-          let header = "<span class='alert'>Header missing in docs.<span>";
-          if (object.header) { header = object.header }
+        if (object && typeof object === 'object') {
+          let header = "<span class='alert'>Header missing in docs.<span>"
+          if (object.header) {
+            header = object.header
+          }
 
           // Output
-          output = output + 
-          "<li" + callFunction + ">" + header + " </li> \n";
+          output = output + '<li' + callFunction + '>' + header + ' </li> \n'
         } else {
-          output = output + "<li>Key Object is missing.</li>"
+          output = output + '<li>Key Object is missing.</li>'
         }
       }
     } else {
-      output = output + "Section Object is missing for List."
+      output = output + 'Section Object is missing for List.'
     }
-  
+
     // Close List and Div
-    output = output + ' \n </ul> \n </div>';
-  
-    return output;
+    output = output + ' \n </ul> \n </div>'
+
+    return output
   } else {
-    return "Missing List information - Section Name"
+    return 'Missing List information - Section Name'
   }
 }
 
 function displaySubSections(section) {
-  let count = 0, output = "";
-  
+  let count = 0,
+    output = ''
+
   if ('subHeaders' in section) {
-    count = Object.keys(section.subHeaders).length;
+    count = Object.keys(section.subHeaders).length
   }
 
   if (count > 0) {
     for (let i = 0; i < count; i++) {
-
-      if (section.subHeaders[i] && section.subHeaders[i] != "") {
+      if (section.subHeaders[i] && section.subHeaders[i] != '') {
         let subHeader = section.subHeaders[i]
 
-        if (!subHeader.section || subHeader.section === "") {
-          output = output + "No Section Informtion."
+        if (!subHeader.section || subHeader.section === '') {
+          output = output + 'No Section Informtion.'
         }
-        if (!subHeader.docs || subHeader.docs === "") {
-          output = output + "No Documents Reference for: " + subHeader.section
+        if (!subHeader.docs || subHeader.docs === '') {
+          output = output + 'No Documents Reference for: ' + subHeader.section
         }
         if (!section.event) {
-          output = output + "No Event Informtion. Must at least be an empty string. For:" + subHeader.section
+          output =
+            output +
+            'No Event Informtion. Must at least be an empty string. For:' +
+            subHeader.section
         }
 
-        output = output + displayMenu(subHeader) + "\n" +
+        output =
+          output +
+          displayMenu(subHeader) +
+          '\n' +
           displayList(subHeader.section, subHeader.docs, section.event)
       }
     }
     return output
-
   } else {
-    return "No SubSection";
+    return 'No SubSection'
   }
-
 }
 
 function outputMenu(thisMenu) {
-  let output = "";
-  let menuItems = {}, subSection = {};
+  let output = ''
+  let menuItems = {},
+    subSection = {}
 
   // Check menu exists and is an object
-  if(thisMenu && typeof thisMenu === "object") {
-
+  if (thisMenu && typeof thisMenu === 'object') {
     // For Each Menu item
-    Object.keys(thisMenu).forEach(function (item) {
-      menuItems = thisMenu[item];
+    Object.keys(thisMenu).forEach(function(item) {
+      menuItems = thisMenu[item]
 
-      // Display Menu item 
-      output = output + displayMenu(menuItems) + "\n";
+      // Display Menu item
+      output = output + displayMenu(menuItems) + '\n'
 
-      if (item == "planning") {
+      if (item == 'planning') {
         output = output + '<div> \n'
       } else {
         output = output + '<div id="' + item + '" class="show"> \n'
@@ -153,40 +171,33 @@ function outputMenu(thisMenu) {
 
       // check for subSections
       if (menuItems.subSections) {
-        
         // For Each Menu subSection
-        Object.keys(menuItems.subSections).forEach(function (i) {
-
-          subSection = menuItems.subSections[i];
+        Object.keys(menuItems.subSections).forEach(function(i) {
+          subSection = menuItems.subSections[i]
 
           // Display Header for subSections
-          output = output + displayMenu(subSection) + "\n"
+          output = output + displayMenu(subSection) + '\n'
 
           if (subSection.section) {
-            
-            if (subSection.section == "models") {
-              output = output + displayModels();
+            if (subSection.section == 'models') {
+              output = output + displayModels()
             } else {
-              output = output + '<div id="'+ subSection.section + '" class="hid">'
+              output =
+                output + '<div id="' + subSection.section + '" class="hid">'
               output = output + displaySubSections(subSection)
               output = output + '</div> \n'
             }
-
           }
-
-        });
-
+        })
       }
 
       output = output + '</div> \n'
-    });
+    })
   }
 
   // Disply Output
-  return output;
+  return output
 }
 
 // Left Side Menu
-module.exports = '<div id="leftMenu"> \n' +
-  outputMenu(menu) +
-  '</div>';
+module.exports = '<div id="leftMenu"> \n' + outputMenu(menu) + '</div>'

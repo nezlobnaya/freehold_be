@@ -1,13 +1,13 @@
 const requireLandlord = (req, res, next) => {
-  const userType = (req.user && req.user.type) || "";
+  const userType = (req.user && req.user.type) || ''
 
-  if (userType !== "landlord") {
+  if (userType !== 'landlord') {
     return res
       .status(401)
-      .json({ error: "User is not authorized for that operation" });
+      .json({error: 'User is not authorized for that operation'})
   }
 
-  next();
-};
+  next()
+}
 
-module.exports = requireLandlord;
+module.exports = requireLandlord

@@ -1,9 +1,9 @@
-const db = require("../../database/db");
+const db = require('../../database/db')
 
 module.exports = {
-  getAll
-};
+  getAll,
+}
 
 function getAll() {
-  return db.from("test").select("name");
+  return db.from('test').select('name')
 }

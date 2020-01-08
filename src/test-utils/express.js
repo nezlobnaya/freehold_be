@@ -1,25 +1,25 @@
 const mockResponse = () => {
-  const res = {};
+  const res = {}
 
-  res.send = jest.fn(() => res);
-  res.status = jest.fn(() => res);
-  res.sendStatus = jest.fn(() => res);
+  res.send = jest.fn(() => res)
+  res.status = jest.fn(() => res)
+  res.sendStatus = jest.fn(() => res)
 
-  res.json = jest.fn(() => res);
+  res.json = jest.fn(() => res)
 
-  return res;
-};
+  return res
+}
 
 const mockRequest = input => {
   return {
     headers: {
-      authorization: "Bearer 1234"
+      authorization: 'Bearer 1234',
     },
-    ...input
-  };
-};
+    ...input,
+  }
+}
 
 module.exports = {
   mockResponse,
-  mockRequest
-};
+  mockRequest,
+}

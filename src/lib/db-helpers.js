@@ -1,4 +1,4 @@
-const faker = require("faker");
+const faker = require('faker')
 
 const creatUser = type => ({
   email: faker.internet.email(),
@@ -9,32 +9,32 @@ const creatUser = type => ({
   // state: faker.address.state(),
   // zip: faker.address.zipCode(),
   phone: faker.phone.phoneNumber(),
-  type
-});
+  type,
+})
 
 const createSeedResources = (creationFn, num = 20) => {
-  let resources = [];
+  let resources = []
 
   if (num > 0) {
     for (let i = 0; i < num; i++) {
-      resources.push(creationFn());
+      resources.push(creationFn())
     }
   }
 
-  return resources;
-};
+  return resources
+}
 
-const createLandlord = () => creatUser("landlord");
-const createTenant = () => creatUser("tenant");
+const createLandlord = () => creatUser('landlord')
+const createTenant = () => creatUser('tenant')
 
-const landlords = createSeedResources(createLandlord);
-const tenants = createSeedResources(createTenant);
+const landlords = createSeedResources(createLandlord)
+const tenants = createSeedResources(createTenant)
 
-const seedUsers = [...landlords, ...tenants];
+const seedUsers = [...landlords, ...tenants]
 
 const getRandomLandlordId = () => {
-  return landlords[Math.floor(Math.random() * landlords.length) - 1];
-};
+  return landlords[Math.floor(Math.random() * landlords.length) - 1]
+}
 
 const createProperty = (landlordId = getRandomLandlordId()) => ({
   name: faker.company.companyName(),
@@ -42,13 +42,13 @@ const createProperty = (landlordId = getRandomLandlordId()) => ({
   city: faker.address.city(),
   state: faker.address.state(),
   zip: faker.address.zipCode(),
-  status: Math.round(Math.random()) === 0 ? "vacant" : "occupied",
-  landlordId
-});
+  status: Math.round(Math.random()) === 0 ? 'vacant' : 'occupied',
+  landlordId,
+})
 
-const seedProperties = createSeedResources(createProperty, 100);
+const seedProperties = createSeedResources(createProperty, 100)
 
 module.exports = {
   seedUsers,
-  seedProperties
-};
+  seedProperties,
+}

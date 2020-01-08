@@ -1,3 +1,3 @@
-const propertyRouter = require("./property-router");
+const propertyRouter = require('./property-router')
 
-module.exports = propertyRouter;
+module.exports = propertyRouter

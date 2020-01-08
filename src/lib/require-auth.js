@@ -1,9 +1,9 @@
 const requireAuth = (req, res, next) => {
   if (req.user) {
-    next();
+    next()
   } else {
-    res.sendStatus(401);
+    res.sendStatus(401)
   }
-};
+}
 
-module.exports = requireAuth;
+module.exports = requireAuth
