@@ -27,6 +27,7 @@ const mockUserResponse = () => ({
 const createLogin = input => ({
   email: 'test@gmail.com',
   password: 'fakepassword',
+  type: 'landlord',
   ...input,
 })
 

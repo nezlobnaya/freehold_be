@@ -2,7 +2,7 @@ const User = require('../../models/user')
 const firebase = require('../../lib/firebase')
 
 async function createUser(req, res) {
-  const {email, password} = req.body
+  const {email, password, type} = req.body
 
   try {
     // Create the user
@@ -14,7 +14,10 @@ async function createUser(req, res) {
       return res.status(400).json({message: 'Account not created'})
     }
 
-    await User.create({email, type: 'landlord'})
+    // Tenants should already be created in the system
+    if (type === 'landlord') {
+      await User.create({email, type})
+    }
 
     // Generate a JWT that can be used for future requests
     const token = await user.user.getIdToken()
