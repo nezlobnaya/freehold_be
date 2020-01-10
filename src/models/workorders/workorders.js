@@ -4,7 +4,7 @@ const table = 'workorders'
 
 module.exports = {
   // Create
-  add,
+  addWorkorder,
   // Read
   get,
   getById,
@@ -16,10 +16,10 @@ module.exports = {
 
 //#region - CREATE
 
-async function add(input, userId) {
+async function addWorkorder(input, userId) {
   const results = await db(table)
     .returning('id')
-    .insert({...input})
+    .insert({...input, createdBy: userId})
   return get(results[0])
 }
 
