@@ -24,13 +24,13 @@ describe('Workorder Model', () => {
       expect(results.length).toEqual(2)
     })
 
-    // it('Should return an array', async () => {
-    //   // call function
-    //   const results = await Properties.getAllProperties()
+    it('Should return an array', async () => {
+      // call function
+      const results = await Workorders.get()
 
-    //   // expected results
-    //   expect(Array.isArray(results)).toBe(true)
-    // })
+      // expected results
+      expect(Array.isArray(results)).toBe(true)
+    })
   })
 
 })

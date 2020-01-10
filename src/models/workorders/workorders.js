@@ -32,8 +32,6 @@ async function get() {
     .from(table)
     .select('*')
 
-    console.log(results)
-
   return results || null
 }
 
