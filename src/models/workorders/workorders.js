@@ -4,7 +4,7 @@ const table = 'workorders'
 
 module.exports = {
   // Create
-  addWorkorder,
+  add,
   // Read
   get,
   getById,
@@ -16,7 +16,7 @@ module.exports = {
 
 //#region - CREATE
 
-async function addWorkorder(input, userId) {
+async function add(input, userId) {
   const results = await db(table)
     .returning('id')
     .insert({...input, createdBy: userId})
@@ -28,9 +28,11 @@ async function addWorkorder(input, userId) {
 //#region - READ
 
 async function get() {
-  const [results] = await db
+  const results = await db
     .from(table)
     .select('*')
+
+    console.log(results)
 
   return results || null
 }
