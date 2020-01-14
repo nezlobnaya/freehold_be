@@ -1,4 +1,4 @@
-const {Db, Models} = require('../../test-utils')
+const {Db} = require('../../test-utils')
 const Workorders = require('./workorders.js')
 
 beforeEach(async () => {
