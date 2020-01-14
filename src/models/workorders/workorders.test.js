@@ -44,7 +44,6 @@ describe('Workorder Model', () => {
 
       // call function
       const results = await Workorders.getById(id)
-      console.log(results)
 
       // expected results
       expect(typeof results).toBe('object')
@@ -58,7 +57,6 @@ describe('Workorder Model', () => {
 
       // call function
       const results = await Workorders.getById(id)
-      console.log(results)
       
       // expected results
       expect(results.title).toBe('Short Description')
