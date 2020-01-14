@@ -7,6 +7,7 @@ module.exports = {
   add,
   // Read
   get,
+  getBy,
   getById,
   // Update
   update,
@@ -40,6 +41,15 @@ async function getById(id) {
     .from(table)
     .select('*')
     .where({id})
+
+  return results || null
+}
+
+async function getBy(query) {
+  const results = await db
+    .from(table)
+    .select('*')
+    .where(query)
 
   return results || null
 }

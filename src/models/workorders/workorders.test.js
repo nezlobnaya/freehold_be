@@ -93,6 +93,35 @@ describe('Workorder Model', () => {
     })
   })
 
+  describe('function getBy(query)', () => {
+
+    it('Should return an Array', async () => {
+      
+      // Expected Input
+      const query = { createdBy: 2 }
+
+      // call function
+      const results = await Workorders.getBy(query)
+
+      // expected results
+      expect(Array.isArray(results)).toBe(true)
+
+    })
+
+    it('Should return 2 workorders for property with id 1', async () => {
+      
+      // Expected Input
+      const query = { propertyId: 1 }
+
+      // call function
+      const results = await Workorders.getBy(query)
+      
+      // expected results
+      expect(results.length).toEqual(2)
+
+    })
+  })
+
   describe('function update', () => {
 
     it('Should update title to: Updated Workorder', async () => {
