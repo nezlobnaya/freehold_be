@@ -66,6 +66,7 @@ describe('Workorder Model', () => {
   })
 
   describe('function getById(id)', () => {
+
     it('Should return an object', async () => {
       
       // Expected Input
@@ -90,6 +91,22 @@ describe('Workorder Model', () => {
       // expected results
       expect(results.title).toBe('Short Description')
 
+    })
+  })
+
+  describe('function update', () => {
+
+    it('Should update title to: Updated Workorder', async () => {
+      // call function
+
+      const id = 2
+      const update = {title: 'Updated Workorder'}
+
+      const {updated, results} = await Workorders.update(update, id)
+
+      // expected results
+      expect(updated).toBe(true)
+      expect(results.title).toBe('Updated Workorder')
     })
   })
 
