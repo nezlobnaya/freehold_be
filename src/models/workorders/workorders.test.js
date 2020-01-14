@@ -1,6 +1,5 @@
 const {Db, Models} = require('../../test-utils')
 const Workorders = require('./workorders.js')
-const seedData = require('../../../database/seedData.js')
 
 beforeEach(async () => {
   await Db.reset()
@@ -107,6 +106,43 @@ describe('Workorder Model', () => {
       // expected results
       expect(updated).toBe(true)
       expect(results.title).toBe('Updated Workorder')
+    })
+  })
+
+  describe('function remove', () => {
+
+    it('Should return { deleted: true } when successfully deleted', async () => {
+      // call function
+      const {deleted} = await Workorders.remove(2)
+      // expected results
+      expect(deleted).toBe(true)
+    })
+
+    it('Workorder by id Should return undefined after delete', async () => {
+      const id = 2
+      // call function
+      await Workorders.remove(id)
+      // check database for the property by id
+      const results = await Workorders.getById(id)
+      // expected results
+      expect(results).toBe(null)
+    })
+
+    it('Count of all workorders Should decrease by 1', async () => {
+
+      // count workorders before delete
+      const dbBefore = await Workorders.get()
+      const dbBeforeCount = dbBefore.length
+
+      // call function
+      await Workorders.remove(2)
+
+      // count properties after delete
+      const dbAfter = await Workorders.get()
+      const dbAfterCount = dbAfter.length
+
+      // expected results -> Count before delete minus count after delete should equal 1
+      expect(dbBeforeCount - dbAfterCount).toEqual(1)
     })
   })
 
