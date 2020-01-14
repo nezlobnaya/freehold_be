@@ -16,11 +16,11 @@ module.exports = {
 
 //#region - CREATE
 
-async function add(input, userId) {
+async function add(input, propertyId, userId) {
   const results = await db(table)
     .returning('id')
-    .insert({...input, createdBy: userId})
-  return get(results[0])
+    .insert({...input, propertyId: propertyId, createdBy: userId})
+  return getById(results[0])
 }
 
 //#endregion
