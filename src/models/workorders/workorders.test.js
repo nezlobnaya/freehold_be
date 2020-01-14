@@ -19,7 +19,6 @@ describe('Workorder Model', () => {
 
       // call function
       const results = await Workorders.get()
-      console.log(results)
 
       // expected results
       expect(results.length).toEqual(2)
@@ -63,7 +62,7 @@ describe('Workorder Model', () => {
       
       // expected results
       expect(results.title).toBe('Short Description')
-      
+
     })
   })
 
