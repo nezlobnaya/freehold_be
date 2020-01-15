@@ -1,3 +1,3 @@
-const Property = require('./property')
+const Workorders = require('./workorders.js')
 
-module.exports = Property
+module.exports = Workorders
