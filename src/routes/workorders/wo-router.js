@@ -22,7 +22,7 @@ const validateInput = getErrors => (req, res, next) => {
 
 //#region - READ
 // GET all properties
-router.get('/', requireLandlord, PropertyController.getAllByUser)
+router.get('/', validateInput, WOController.readAllByUser)
 //#endregion
 
 
