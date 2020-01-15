@@ -1,4 +1,4 @@
-const {Db} = require('../../test-utils')
+const {Db, Models} = require('../../test-utils')
 const Workorders = require('./workorders.js')
 
 beforeEach(async () => {
@@ -10,13 +10,7 @@ afterAll(async () => {
   await Db.destroyConn()
 })
 
-const defaultWorkorder = {
-    "title": "New Work order",
-    "description": "Description of the issue.",
-    "type": "electrical",
-    "startDate": "11-03-2019",
-    "endDate": null
-  }
+const defaultWorkorder = Models.createWorkorder()
 
 describe('Workorder Model', () => {
 
