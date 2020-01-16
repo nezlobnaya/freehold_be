@@ -38,7 +38,7 @@ describe('Workorder Routes', () => {
       admin.verifyIdToken.mockResolvedValue({email: defaultLandlord.email})
 
       const results = await request
-        .get(routeAPI)
+        .get('/api/workorders')
         .set('Authorization', 'Bearer 1234')
 
       expect(results.status).toBe(200)
