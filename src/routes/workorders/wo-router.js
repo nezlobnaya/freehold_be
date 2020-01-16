@@ -1,5 +1,5 @@
 const express = require('express')
-const WOController = require('../../controllers/workorders')
+const WOController = require('../../controllers/workorders/workorders.js')
 const bearerAuth = require('../../lib/bearer-auth')
 const requireAuth = require('../../lib/require-auth')
 const {requireLandlord} = require('../../middleware')
