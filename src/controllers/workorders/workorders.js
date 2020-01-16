@@ -1,6 +1,5 @@
 // Workorder Controllers
 const Workorders = require('../../models/workorders')
-//const User = require('../../models/user')
 
 const create = async (req, res) => {
   const input = req.body
@@ -31,25 +30,20 @@ const readAllByUser = async (req, res) => {
 }
 
 const readById = async (req, res) => {
-  // const {id} = req.params
+  const {id} = req.params
 
-  // try {
-  //   const property = await Property.getProperty(id)
+  try {
+    const results = await Workorders.getById(id)
 
-  //   if (property) {
-  //     if (!req.user.id === property.landlordId) {
-  //       res.sendStatus(401)
-  //       return
-  //     }
-
-  //     res.status(200).json(property)
-  //   } else {
-  //     res.status(404).json({error: 'No property found with that id'})
-  //   }
-  // } catch (err) {
-  //   console.error(err)
-  //   res.status(500).json({error: 'Internal server error'})
-  // }
+    if (results) {
+      res.status(200).json(results)
+    } else {
+      res.status(404).json({error: 'No workorder found with that id'})
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({error: 'Internal server error'})
+  }
 }
 
 const updateById = async (req, res) => {

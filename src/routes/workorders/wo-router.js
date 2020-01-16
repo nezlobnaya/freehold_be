@@ -21,8 +21,10 @@ const validateInput = getErrors => (req, res, next) => {
 }
 
 //#region - READ
-// GET all properties
-router.get('/', validateInput, WOController.readAllByUser)
+
+  // GET all workorders - based off the user who is logged in
+  router.get('/', WOController.readAllByUser)
+
 //#endregion
 
 
