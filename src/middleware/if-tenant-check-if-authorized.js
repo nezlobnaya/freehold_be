@@ -21,6 +21,9 @@ const ifTenantCheckIfAuthorized = async (req, res, next) => {
       })
     }
 
+    /* eslint-disable-next-line */
+    req.user = tenant
+
     next()
   } catch (err) {
     console.error(err)
