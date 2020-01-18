@@ -5,6 +5,7 @@ const morgan = require('morgan')
 
 const docs = require('./docs/index.js')
 
+// Require Routers
 const authRouter = require('./routes/auth/')
 const propertyRouter = require('./routes/properties/property-router.js')
 const tenantHistoryRouter = require('./routes/history/tenantHistory-router.js')
@@ -12,6 +13,7 @@ const workorderRouter = require('./routes/workorders/wo-router.js')
 const tenantsRouter = require('./routes/tenants')
 const usersRouter = require('./routes/users')
 
+// Auth Middleware
 const bearerAuth = require('./lib/bearer-auth')
 const requireAuth = require('./lib/require-auth')
 
