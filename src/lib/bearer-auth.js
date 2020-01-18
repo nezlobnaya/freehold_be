@@ -1,4 +1,4 @@
-const admin = require('./admin')
+const jwt = require('jsonwebtoken')
 const User = require('../models/user')
 
 const bearerAuth = async (req, res, next) => {
@@ -14,9 +14,9 @@ const bearerAuth = async (req, res, next) => {
    * */
   if (type === 'Bearer') {
     try {
-      const token = await admin.auth().verifyIdToken(payload)
+      const token = jwt.decode(payload)
 
-      const user = await User.findByEmail(token.email)
+      const user = await User.findByEmail(token.sub)
 
       /* eslint-disable-next-line */
       req.user = user
