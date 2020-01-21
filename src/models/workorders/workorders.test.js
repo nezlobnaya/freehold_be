@@ -3,7 +3,9 @@ const Workorders = require('./workorders.js')
 
 beforeEach(async () => {
   await Db.reset()
-  await Db.seedTables()
+  await Db.seedTables("users")
+  await Db.seedTables("properties")
+  await Db.seedTables("workorders")
 })
 
 afterAll(async () => {
@@ -29,24 +31,27 @@ describe('Workorder Model', () => {
       const results = await Workorders.add(defaultWorkorder, 1, 2)
 
       // expected results
-      expect(results.id).toBe(3)
       expect(results.title).toBe("New Work order")
       expect(results.propertyId).toBe(1)
       expect(results.createdBy).toBe(2)
     })
+
+    it('Count of all Workorders should increase by 1', async () => {
+      // count before
+      const dbBefore = await Db.countResults("workorders")
+      
+      // call function
+      await Workorders.add(defaultWorkorder, 1, 2)
+      
+      // count after
+      const dbAfter = await Db.countResults("workorders")
+
+      // expected results
+      expect(dbAfter - dbBefore).toEqual(1)
+    })
   })
 
   describe('function get', () => {
-    it('Should return 2 results', async () => {
-
-      // call function
-      const results = await Workorders.get()
-
-      // expected results
-      expect(results.length).toEqual(2)
-
-    })
-
     it('Should return an array', async () => {
 
       // call function
@@ -152,20 +157,17 @@ describe('Workorder Model', () => {
     })
 
     it('Count of all workorders Should decrease by 1', async () => {
-
-      // count workorders before delete
-      const dbBefore = await Workorders.get()
-      const dbBeforeCount = dbBefore.length
+      // count before
+      const dbBefore = await Db.countResults("workorders")
 
       // call function
       await Workorders.remove(2)
+      
+      // count after
+      const dbAfter = await Db.countResults("workorders")
 
-      // count properties after delete
-      const dbAfter = await Workorders.get()
-      const dbAfterCount = dbAfter.length
-
-      // expected results -> Count before delete minus count after delete should equal 1
-      expect(dbBeforeCount - dbAfterCount).toEqual(1)
+      // expected results
+      expect(dbBefore - dbAfter).toEqual(1)
     })
   })
 
