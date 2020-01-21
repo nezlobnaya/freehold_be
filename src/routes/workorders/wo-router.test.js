@@ -9,6 +9,7 @@ const request = supertest(app)
 
 const routeAPI = '/api/workorders'
 
+const newEntry = Models.createWorkorder()
 const defaultTenant = Models.createTenant()
 
 // const mockVerifyId = (email = defaultLandlord.email) =>
@@ -29,7 +30,37 @@ afterAll(async () => {
 })
 
 describe('Workorder Routes', () => {
+  //#region - CREATE
+  describe("post: '" + routeAPI + "' endpoint", () => {
 
+    it('should return a 401 if user is not authenticated', async () => {
+      const results = await request.post(routeAPI).send(newEntry)
+
+      expect(results.status).toBe(401)
+    })
+
+    it('should return 201 status when successful', async () => {
+      let property = { id: 2 }
+      
+      admin.verifyIdToken.mockResolvedValue({email: defaultTenant.email})
+
+
+      // call function
+      const results = await request
+        .set('property', property)
+        .post(routeAPI)
+        .send(newEntry)
+        .set('Authorization', 'Bearer 1234')
+
+      // expected results
+      expect(results.status).toBe(201)
+      expect(results.body).toEqual({...newEntry})
+    })
+  })
+
+  //#endregion - CREATE
+
+  //#region - READ
   describe("get: '" + routeAPI + "' endpoint", () => {
     it('should return a 401 when the user is not authorized', async () => {
       const {error} = await request.get(routeAPI)
@@ -87,5 +118,6 @@ describe('Workorder Routes', () => {
       expect(response.title).toEqual("Work Order Title")
     })
   })
+  //#endregion
 
 })
