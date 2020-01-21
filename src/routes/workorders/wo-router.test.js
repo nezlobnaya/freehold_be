@@ -9,17 +9,19 @@ const request = supertest(app)
 
 const routeAPI = '/api/workorders'
 
-const defaultLandlord = Models.createUser()
+const defaultTenant = Models.createTenant()
 
-const mockVerifyId = (email = defaultLandlord.email) =>
-  admin.verifyIdToken.mockResolvedValue({email})
+// const mockVerifyId = (email = defaultLandlord.email) =>
+//   admin.verifyIdToken.mockResolvedValue({email})
 
 //#endregion
 
 beforeAll(async () => {
   await Db.reset()
-  await Db.seedTables()
-  await Db.insertUsers(defaultLandlord)
+  await Db.seedTables("users")
+  await Db.seedTables("properties")
+  await Db.seedTables("workorders")
+  await Db.insertUsers(defaultTenant)
 })
 
 afterAll(async () => {
@@ -36,7 +38,7 @@ describe('Workorder Routes', () => {
     })
 
     it('should return 200 status', async () => { 
-      admin.verifyIdToken.mockResolvedValue({email: defaultLandlord.email})
+      admin.verifyIdToken.mockResolvedValue({email: defaultTenant.email})
 
       const results = await request
         .get(routeAPI)
@@ -64,25 +66,25 @@ describe('Workorder Routes', () => {
       expect(error.status).toBe(401)
     })
 
-    it('should return 200 status', async () => { 
-      admin.verifyIdToken.mockResolvedValue({email: defaultLandlord.email})
-
-      const results = await request
-        .get(routeAPI)
-        .set('Authorization', 'Bearer 1234')
-
-      expect(results.status).toBe(200)
-      expect(results.body.length).toBe(0)
-    })
-
-    it('should return a length of 2', async () => {
+    it('should return 200 status', async (id = 1) => { 
       admin.verifyIdToken.mockResolvedValue({email: "tenant@gmail.com"})
 
       const results = await request
-        .get(routeAPI)
+        .get(routeAPI + "/" + id)
         .set('Authorization', 'Bearer 1234')
 
-      expect(results.body.length).toBe(2)
+      expect(results.status).toBe(200)
+    })
+
+    it('should return an object that matches example', async (id = 1) => {
+      admin.verifyIdToken.mockResolvedValue({email: "tenant@gmail.com"})
+
+      const results = await request
+        .get(routeAPI + "/" + id)
+        .set('Authorization', 'Bearer 1234')
+      const response = results.body
+
+      expect(response.title).toEqual("Work Order Title")
     })
   })
 
