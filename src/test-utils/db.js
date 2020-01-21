@@ -1,6 +1,8 @@
 const db = require('../../database/db.js')
 const cleaner = require('knex-cleaner')
+
 const seedData = require('../../database/seedData.js')
+const { users, properties, tenanthistory, workorders } = seedData
 
 const reset = async () => {
   try {
@@ -35,13 +37,52 @@ const insertTenantHistories = insertResourceIntoTable('tenanthistory')
 const getAllWorkorders = () => db.from('workorders as w')
 const insertWorkorders = insertResourceIntoTable('workorders as w')
 
-const seedTables = async () => {
-  const { users, properties, workorders } = seedData
-
+const seedTables = async (table) => {
   // Insert into Tables
-  await insertUsers([users.landlord, users.tenant, users.master])
-  await insertProperties([properties.prop1, properties.prop2])
-  await insertWorkorders([workorders.workorder1, workorders.workorder2])
+  switch(table) {
+    case "users": 
+      await insertUsers(users)
+      break
+    case "properties": 
+      await insertProperties(properties)
+      break
+    case "tenanthistory": 
+      await insertTenantHistories(tenanthistory)
+      break
+    case "workorders": 
+      await insertWorkorders(workorders)
+      break
+    default: 
+      await insertUsers(users)
+      await insertProperties(properties)
+      await insertTenantHistories(tenanthistory)
+      await insertWorkorders(workorders)
+  }
+}
+
+const countResults = async (table) => {
+  let results
+
+  // Select Table
+  switch(table) {
+    case "users": 
+      results = await getAllUsers()
+      break
+    case "properties": 
+      results = await getAllProperties()
+      break
+    case "tenanthistory": 
+      results = await getAllTenantHistory()
+      break
+    case "workorders": 
+      results = await getAllWorkorders()
+      break
+    default: 
+      results = null
+  }
+
+  return results.length
+
 }
 
 module.exports = {
@@ -56,4 +97,5 @@ module.exports = {
   insertUsers,
   insertTenantHistories,
   insertWorkorders,
+  countResults
 }
