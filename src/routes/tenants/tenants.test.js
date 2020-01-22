@@ -1,6 +1,6 @@
 const supertest = require('supertest')
 const app = require('../../server')
-const admin = require('../../lib/admin')
+const jwt = require('../../lib/jwt')
 
 const db = require('../../../database/db')
 
@@ -17,6 +17,13 @@ afterAll(async () => {
 })
 
 const defaultLandlord = Models.createLandlord()
+
+const createToken = email => {
+  const token = jwt.signToken({sub: email})
+  return 'Bearer ' + token
+}
+
+const defaultToken = createToken(defaultLandlord.email)
 
 const testFixture = async () => {
   const users = await Db.insertUsers([
@@ -55,15 +62,11 @@ const testFixture = async () => {
   }
 }
 
-const mockVerifyId = (email = defaultLandlord.email) =>
-  admin.verifyIdToken.mockResolvedValue({email})
-
 describe('POST /api/tenants', () => {
   const endpoint = '/api/tenants'
 
   it('should return a status of 201 when successfully creating a tenant', async () => {
     await testFixture()
-    const fakeToken = '1234'
 
     const tenant = Models.createTenant({
       firstName: 'peter',
@@ -75,10 +78,9 @@ describe('POST /api/tenants', () => {
       ...tenant,
     }
 
-    mockVerifyId()
     const results = await request
       .post(endpoint)
-      .set('Authorization', 'Bearer ' + fakeToken)
+      .set('Authorization', defaultToken)
       .send(input)
 
     expect(results.status).toBe(201)
@@ -86,8 +88,6 @@ describe('POST /api/tenants', () => {
 
   it('should return the newly created user', async () => {
     let {landlord, properties} = await testFixture()
-    const fakeToken = '1234'
-
     const tenant = Models.createTenant({
       firstName: 'peter',
       lastName: 'peterton',
@@ -98,10 +98,9 @@ describe('POST /api/tenants', () => {
       ...tenant,
     }
 
-    mockVerifyId()
     const results = await request
       .post(endpoint)
-      .set('Authorization', 'Bearer ' + fakeToken)
+      .set('Authorization', defaultToken)
       .send(input)
 
     expect(results.body).toEqual({...input, id: 5, landlordId: landlord.id})
@@ -118,8 +117,6 @@ describe('POST /api/tenants', () => {
 
     await Db.insertUsers(user2)
 
-    const fakeToken = '1234'
-
     const tenant = Models.createTenant({
       firstName: 'peter',
       lastName: 'peterton',
@@ -130,11 +127,11 @@ describe('POST /api/tenants', () => {
       ...tenant,
     }
 
-    mockVerifyId(user2.email)
+    const token = createToken(user2.email)
 
     const results = await request
       .post(endpoint)
-      .set('Authorization', 'Bearer ' + fakeToken)
+      .set('Authorization', token)
       .send(input)
 
     expect(results.status).toBe(401)
@@ -152,8 +149,6 @@ describe('POST /api/tenants', () => {
 
     await Db.insertUsers(landlord2)
 
-    const fakeToken = '1234'
-
     const tenant = Models.createTenant({
       firstName: 'peter',
       lastName: 'peterton',
@@ -164,11 +159,11 @@ describe('POST /api/tenants', () => {
       ...tenant,
     }
 
-    mockVerifyId(landlord2.email)
+    const token = createToken(landlord2.email)
 
     const results = await request
       .post(endpoint)
-      .set('Authorization', 'Bearer ' + fakeToken)
+      .set('Authorization', token)
       .send(input)
 
     expect(results.status).toBe(401)
@@ -198,8 +193,6 @@ describe('POST /api/tenants', () => {
   it('should change the status of the property from vacant to occupied when a tenant is added', async () => {
     const {properties} = await testFixture()
 
-    const fakeToken = '1234'
-
     const tenant = Models.createTenant({
       firstName: 'peter',
       lastName: 'peterton',
@@ -210,10 +203,9 @@ describe('POST /api/tenants', () => {
       ...tenant,
     }
 
-    mockVerifyId()
     await request
       .post(endpoint)
-      .set('Authorization', 'Bearer ' + fakeToken)
+      .set('Authorization', defaultToken)
       .send(input)
 
     const [prop] = await db
@@ -233,7 +225,6 @@ describe('GET /api/tenants', () => {
   it('should return a 401 if the user is not logged in', async () => {
     await testFixture()
 
-    mockVerifyId()
     let res = await request.get(endpoint)
 
     expect(res.status).toBe(401)
@@ -242,8 +233,9 @@ describe('GET /api/tenants', () => {
   it('should return a 401 if the user is a tenant', async () => {
     let {tenants} = await testFixture()
 
-    mockVerifyId({email: tenants[0].email})
-    let res = await request.get(endpoint).set('Authorzation', 'Bearer 1234')
+    const token = createToken(tenants[0].email)
+
+    let res = await request.get(endpoint).set('Authorzation', token)
 
     expect(res.status).toBe(401)
   })
@@ -251,8 +243,7 @@ describe('GET /api/tenants', () => {
   it('should return a 200 if successful', async () => {
     await testFixture()
 
-    mockVerifyId()
-    const res = await request.get(endpoint).set('Authorization', 'Bearer 1234')
+    const res = await request.get(endpoint).set('Authorization', defaultToken)
 
     expect(res.status).toBe(200)
   })
@@ -260,8 +251,7 @@ describe('GET /api/tenants', () => {
   it('should return an array of tenants', async () => {
     await testFixture()
 
-    mockVerifyId()
-    const res = await request.get(endpoint).set('Authorization', 'Bearer 1234')
+    const res = await request.get(endpoint).set('Authorization', defaultToken)
 
     expect(Array.isArray(res.body)).toBe(true)
   })
@@ -277,8 +267,7 @@ describe('GET /api/tenants', () => {
       }),
     ])
 
-    mockVerifyId()
-    const res = await request.get(endpoint).set('Authorization', 'Bearer 1234')
+    const res = await request.get(endpoint).set('Authorization', defaultToken)
 
     const tenants = res.body
 
@@ -301,10 +290,8 @@ describe('GET /api/tenants/:id', () => {
   it('should return 401 if not logged in as a landlord', async () => {
     const {tenants} = await testFixture()
 
-    mockVerifyId(tenants[0].email)
-    const res = await request
-      .get(endpoint + 1)
-      .set('Authorization', 'Bearer 1234')
+    const token = createToken(tenants[0].email)
+    const res = await request.get(endpoint + 1).set('Authorization', token)
 
     expect(res.status).toBe(401)
   })
@@ -312,11 +299,9 @@ describe('GET /api/tenants/:id', () => {
   it('should return 401 if the tenant does not belong to the landlord', async () => {
     const {landlord2} = await testFixture()
 
-    mockVerifyId(landlord2.email)
+    const token = createToken(landlord2.email)
 
-    const res = await request
-      .get(endpoint + 3)
-      .set('Authorization', 'Bearer 1234')
+    const res = await request.get(endpoint + 3).set('Authorization', token)
 
     expect(res.status).toBe(401)
   })
@@ -324,11 +309,9 @@ describe('GET /api/tenants/:id', () => {
   it('should return 200 when successful', async () => {
     const {landlord} = await testFixture()
 
-    mockVerifyId(landlord.email)
+    const token = createToken(landlord.email)
 
-    const res = await request
-      .get(endpoint + 3)
-      .set('Authorization', 'Bearer 1234')
+    const res = await request.get(endpoint + 3).set('Authorization', token)
 
     expect(res.status).toBe(200)
   })
@@ -336,11 +319,9 @@ describe('GET /api/tenants/:id', () => {
   it('should return the desired tenant', async () => {
     const {landlord, tenants} = await testFixture()
 
-    mockVerifyId(landlord.email)
+    const token = createToken(landlord.email)
 
-    const res = await request
-      .get(endpoint + 3)
-      .set('Authorization', 'Bearer 1234')
+    const res = await request.get(endpoint + 3).set('Authorization', token)
 
     expect(res.body).toEqual(tenants[0])
   })
@@ -368,12 +349,12 @@ describe('PUT /api/tenants/:id', () => {
       lastname: 'frederson',
     }
 
-    mockVerifyId(tenants[1].email)
+    const token = createToken(tenants[1].email)
 
     const res = await request
       .put(endpoint)
       .send(input)
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
 
     expect(res.status).toBe(401)
   })
@@ -386,12 +367,12 @@ describe('PUT /api/tenants/:id', () => {
       lastName: 'frederson',
     }
 
-    mockVerifyId(landlord2.email)
+    const token = createToken(landlord2.email)
 
     const res = await request
       .put(endpoint)
       .send(input)
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
 
     expect(res.status).toBe(401)
     expect(res.body).toEqual({
@@ -405,20 +386,21 @@ describe('PUT /api/tenants/:id', () => {
     it('should return 400 if the email key is present', async () => {
       const {landlord} = await testFixture()
 
-      mockVerifyId(landlord.email)
+      const token = createToken(landlord.email)
+
       const responses = await Promise.all([
         request
           .put(endpoint)
           .send({email: ''})
-          .set('Authorization', 'Bearer 1234'),
+          .set('Authorization', token),
         request
           .put(endpoint)
           .send({email: null})
-          .set('Authorization', 'Bearer 1234'),
+          .set('Authorization', token),
         request
           .put(endpoint)
           .send({email: 'someother@email.com'})
-          .set('Authorization', 'Bearer 1234'),
+          .set('Authorization', token),
       ])
 
       const error = {
@@ -438,11 +420,11 @@ describe('PUT /api/tenants/:id', () => {
     const {landlord} = await testFixture()
     const input = {firstName: 'fred', lastName: 'frederson'}
 
-    mockVerifyId(landlord.email)
+    const token = createToken(landlord.email)
     const res = await request
       .put(endpoint)
       .send(input)
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
 
     expect(res.status).toBe(200)
   })
@@ -451,12 +433,12 @@ describe('PUT /api/tenants/:id', () => {
     const {landlord, tenants} = await testFixture()
     const input = {firstName: 'fred', lastName: 'frederson'}
 
-    mockVerifyId(landlord.email)
+    const token = createToken(landlord.email)
 
     const res = await request
       .put(endpoint)
       .send(input)
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
 
     expect(res.body).toEqual({...tenants[0], ...input})
   })

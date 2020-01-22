@@ -31,6 +31,7 @@ const tenantModel = {
 const registerInput = {
   email: 'example@gmail.com',
   password: 'badpassword',
+  type: 'landlord',
 }
 const registerReturn = {
   token:

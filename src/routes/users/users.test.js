@@ -2,7 +2,9 @@ const supertest = require('supertest')
 const app = require('../../server')
 const {Db, Models} = require('../../test-utils')
 
-const admin = require('../../lib/admin')
+const jwt = require('../../lib/jwt')
+
+const createToken = user => 'Bearer ' + jwt.signToken({sub: user.email})
 
 const req = supertest(app)
 
@@ -34,9 +36,9 @@ describe('GET /api/users/me', () => {
   it('should return a 200 if the user is authorized', async () => {
     let [, tenant] = await testFixture()
 
-    admin.verifyIdToken.mockResolvedValue({email: tenant.email})
+    const token = createToken(tenant)
 
-    const res = await req.get(endpoint).set('Authorization', 'Bearer 1234')
+    const res = await req.get(endpoint).set('Authorization', token)
 
     expect(res.status).toBe(200)
   })
@@ -44,9 +46,9 @@ describe('GET /api/users/me', () => {
   it('should return user info in the correct shape', async () => {
     let [landlord] = await testFixture()
 
-    admin.verifyIdToken.mockResolvedValue({email: landlord.email})
+    const token = createToken(landlord)
 
-    const res = await req.get(endpoint).set('Authorization', 'Bearer 1234')
+    const res = await req.get(endpoint).set('Authorization', token)
 
     expect(res.body).toEqual({
       firstName: landlord.firstName,
@@ -78,10 +80,10 @@ describe('PUT /api/users/me', () => {
       firstName: 'George',
     }
 
-    admin.verifyIdToken.mockResolvedValue({email: landlord.email})
+    const token = createToken(landlord)
     const res = await req
       .put(endpoint)
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
       .send(update)
 
     expect(res.status).toBe(200)
@@ -102,10 +104,11 @@ describe('PUT /api/users/me', () => {
       ...rest
     } = landlord
 
-    admin.verifyIdToken.mockResolvedValue({email: landlord.email})
+    const token = createToken(landlord)
+
     const res = await req
       .put(endpoint)
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
       .send(update)
 
     expect(res.body).toEqual({...rest, ...update})
@@ -119,10 +122,10 @@ describe('PUT /api/users/me', () => {
       email: 'georgey@gmail.com',
     }
 
-    admin.verifyIdToken.mockResolvedValue({email: landlord.email})
+    const token = createToken(landlord)
     const res = await req
       .put(endpoint)
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
       .send(update)
 
     expect(res.status).toBe(400)
@@ -135,10 +138,10 @@ describe('PUT /api/users/me', () => {
       email: '',
     }
 
-    admin.verifyIdToken.mockResolvedValue({email: landlord.email})
+    const token = createToken(landlord)
     const res = await req
       .put(endpoint)
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
       .send(update)
 
     expect(res.status).toBe(400)
@@ -151,10 +154,10 @@ describe('PUT /api/users/me', () => {
       email: null,
     }
 
-    admin.verifyIdToken.mockResolvedValue({email: landlord.email})
+    const token = createToken(landlord)
     const res = await req
       .put(endpoint)
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
       .send(update)
 
     expect(res.status).toBe(400)

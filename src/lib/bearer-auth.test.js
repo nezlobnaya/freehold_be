@@ -1,10 +1,14 @@
+const jwt = require('../lib/jwt')
 const bearerAuth = require('./bearer-auth')
 const {Db, Models, Express} = require('../test-utils')
 
-// For mocking purposed
-const admin = require('./admin')
-
 const defaultUser = Models.createUser()
+
+const createToken = email => {
+  const token = jwt.signToken({sub: email})
+
+  return `Bearer ${token}`
+}
 
 beforeEach(async () => {
   await Db.reset()
@@ -18,11 +22,11 @@ describe('bearerAuth', () => {
   it('should call next when the token is valid', async () => {
     // arrange
     await Db.insertUsers(defaultUser)
-    const req = Express.mockRequest()
+    const req = Express.mockRequest({
+      headers: {authorization: createToken(defaultUser.email)},
+    })
     const res = Express.mockResponse()
     const next = jest.fn()
-
-    admin.verifyIdToken.mockResolvedValue({email: defaultUser.email})
 
     // act
     await bearerAuth(req, res, next)
@@ -33,11 +37,11 @@ describe('bearerAuth', () => {
 
   it('should set the correct user on `req.user`', async () => {
     const [insertedUser] = await Db.insertUsers(defaultUser)
-    const req = Express.mockRequest()
+    const req = Express.mockRequest({
+      headers: {authorization: createToken(defaultUser.email)},
+    })
     const res = Express.mockResponse()
     const next = jest.fn()
-
-    admin.verifyIdToken.mockResolvedValue({email: defaultUser.email})
 
     // eslint-disable-next-line
     const {residenceId, landlordId, ...rest} = insertedUser
@@ -55,7 +59,7 @@ describe('bearerAuth', () => {
   // token when Bearer is used
   it("should call next when Bearer auth isn't used", async () => {
     const req = Express.mockRequest({
-      header: {authorization: 'Basic 1234'},
+      headers: {authorization: 'Basic 1234'},
     })
     const res = Express.mockResponse()
     const next = jest.fn()
@@ -69,7 +73,6 @@ describe('bearerAuth', () => {
     const res = Express.mockResponse()
     const next = jest.fn()
 
-    admin.verifyIdToken.mockRejectedValue({error: 'not a valid token'})
     await bearerAuth(req, res, next)
     expect(res.status).toHaveBeenCalledWith(401)
     expect(res.send).toHaveBeenCalledWith({error: 'You are not authorized'})

@@ -1,18 +1,19 @@
 const {createUser, login} = require('./')
-const {Db, Express} = require('../../test-utils')
+const {Express, Db, Models} = require('../../test-utils')
 const firebase = require('../../lib/firebase')
 
-const mockRequest = () =>
+const mockRequest = input =>
   Express.mockRequest({
     body: {
       email: 'test@gmail.com',
       password: '123',
     },
+    ...input,
   })
 
-const mockExpress = () => ({
-  req: mockRequest(),
-  res: Express.mockResponse(),
+const mockExpress = (req, res) => ({
+  req: mockRequest(req),
+  res: Express.mockResponse(res),
 })
 
 beforeEach(async () => {
@@ -25,13 +26,14 @@ afterAll(async () => {
 
 describe('createUser', () => {
   it('should return a 201 on success', async () => {
-    const {req, res} = mockExpress()
+    const user = Models.createLandlord()
+    await Db.insertUsers([user])
+
+    const {req, res} = mockExpress({body: {email: user.email}, user: user})
 
     firebase.createUserWithEmailAndPassword.mockResolvedValue({
       user: firebase.user,
     })
-
-    firebase.user.getIdToken.mockResolvedValue('1234')
 
     await createUser(req, res)
 
@@ -39,17 +41,22 @@ describe('createUser', () => {
   })
 
   it('should send a token on success', async () => {
-    const {req, res} = mockExpress()
+    const {req, res} = mockExpress({user: {}})
+    const expected = {
+      token: expect.any(String),
+      user: {
+        email: req.body.email,
+      },
+    }
 
     firebase.createUserWithEmailAndPassword.mockResolvedValue({
       user: firebase.user,
     })
 
-    firebase.user.getIdToken.mockResolvedValue('1234')
-
     await createUser(req, res)
 
-    expect(res.json).toHaveBeenCalledWith({token: '1234'})
+    expect(res.json).toHaveBeenCalledTimes(1)
+    expect(res.json).toHaveBeenCalledWith(expected)
   })
 
   it('should send 400 if email is already taken', async () => {
@@ -58,8 +65,6 @@ describe('createUser', () => {
     firebase.createUserWithEmailAndPassword.mockRejectedValue({
       code: 'auth/email-already-in-use',
     })
-
-    firebase.user.getIdToken.mockResolvedValue('1234')
 
     await createUser(req, res)
 
@@ -70,14 +75,24 @@ describe('createUser', () => {
 
 describe('login', () => {
   it('should return a 200 when successful', async () => {
-    const {req, res} = mockExpress()
+    const user = Models.createLandlord({email: 'test@gmail.com'})
+
+    await Db.insertUsers([user])
+    const {req, res} = mockExpress({body: {email: 'test@gmail.com'}})
 
     firebase.signInWithEmailAndPassword.mockResolvedValue()
-    firebase.currentUser.getIdToken.mockResolvedValue('1234')
     await login(req, res)
 
     expect(res.status).toHaveBeenCalledWith(200)
-    expect(res.json).toHaveBeenCalledWith({token: '1234'})
+    expect(res.json).toHaveBeenCalledWith({
+      token: expect.any(String),
+      user: {
+        email: user.email,
+        type: user.type,
+        firstName: user.firstName,
+        lastName: user.lastName,
+      },
+    })
   })
 
   it('should return a 401 when bad credentials are given', async () => {

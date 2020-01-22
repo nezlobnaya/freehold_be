@@ -1,5 +1,5 @@
 const supertest = require('supertest')
-const admin = require('../../lib/admin')
+const jwt = require('../../lib/jwt')
 const app = require('../../server.js') // Link to your server file
 const {Db, Models} = require('../../test-utils')
 
@@ -8,8 +8,7 @@ const request = supertest(app)
 const defaultLandlord = Models.createUser()
 const newProperty = Models.createProperty()
 
-const mockVerifyId = (email = defaultLandlord.email) =>
-  admin.verifyIdToken.mockResolvedValue({email})
+const createToken = user => 'Bearer ' + jwt.signToken({sub: user.email})
 
 beforeEach(async () => {
   await Db.reset()
@@ -73,12 +72,12 @@ describe('Properties Routes', () => {
     it('should return 201 status when successful', async () => {
       // call function
 
-      admin.verifyIdToken.mockResolvedValue({email: defaultLandlord.email})
+      const token = createToken(defaultLandlord)
 
       const results = await request
         .post('/api/properties/')
         .send(newProperty)
-        .set('Authorization', 'Bearer 1234')
+        .set('Authorization', token)
 
       // expected results
       expect(results.status).toBe(201)
@@ -97,18 +96,18 @@ describe('Properties Routes', () => {
     })
 
     it('should return 200 status', async () => {
-      admin.verifyIdToken.mockResolvedValue({email: defaultLandlord.email})
+      const token = createToken(defaultLandlord)
 
       const results = await request
         .get('/api/properties/')
-        .set('Authorization', 'Bearer 1234')
+        .set('Authorization', token)
 
       expect(results.status).toBe(200)
       expect(results.body.length).toBe(0)
     })
 
     it('should return a length of 2', async () => {
-      admin.verifyIdToken.mockResolvedValue({email: defaultLandlord.email})
+      const token = createToken(defaultLandlord)
 
       await Db.insertProperties([
         Models.createProperty(),
@@ -117,7 +116,7 @@ describe('Properties Routes', () => {
 
       const results = await request
         .get('/api/properties/')
-        .set('Authorization', 'Bearer 1234')
+        .set('Authorization', token)
 
       expect(results.body.length).toBe(2)
     })
@@ -125,7 +124,7 @@ describe('Properties Routes', () => {
 
   describe("get: '/api/properties/:id' endpoint", () => {
     it('should return 200 status', async () => {
-      admin.verifyIdToken.mockResolvedValue({email: defaultLandlord.email})
+      const token = createToken(defaultLandlord)
 
       await Db.insertProperties([
         Models.createProperty(),
@@ -134,19 +133,19 @@ describe('Properties Routes', () => {
 
       const results = await request
         .get('/api/properties/1')
-        .set('Authorization', 'Bearer 1234')
+        .set('Authorization', token)
 
       expect(results.status).toBe(200)
     })
 
     it('should return an object that matches example', async () => {
-      admin.verifyIdToken.mockResolvedValue({email: defaultLandlord.email})
+      const token = createToken(defaultLandlord)
 
       const [property] = await Db.insertProperties([Models.createProperty()])
 
       const results = await request
         .get('/api/properties/1')
-        .set('Authorization', 'Bearer 1234')
+        .set('Authorization', token)
       const response = results.body
 
       expect(response).toEqual(property)
@@ -197,7 +196,7 @@ describe('Properties Routes', () => {
   describe("put: '/api/properties/' endpoint", () => {
     it('should return 200 status', async () => {
       // call function
-      admin.verifyIdToken.mockResolvedValue({email: defaultLandlord.email})
+      const token = createToken(defaultLandlord)
       const prop2 = Models.createProperty({name: 'some funky name'})
       const input = {name: 'a new funky name'}
 
@@ -208,7 +207,7 @@ describe('Properties Routes', () => {
 
       const results = await request
         .put('/api/properties/2')
-        .set('Authorization', 'Bearer 1234')
+        .set('Authorization', token)
         .send(input)
       // expected results
       expect(results.status).toBe(200)
@@ -216,12 +215,12 @@ describe('Properties Routes', () => {
     })
 
     it('should fail if id is not valid with message: Could not find property with given id', async () => {
-      mockVerifyId()
+      const token = createToken(defaultLandlord)
 
       // call function
       const results = await request
         .put('/api/properties/5')
-        .set('Authorization', 'Bearer 1234')
+        .set('Authorization', token)
         .send({name: 'Sample Property Updated'})
 
       // expected results
@@ -235,7 +234,7 @@ describe('Properties Routes', () => {
   //#region - DELETE
   describe("delete: '/api/properties/' endpoint", () => {
     it('should return 200 status', async () => {
-      mockVerifyId()
+      const token = createToken(defaultLandlord)
 
       await Db.insertProperties([
         Models.createProperty(),
@@ -246,30 +245,30 @@ describe('Properties Routes', () => {
       // call function
       const results = await request
         .delete('/api/properties/2')
-        .set('Authorization', 'Bearer 1234')
+        .set('Authorization', token)
       // expected results
       expect(results.status).toBe(200)
     })
 
     it('should return property to be deleted', async () => {
-      mockVerifyId()
+      const token = createToken(defaultLandlord)
       const prop2 = Models.createProperty({name: 'Second Prop'})
 
       await Db.insertProperties([Models.createProperty(), prop2])
 
       const results = await request
         .delete('/api/properties/2')
-        .set('Authorization', 'Bearer')
+        .set('Authorization', token)
       // expected results
       expect(results.body).toEqual({...prop2, id: 2})
     })
 
     it('should fail if id is not valid with status 404', async () => {
-      mockVerifyId()
+      const token = createToken(defaultLandlord)
       // call function
       const results = await request
         .delete('/api/properties/5')
-        .set('Authorization', 'Bearer 1234')
+        .set('Authorization', token)
       // expected results
       expect(results.status).toBe(404)
       expect(results.body).toEqual({
@@ -282,7 +281,7 @@ describe('Properties Routes', () => {
 })
 
 describe('GET /api/properties/:id/tenants', () => {
-  it('should return 401 when logged in', async () => {
+  it('should return 401 when not logged in', async () => {
     await tenantsFixture()
     const results = await request.get('/api/properties/1/tenants')
 
@@ -291,10 +290,11 @@ describe('GET /api/properties/:id/tenants', () => {
 
   it('should send a 401 when the landlord is not authorized to view the property', async () => {
     await tenantsFixture()
-    mockVerifyId()
+    const token = createToken(defaultLandlord)
+
     const results = await request
       .get('/api/properties/2/tenants')
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
 
     expect(results.status).toBe(401)
   })
@@ -302,11 +302,11 @@ describe('GET /api/properties/:id/tenants', () => {
   it('should send 404 when no property exists with that id', async () => {
     await tenantsFixture()
 
-    mockVerifyId()
+    const token = createToken(defaultLandlord)
 
     const results = await request
       .get('/api/properties/3/tenants')
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
 
     expect(results.status).toBe(404)
   })
@@ -314,11 +314,11 @@ describe('GET /api/properties/:id/tenants', () => {
   it('should send a 200 when successful', async () => {
     await tenantsFixture()
 
-    mockVerifyId()
+    const token = createToken(defaultLandlord)
 
     const results = await request
       .get('/api/properties/1/tenants')
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
 
     expect(results.status).toBe(200)
   })
@@ -326,11 +326,11 @@ describe('GET /api/properties/:id/tenants', () => {
   it('should return an array of tenants when successful', async () => {
     const {tenants} = await tenantsFixture()
 
-    mockVerifyId()
+    const token = createToken(defaultLandlord)
 
     const results = await request
       .get('/api/properties/1/tenants')
-      .set('Authorization', 'Bearer 1234')
+      .set('Authorization', token)
 
     expect(results.body).toEqual(tenants)
   })

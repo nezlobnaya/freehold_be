@@ -1,8 +1,9 @@
 const User = require('../../models/user')
 const firebase = require('../../lib/firebase')
+const jwt = require('../../lib/jwt')
 
 async function createUser(req, res) {
-  const {email, password} = req.body
+  const {email, password, type} = req.body
 
   try {
     // Create the user
@@ -14,12 +15,19 @@ async function createUser(req, res) {
       return res.status(400).json({message: 'Account not created'})
     }
 
-    await User.create({email, type: 'landlord'})
+    const payload = {sub: email}
 
-    // Generate a JWT that can be used for future requests
-    const token = await user.user.getIdToken()
+    const token = jwt.signToken(payload)
 
-    res.status(201).json({token})
+    res.status(201).json({
+      token,
+      user: {
+        type,
+        email,
+        firstName: req.user.firstName,
+        lastName: req.user.lastName,
+      },
+    })
   } catch (err) {
     if (err.code === 'auth/email-already-in-use') {
       return res.status(400).json({message: 'Email is already used'})
@@ -42,9 +50,16 @@ async function login(req, res) {
      * */
     await firebase.auth().signInWithEmailAndPassword(email, password)
 
-    const token = await firebase.auth().currentUser.getIdToken()
+    const user = await User.findByEmail(email, [
+      'email',
+      'type',
+      'firstName',
+      'lastName',
+    ])
 
-    res.status(200).json({token})
+    const token = jwt.signToken({sub: email})
+
+    res.status(200).json({token, user})
   } catch (err) {
     res.status(401).json({
       error: 'Invalid credentials',

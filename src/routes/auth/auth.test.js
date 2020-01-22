@@ -1,4 +1,5 @@
 const supertest = require('supertest')
+const jwt = require('jsonwebtoken')
 const app = require('../../server')
 const firebase = require('../../lib/firebase')
 const {Db, Models} = require('../../test-utils')
@@ -27,34 +28,46 @@ const mockUserResponse = () => ({
 const createLogin = input => ({
   email: 'test@gmail.com',
   password: 'fakepassword',
+  type: 'landlord',
   ...input,
 })
 
 describe('POST /api/auth/register', () => {
   const endpoint = '/api/auth/register'
 
-  it('should return a 201 upon successfully creating a landlord', async () => {
-    const input = createLogin()
-    const fakeToken = '1234'
+  describe('Succsefully creating an account', () => {
+    it('should return a 201 upon successfully creating a landlord', async () => {
+      const input = createLogin()
+      const mocked = mockUserResponse()
+      firebase.createUserWithEmailAndPassword.mockResolvedValue(mocked)
 
-    const mocked = mockUserResponse()
+      const response = await request.post(endpoint).send(input)
 
-    firebase.createUserWithEmailAndPassword.mockResolvedValue(mocked)
-    mocked.user.getIdToken.mockResolvedValue(fakeToken)
-    const response = await request.post(endpoint).send(input)
-    expect(response.status).toBe(201)
-  })
+      expect(response.status).toBe(201)
+    })
 
-  it('should return a token when succesfully created', async () => {
-    const input = createLogin()
-    const fakeToken = '1234'
+    it('should return a 201 upon successfully creating a tenant', async () => {
+      const tenant = Models.createTenant()
+      await Db.insertUsers([Models.createLandlord(), tenant])
+      const input = createLogin({email: tenant.email, type: 'tenant'})
+      const mocked = mockUserResponse()
 
-    const mocked = mockUserResponse()
+      firebase.createUserWithEmailAndPassword.mockResolvedValue(mocked)
 
-    firebase.createUserWithEmailAndPassword.mockResolvedValue(mocked)
-    mocked.user.getIdToken.mockResolvedValue(fakeToken)
-    const response = await request.post(endpoint).send(input)
-    expect(response.body).toEqual({token: fakeToken})
+      const response = await request.post(endpoint).send(input)
+
+      expect(response.status).toBe(201)
+    })
+
+    it('should return a token when succesfully created', async () => {
+      const input = createLogin()
+
+      const mocked = mockUserResponse()
+
+      firebase.createUserWithEmailAndPassword.mockResolvedValue(mocked)
+      const response = await request.post(endpoint).send(input)
+      expect(response.body.token).not.toBeUndefined()
+    })
   })
 
   describe('should return 400 when invalid input is given', () => {
@@ -90,6 +103,7 @@ describe('POST /api/auth/register', () => {
         errors: {email: 'The email supplied is not valid'},
       })
     })
+
     it('password must be at least 8 characters long', async () => {
       const input = createLogin({password: '1234'})
 
@@ -102,7 +116,15 @@ describe('POST /api/auth/register', () => {
     })
   })
 
-  it.skip('should return 400 when a user with the same email exists', () => {})
+  it('should return 401 when tenant is not invited', async () => {
+    const input = createLogin({type: 'tenant'})
+    const mocked = mockUserResponse()
+    firebase.createUserWithEmailAndPassword.mockResolvedValue(mocked)
+
+    const response = await request.post(endpoint).send(input)
+
+    expect(response.status).toBe(401)
+  })
 })
 
 describe('POST /api/auth/login', () => {
@@ -112,12 +134,8 @@ describe('POST /api/auth/login', () => {
     const user = Models.createUser()
     const login = createLogin({email: user.email})
     await Db.insertUsers([user])
-    const fakeToken = '1234'
-
-    // signInWithEmailAndPassword
     firebase.signInWithEmailAndPassword.mockResolvedValue()
-    // currentUser.getIdToken
-    firebase.currentUser.getIdToken.mockResolvedValue(fakeToken)
+
     const response = await request.post(endpoint).send(login)
 
     expect(response.status).toBe(200)
@@ -126,15 +144,14 @@ describe('POST /api/auth/login', () => {
     const user = Models.createUser()
     const login = createLogin({email: user.email})
     await Db.insertUsers([user])
-    const fakeToken = '1234'
-
-    // signInWithEmailAndPassword
     firebase.signInWithEmailAndPassword.mockResolvedValue()
-    // currentUser.getIdToken
-    firebase.currentUser.getIdToken.mockResolvedValue(fakeToken)
+
     const response = await request.post(endpoint).send(login)
 
-    expect(response.body).toEqual({token: fakeToken})
+    const {token} = response.body
+    const decoded = jwt.decode(token)
+
+    expect(decoded.sub).toEqual(user.email)
   })
   it.skip('should return a 400 when invalid input is given', () => {})
   it.skip('should return a 401 when incorrect email / password combination given', () => {})
