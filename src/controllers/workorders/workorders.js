@@ -5,7 +5,7 @@ const create = async (req, res) => {
   const input = req.body
 
   try {
-    const results = await Workorders.add(input, req.property.id, req.user.id)
+    const results = await Workorders.add(input, req.user.id)
     if (results) {
       res.status(201).json(results)
     } else {
