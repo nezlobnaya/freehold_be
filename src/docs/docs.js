@@ -114,10 +114,37 @@ const updateTenantHistoryReturn = {
 const workorders = []
 seedData.workorders.forEach((x, i) => { workorders.push({ "id": i + 1, ...x }) })
 
-const addWorkorderInput = {}
-const addWorkorderReturn = {}
-const updateWorkorderInput = {}
-const updateWorkorderReturn = {}
+const addWorkorderInput = {
+  "title": "Short Description",
+  "description": "Description of the issue.",
+  "type": "electrical",
+  "startDate": "01-01-2020",
+  "endDate": null,
+  "propertyId": 1
+}
+const addWorkorderReturn = {
+  "id": 4,
+  "title": "Short Description",
+  "description": "Description of the issue.",
+  "type": "electrical",
+  "startDate": "01-01-2020",
+  "endDate": null,
+  "propertyId": 1,
+  "createdBy": 5
+}
+const updateWorkorderInput = {
+  "endDate": "01-20-2020"
+}
+const updateWorkorderReturn = {
+  "id": 3,
+  "title": "Third Workorder",
+  "description": "Description of the issue.",
+  "type": "plumbing",
+  "startDate": "01-16-2020",
+  "endDate": "01-20-2020",
+  "propertyId": 7,
+  "createdBy": 5
+}
 
 //#endregion
 
