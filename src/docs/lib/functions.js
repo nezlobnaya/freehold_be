@@ -9,6 +9,7 @@ module.exports = {
   modelsUsers,
   modelsProperty,
   modelsTenantHistory,
+  modelsWorkorders,
   // Endpoints
   displayAxios,
   displayEndpoints,
@@ -113,6 +114,25 @@ function modelsTenantHistory() {
       tenantHistoryTodo,
       tenantHistoryComment,
       docs.models['Tenant History'].examples[0],
+    )
+  output(outputContent)
+}
+
+// Workorder Model
+function modelsWorkorders() {
+  // Todo
+  let todo = ''
+  // Comments
+  let comment = ''
+
+  let header = '<h2>Tenant History Model</h2> '
+  let outputContent =
+    header +
+    models(
+      '',
+      todo,
+      comment,
+      docs.models['Work Orders'].examples[0],
     )
   output(outputContent)
 }
