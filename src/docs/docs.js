@@ -114,6 +114,11 @@ const updateTenantHistoryReturn = {
 const workorders = []
 seedData.workorders.forEach((x, i) => { workorders.push({ "id": i + 1, ...x }) })
 
+const addWorkorderInput = {}
+const addWorkorderReturn = {}
+const updateWorkorderInput = {}
+const updateWorkorderReturn = {}
+
 //#endregion
 
 // #region - Work Order History variables
@@ -209,6 +214,14 @@ const docs = {
               onclick: "{showContent('tenantHistoryEndpoints')}",
               docs: 'docs.endpoints.TenantHistory',
               content: 'Tenant History Endpoints',
+            },
+            {
+              section: 'workorderEndpoints',
+              tag: 'h3',
+              class: 'moreInfo',
+              onclick: "{showContent('workorderEndpoints')}",
+              docs: 'docs.endpoints.Workorder',
+              content: 'Work Order Endpoints',
             },
             {
               section: 'sampleEndpoints',
@@ -518,6 +531,84 @@ const docs = {
           {message: 'Could not find entry with given id.'},
           {message: 'Failed to delete entry.'},
         ],
+      },
+    },
+    Workorder: {
+      Add: {
+        header: 'Add a Work order',
+        todo: '',
+        comment: '',
+        endpoint: '/api/workorders/',
+        type: 'post',
+        description: 'Adds a Work order to the database.',
+        expectedInput: addWorkorderInput,
+        sampleRequest: {
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: addWorkorderReturn,
+        expectedFailedReturn: {message: 'Failed to create new work order.'},
+      },
+      Get: {
+        header: 'Get a Work order',
+        todo: '',
+        comment: '',
+        endpoint: '/api/workorders/:id',
+        type: 'get',
+        description: 'Returns an object based on the Work Order id.',
+        expectedInput: '',
+        sampleRequest: {
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: workorders[0],
+        expectedFailedReturn: {message: 'Failed to get results.'},
+      },
+      GetAll: {
+        header: 'Get All Work Orders',
+        todo: '',
+        comment: '',
+        endpoint: '/api/workorders/',
+        type: 'GET',
+        description: 'Returns an array of all Work Orders in the database.',
+        expectedInput: '',
+        sampleRequest: {
+          axiosThen: 'token => console.log&lpar;token&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: fromJSON(workorders),
+        expectedFailedReturn: {message: 'Failed to get results.'},
+      },
+      Update: {
+        header: 'Update a Work Order',
+        todo: '',
+        comment: '',
+        endpoint: '/api/workorders/:id',
+        type: 'put',
+        description: 'Updates a work order based on id.',
+        expectedInput: updateWorkorderInput,
+        sampleRequest: {
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: updateWorkorderReturn,
+        expectedFailedReturn: {message: 'Failed to update the workorder.'},
+      },
+      Delete: {
+        header: 'Delete a Work Order',
+        todo: '',
+        comment: '',
+        endpoint: '/api/workorders/:id',
+        type: 'delete',
+        description:
+          'Deletes a work order based on the id, and returns the work order information.',
+        expectedInput: '',
+        sampleRequest: {
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: workorders[1],
+        expectedFailedReturn: {message: 'Failed to delete work order.'},
       },
     },
     Sample: {
