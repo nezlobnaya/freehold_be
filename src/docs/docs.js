@@ -2,28 +2,40 @@
 TODO: Still refactoring some things so they can be edited in this document.
   This will be the primary file to update the documents index page.
 */
+// const {users} = require('../../database/seedData.js')
+const seedData = require('../../database/seedData.js')
 
-// #region - variables for models
+// #region - User variables
 
 // Users
-const landlordModel = {
-  userId: 1,
-  email: 'landlord@email.com',
-  firstName: 'Firstname',
-  lastName: 'Lastname',
-  type: 'landlord',
-  phone: '123-456-7890',
-}
-const devModel = {
-  userId: 2,
-  email: 'dev@email.com',
-  type: 'dev',
-}
-const tenantModel = {
-  userId: 3,
-  email: 'tenant@email.com',
-  type: 'tenant',
-}
+// const usersModels = []
+// users.forEach((x, i) => {
+//   usersModels.push({id: i + 1, ...x})
+// })
+
+// const landlordModel = {
+//   userId: 1,
+//   email: 'landlord@email.com',
+//   firstName: 'Firstname',
+//   lastName: 'Lastname',
+//   type: 'landlord',
+//   phone: '123-456-7890',
+// }
+// const devModel = {
+//   userId: 2,
+//   email: 'dev@email.com',
+//   type: 'dev',
+// }
+// const tenantModel = {
+//   userId: 3,
+//   email: 'tenant@email.com',
+//   type: 'tenant',
+// }
+const users = []
+seedData.users.forEach((x, i) => {
+  users.push({id: i + 1, ...x})
+})
+
 const registerInput = {
   email: 'example@gmail.com',
   password: 'badpassword',
@@ -42,29 +54,15 @@ const LoginReturn = {
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
 }
 
-// Properties
-const property1 = {
-  id: 1,
-  name: 'Name for the Property',
-  street: '1 First St',
-  city: 'Salt Lake City',
-  state: 'Utah',
-  zip: '84101',
-  status: 'occupied',
-  image: null,
-  landlordId: 1,
-}
-const property2 = {
-  id: 2,
-  name: 'Sample',
-  street: '2 Second St',
-  city: 'Salt Lake City',
-  state: 'Utah',
-  zip: '84101',
-  status: 'vacant',
-  image: null,
-  landlordId: 1,
-}
+//#endregion
+
+// #region - Properties variables
+
+const properties = []
+seedData.properties.forEach((x, i) => {
+  properties.push({id: i + 1, ...x})
+})
+
 const addPropertyInput = {
   name: 'Property Name',
   street: '1 First St',
@@ -101,7 +99,15 @@ const updatePropertyReturn = {
   landlordId: 1,
 }
 
-// Tenant History
+//#endregion
+
+// #region - Tenant History variables
+
+const tenanthistory = []
+seedData.tenanthistory.forEach((x, i) => {
+  tenanthistory.push({id: i + 1, ...x})
+})
+
 const tenantHistory = {
   id: 2,
   tenantId: 3,
@@ -132,9 +138,50 @@ const updateTenantHistoryReturn = {
   endDate: '12/31/2010',
 }
 
-// Work Orders
+//#endregion
 
-// Work Order History
+// #region - Work Order variables
+
+const workorders = []
+seedData.workorders.forEach((x, i) => {
+  workorders.push({id: i + 1, ...x})
+})
+
+const addWorkorderInput = {
+  title: 'Short Description',
+  description: 'Description of the issue.',
+  type: 'electrical',
+  startDate: '01-01-2020',
+  endDate: null,
+  propertyId: 1,
+}
+const addWorkorderReturn = {
+  id: 4,
+  title: 'Short Description',
+  description: 'Description of the issue.',
+  type: 'electrical',
+  startDate: '01-01-2020',
+  endDate: null,
+  propertyId: 1,
+  createdBy: 5,
+}
+const updateWorkorderInput = {
+  endDate: '01-20-2020',
+}
+const updateWorkorderReturn = {
+  id: 3,
+  title: 'Third Workorder',
+  description: 'Description of the issue.',
+  type: 'plumbing',
+  startDate: '01-16-2020',
+  endDate: '01-20-2020',
+  propertyId: 7,
+  createdBy: 5,
+}
+
+//#endregion
+
+// #region - Work Order History variables
 
 //#endregion
 
@@ -229,6 +276,14 @@ const docs = {
               content: 'Tenant History Endpoints',
             },
             {
+              section: 'workorderEndpoints',
+              tag: 'h3',
+              class: 'moreInfo',
+              onclick: "{showContent('workorderEndpoints')}",
+              docs: 'docs.endpoints.Workorder',
+              content: 'Work Order Endpoints',
+            },
+            {
               section: 'sampleEndpoints',
               tag: 'h3',
               class: 'moreInfo',
@@ -262,22 +317,20 @@ const docs = {
   models: {
     User: {
       function: 'modelsUsers()',
-      examples: [landlordModel, devModel, tenantModel],
+      examples: users,
     },
     Property: {
       function: 'modelsProperty()',
-      examples: [property1, property2],
+      examples: properties,
     },
     'Tenant History': {
       function: 'modelsTenantHistory()',
-      examples: [tenantHistory],
+      examples: tenantHistory,
     },
-    // 'Work Orders': {
-    //   function: "test()",
-    //   examples: [
-    //     {}
-    //   ]
-    // },
+    'Work Orders': {
+      function: 'modelsWorkorders()',
+      examples: workorders,
+    },
     // 'Work Order History': {
     //   function: "test()",
     //   examples: [
@@ -370,7 +423,7 @@ const docs = {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: property1,
+        expectedReturn: properties[0],
         expectedFailedReturn: {message: 'Failed to get results.'},
       },
       GetAll: {
@@ -385,7 +438,7 @@ const docs = {
           axiosThen: 'token => console.log&lpar;token&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: fromJSON([property1, property2]),
+        expectedReturn: fromJSON(properties),
         expectedFailedReturn: {message: 'Failed to get results.'},
       },
       GetAllUser: {
@@ -400,7 +453,7 @@ const docs = {
           axiosThen: 'token => console.log&lpar;token&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: fromJSON([property1, property2]),
+        expectedReturn: fromJSON(properties),
         expectedFailedReturn: {message: 'Failed to get results.'},
       },
       Update: {
@@ -432,7 +485,7 @@ const docs = {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: property2,
+        expectedReturn: properties[1],
         expectedFailedReturn: {message: 'Failed to delete property.'},
       },
     },
@@ -538,6 +591,84 @@ const docs = {
           {message: 'Could not find entry with given id.'},
           {message: 'Failed to delete entry.'},
         ],
+      },
+    },
+    Workorder: {
+      Add: {
+        header: 'Add a Work order',
+        todo: '',
+        comment: '',
+        endpoint: '/api/workorders/',
+        type: 'post',
+        description: 'Adds a Work order to the database.',
+        expectedInput: addWorkorderInput,
+        sampleRequest: {
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: addWorkorderReturn,
+        expectedFailedReturn: {message: 'Failed to create new work order.'},
+      },
+      Get: {
+        header: 'Get a Work order',
+        todo: '',
+        comment: '',
+        endpoint: '/api/workorders/:id',
+        type: 'get',
+        description: 'Returns an object based on the Work Order id.',
+        expectedInput: '',
+        sampleRequest: {
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: workorders[0],
+        expectedFailedReturn: {message: 'Failed to get results.'},
+      },
+      GetAll: {
+        header: 'Get All Work Orders',
+        todo: '',
+        comment: '',
+        endpoint: '/api/workorders/',
+        type: 'GET',
+        description: 'Returns an array of all Work Orders in the database.',
+        expectedInput: '',
+        sampleRequest: {
+          axiosThen: 'token => console.log&lpar;token&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: fromJSON(workorders),
+        expectedFailedReturn: {message: 'Failed to get results.'},
+      },
+      Update: {
+        header: 'Update a Work Order',
+        todo: '',
+        comment: '',
+        endpoint: '/api/workorders/:id',
+        type: 'put',
+        description: 'Updates a work order based on id.',
+        expectedInput: updateWorkorderInput,
+        sampleRequest: {
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: updateWorkorderReturn,
+        expectedFailedReturn: {message: 'Failed to update the workorder.'},
+      },
+      Delete: {
+        header: 'Delete a Work Order',
+        todo: '',
+        comment: '',
+        endpoint: '/api/workorders/:id',
+        type: 'delete',
+        description:
+          'Deletes a work order based on the id, and returns the work order information.',
+        expectedInput: '',
+        sampleRequest: {
+          axiosThen: 'response => console.log&lpar;response&rpar;',
+          axiosCatch: 'err => console.error&lpar;err&rpar;',
+        },
+        expectedReturn: workorders[1],
+        expectedFailedReturn: {message: 'Failed to delete work order.'},
       },
     },
     Sample: {
