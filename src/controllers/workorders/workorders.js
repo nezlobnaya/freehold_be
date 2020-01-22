@@ -19,10 +19,16 @@ const create = async (req, res) => {
 
 const readAllByUser = async (req, res) => {
   try {
-    const createdBy = req.user.id
-    const results = await Workorders.getBy({"createdBy": createdBy})
+    if (req.user.type === 'tenant') {
+      const workOrders = await Workorders.getAllByPropertyId(
+        req.user.residenceId,
+      )
 
-    res.status(200).json(results)
+      res.status(200).json(workOrders)
+    } else {
+      const workOrders = await Workorders.getByLandlordId(req.user.id)
+      res.status(200).json(workOrders)
+    }
   } catch (err) {
     console.error(err)
     res.status(500).json({error: 'Internal server error'})
@@ -64,7 +70,7 @@ const updateById = async (req, res) => {
   }
 }
 
-module.exports = { 
+module.exports = {
   create,
   readAllByUser,
   readById,

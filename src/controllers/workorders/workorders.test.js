@@ -14,7 +14,6 @@ afterAll(async () => {
 describe('Workorder Controllers', () => {
   describe('readAllByUser', () => {
     it('readAllByUser should return status 200', async () => {
-
       const req = Express.mockRequest({
         user: {
           id: 2,
@@ -32,7 +31,6 @@ describe('Workorder Controllers', () => {
 
   describe('create', () => {
     it('create should send a status of 201 when successfully creating a workorder', async () => {
-
       const input = Models.createWorkorder()
       const req = Express.mockRequest({
         body: input,
@@ -54,13 +52,12 @@ describe('Workorder Controllers', () => {
 
   describe('update', () => {
     it('update should send a status of 200 when successfully updating a workorder', async () => {
-
       const input = Models.createWorkorder()
       const req = Express.mockRequest({
         body: input,
         params: {
-          id: 1
-        }
+          id: 1,
+        },
       })
       const res = Express.mockResponse()
 
@@ -71,5 +68,4 @@ describe('Workorder Controllers', () => {
       // expect(res.json).toHaveBeenCalledWith(expect.objectContaining({...input, "id": 1}))
     })
   })
-
 })
