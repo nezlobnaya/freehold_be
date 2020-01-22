@@ -70,7 +70,6 @@ describe('Workorder Routes', () => {
 
       const newEntry = Models.createWorkorder({propertyId: property.id})
 
-      // call function
       const results = await request
         .post(routeAPI)
         .send(newEntry)

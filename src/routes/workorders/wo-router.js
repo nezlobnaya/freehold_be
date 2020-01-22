@@ -25,6 +25,25 @@ const putPropertyid = (req, _res, next) => {
 
 router.use(bearerAuth, requireAuth)
 
+const validateById = async (req, res, next) => {
+  const {id} = req.params
+
+  try {
+    const workorder = await WOController.readById(id)
+
+    if (!workorder) {
+      res.status(404).json({message: 'No workorder found with that id.'})
+    } else {
+      /* eslint-disable-next-line */
+      req.workorder = workorder
+      next()
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({message: 'Internal server error'})
+  }
+}
+
 //#region - READ
 
 // GET all workorders - based off the user who is logged in
@@ -34,6 +53,17 @@ router.get('/', WOController.readAllByUser)
 router.get('/:id', WOController.readById)
 
 router.post('/', putPropertyid, requirePropertyId, WOController.create)
+
+//#endregion
+//#region - UPDATE
+
+router.put('/:id', validateById, WOController.updateById)
+
+//#endregion
+
+//#region - DELETE
+
+router.delete('/:id', validateById, WOController.remove)
 
 //#endregion
 

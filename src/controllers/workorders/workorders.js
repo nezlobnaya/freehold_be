@@ -70,9 +70,27 @@ const updateById = async (req, res) => {
   }
 }
 
+const remove = async (req, res) => {
+  const {id} = req.params
+
+  try {
+    // check that property exists
+    const {deleted} = await Workorders.remove(id)
+
+    if (deleted) {
+      res.status(200).json(req.property)
+    } else {
+      res.status(400).json({message: 'Could not delete workorder.'})
+    }
+  } catch (err) {
+    res.status(500).json({message: 'Failed to delete workorder.'})
+  }
+}
+
 module.exports = {
   create,
   readAllByUser,
   readById,
   updateById,
+  remove,
 }

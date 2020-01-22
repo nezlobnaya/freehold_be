@@ -9,6 +9,7 @@ module.exports = {
   modelsUsers,
   modelsProperty,
   modelsTenantHistory,
+  modelsWorkorders,
   // Endpoints
   displayAxios,
   displayEndpoints,
@@ -56,15 +57,15 @@ function models(header, todo, comment, model) {
 // User Models
 function modelsUsers() {
   // Models
-  let landlordModel = docs.models.User.examples[0]
-  let devModel = docs.models.User.examples[1]
+  let devModel = docs.models.User.examples[0]
+  let landlordModel = docs.models.User.examples[1]
   let tenantModel = docs.models.User.examples[2]
 
   let header = '<h2>User Models</h2> '
   let outputContent =
     header +
-    models('Landlord User Model', '', '', landlordModel) +
     models('Dev Model', '', '', devModel) +
+    models('Landlord User Model', '', '', landlordModel) +
     models('Tenant Model', '', '', tenantModel)
 
   // Display Output
@@ -114,6 +115,19 @@ function modelsTenantHistory() {
       tenantHistoryComment,
       docs.models['Tenant History'].examples[0],
     )
+  output(outputContent)
+}
+
+// Workorder Model
+function modelsWorkorders() {
+  // Todo
+  let todo = ''
+  // Comments
+  let comment = ''
+
+  let header = '<h2>Tenant History Model</h2> '
+  let outputContent =
+    header + models('', todo, comment, docs.models['Work Orders'].examples[0])
   output(outputContent)
 }
 
