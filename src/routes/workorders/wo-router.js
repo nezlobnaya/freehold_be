@@ -9,6 +9,25 @@ const router = express.Router()
 
 router.use(bearerAuth, requireAuth)
 
+const validateById = async (req, res, next) => {
+  const {id} = req.params
+
+  try {
+    const results = await Workorders.readById(id)
+
+    if (!results) {
+      res.status(404).json({message: 'No workorder found with that id.'})
+    } else {
+      /* eslint-disable-next-line */
+      req.results = results
+      next()
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({message: 'Internal server error'})
+  }
+}
+
 //#region - CREATE
 
   // add a workorder and return results for that workorder by id inserted
