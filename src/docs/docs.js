@@ -2,32 +2,34 @@
 TODO: Still refactoring some things so they can be edited in this document.
   This will be the primary file to update the documents index page.
 */
-const { users } = require("../../database/seedData.js")
+const {users} = require('../../database/seedData.js')
 
 // #region - variables for models
 
 // Users
 const usersModels = []
-users.forEach((x, i) => { usersModels.push({ "id": i + 1, ...x }) })
+users.forEach((x, i) => {
+  usersModels.push({id: i + 1, ...x})
+})
 
-const landlordModel = {
-  userId: 1,
-  email: 'landlord@email.com',
-  firstName: 'Firstname',
-  lastName: 'Lastname',
-  type: 'landlord',
-  phone: '123-456-7890',
-}
-const devModel = {
-  userId: 2,
-  email: 'dev@email.com',
-  type: 'dev',
-}
-const tenantModel = {
-  userId: 3,
-  email: 'tenant@email.com',
-  type: 'tenant',
-}
+// const landlordModel = {
+//   userId: 1,
+//   email: 'landlord@email.com',
+//   firstName: 'Firstname',
+//   lastName: 'Lastname',
+//   type: 'landlord',
+//   phone: '123-456-7890',
+// }
+// const devModel = {
+//   userId: 2,
+//   email: 'dev@email.com',
+//   type: 'dev',
+// }
+// const tenantModel = {
+//   userId: 3,
+//   email: 'tenant@email.com',
+//   type: 'tenant',
+// }
 const registerInput = {
   email: 'example@gmail.com',
   password: 'badpassword',
