@@ -105,3 +105,4 @@ dist
 
 # firebase
 /firebase
+package-lock.json
