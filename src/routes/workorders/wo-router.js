@@ -3,21 +3,38 @@ const WOController = require('../../controllers/workorders/workorders.js')
 const bearerAuth = require('../../lib/bearer-auth')
 const requireAuth = require('../../lib/require-auth')
 
-const Workorders = require('../../models/workorders')
-
 const router = express.Router()
+
+const requirePropertyId = (req, res, next) => {
+  if (!req.property.id) {
+    return res.status(400).json({message: 'property id is required'})
+  }
+
+  next()
+}
+
+const putPropertyid = (req, _res, next) => {
+  if (req.user.type === 'landlord') {
+    req.property = {id: req.body.propertyId}
+  } else {
+    req.property = {id: req.user.residenceId}
+  }
+
+  next()
+}
 
 router.use(bearerAuth, requireAuth)
 
 //#region - READ
 
-  // GET all workorders - based off the user who is logged in
-  router.get('/', WOController.readAllByUser)
+// GET all workorders - based off the user who is logged in
+router.get('/', WOController.readAllByUser)
 
-  // GET workorder by id
-  router.get('/:id', WOController.readById)
+// GET workorder by id
+router.get('/:id', WOController.readById)
+
+router.post('/', putPropertyid, requirePropertyId, WOController.create)
 
 //#endregion
-
 
 module.exports = router
