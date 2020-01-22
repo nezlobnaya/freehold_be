@@ -56,15 +56,15 @@ function models(header, todo, comment, model) {
 // User Models
 function modelsUsers() {
   // Models
-  let landlordModel = docs.models.User.examples[0]
-  let devModel = docs.models.User.examples[1]
+  let devModel = docs.models.User.examples[0]
+  let landlordModel = docs.models.User.examples[1]
   let tenantModel = docs.models.User.examples[2]
 
   let header = '<h2>User Models</h2> '
   let outputContent =
     header +
-    models('Landlord User Model', '', '', landlordModel) +
     models('Dev Model', '', '', devModel) +
+    models('Landlord User Model', '', '', landlordModel) +
     models('Tenant Model', '', '', tenantModel)
 
   // Display Output
