@@ -9,6 +9,13 @@ const router = express.Router()
 
 router.use(bearerAuth, requireAuth)
 
+//#region - CREATE
+
+  // add a workorder and return results for that workorder by id inserted
+  router.post('/', WOController.create)
+
+//#endregion
+
 //#region - READ
 
   // GET all workorders - based off the user who is logged in
@@ -16,6 +23,18 @@ router.use(bearerAuth, requireAuth)
 
   // GET workorder by id
   router.get('/:id', WOController.readById)
+
+//#endregion
+
+//#region - UPDATE
+
+router.put('/:id', WOController.updateById)
+
+//#endregion
+
+//#region - DELETE
+
+router.delete('/:id', WOController.remove)
 
 //#endregion
 
