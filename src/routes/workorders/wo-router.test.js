@@ -31,7 +31,7 @@ afterAll(async () => {
 
 describe('Workorder Routes', () => {
   //#region - CREATE
-  describe("post: '" + routeAPI + "' endpoint", () => {
+  xdescribe("post: '" + routeAPI + "' endpoint", () => {
 
     it('should return a 401 if user is not authenticated', async () => {
       const results = await request.post(routeAPI).send(newEntry)
@@ -44,10 +44,8 @@ describe('Workorder Routes', () => {
       
       admin.verifyIdToken.mockResolvedValue({email: defaultTenant.email})
 
-
       // call function
       const results = await request
-        .set('property', property)
         .post(routeAPI)
         .send(newEntry)
         .set('Authorization', 'Bearer 1234')
