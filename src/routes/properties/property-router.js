@@ -86,7 +86,7 @@ router.post(
 //#region - READ
 
 // GET all properties
-router.get('/', requireLandlord, PropertyController.getAllByUser)
+router.get('/', PropertyController.getAllByUser)
 
 // GET property by id
 router.get(
