@@ -153,6 +153,31 @@ describe('Properties Routes', () => {
   })
 
   describe("get: '/api/properties/:id' endpoint", () => {
+    describe('[user.type="tenant"]', () => {
+      it('should return 200 status', async () => {
+        const [landlord] = await Db.insertUsers([Models.createLandlord()])
+        const [property] = await Db.insertProperties([
+          Models.createProperty({landlordId: landlord.id}),
+        ])
+
+        const [tenant] = await Db.insertUsers(
+          Models.createTenant({
+            landlordId: landlord.id,
+            residenceId: property.id,
+            email: 'tenant@gmail.com',
+          }),
+        )
+
+        const token = createToken(tenant)
+
+        const results = await request
+          .get('/api/properties/1')
+          .set('Authorization', token)
+
+        expect(results.status).toBe(200)
+        expect(results.body).toEqual(property)
+      })
+    })
     it('should return 200 status', async () => {
       const token = createToken(defaultLandlord)
 

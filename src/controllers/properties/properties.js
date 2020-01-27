@@ -41,10 +41,15 @@ const getById = async (req, res) => {
     const property = await Property.getProperty(id)
 
     if (property) {
-      if (!req.user.id === property.landlordId) {
-        res.sendStatus(401)
-        return
-      }
+      // if (req.user.type === 'landlord' && req.user.id !== property.landlordId) {
+      //   res.sendStatus(401)
+      //   return
+      // }
+
+      // if (req.user.type === 'tenant' && req.user.residenceId !== property.id) {
+      //   res.sendStatus(401)
+      //   return
+      // }
 
       res.status(200).json(property)
     } else {
