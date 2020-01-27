@@ -19,9 +19,15 @@ const create = async (req, res) => {
 
 const getAllByUser = async (req, res) => {
   try {
-    const properties = await Property.getPropertiesByUser(req.user.id)
+    if (req.user.type === 'tenant') {
+      const property = await Property.getProperty(req.user.residenceId)
 
-    res.status(200).json(properties)
+      res.status(200).json([property])
+    } else if (req.user.type === 'landlord') {
+      const properties = await Property.getPropertiesByUser(req.user.id)
+
+      res.status(200).json(properties)
+    }
   } catch (err) {
     console.error(err)
     res.status(500).json({error: 'Internal server error'})
@@ -35,10 +41,15 @@ const getById = async (req, res) => {
     const property = await Property.getProperty(id)
 
     if (property) {
-      if (!req.user.id === property.landlordId) {
-        res.sendStatus(401)
-        return
-      }
+      // if (req.user.type === 'landlord' && req.user.id !== property.landlordId) {
+      //   res.sendStatus(401)
+      //   return
+      // }
+
+      // if (req.user.type === 'tenant' && req.user.residenceId !== property.id) {
+      //   res.sendStatus(401)
+      //   return
+      // }
 
       res.status(200).json(property)
     } else {
