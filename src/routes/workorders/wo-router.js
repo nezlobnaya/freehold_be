@@ -10,7 +10,7 @@ const requireAuth = require('../../lib/require-auth')
 const router = express.Router()
 
 const checkAccessToWorkorder = async (req, res, next) => {
-  const id = req.workorder.propertyId
+  const id = req.workorder.property.id
 
   if (req.user.type === 'tenant' && req.user.residenceId !== id) {
     return res
@@ -43,11 +43,15 @@ const requirePropertyId = (req, res, next) => {
   next()
 }
 
-const putPropertyid = (req, _res, next) => {
+const putPropertyid = (req, res, next) => {
   if (req.user.type === 'landlord') {
     req.property = {id: req.body.propertyId}
   } else {
     req.property = {id: req.user.residenceId}
+  }
+
+  if (!req.property.id) {
+    return res.status(500).send('help')
   }
 
   next()
@@ -80,7 +84,13 @@ const validateById = async (req, res, next) => {
 router.get('/', WOController.readAllByUser)
 
 // GET workorder by id
-router.get('/:id', validateById, checkAccessToWorkorder, WOController.readById)
+router.get(
+  '/:id',
+  validateById,
+  putPropertyid,
+  checkAccessToWorkorder,
+  WOController.readById,
+)
 
 router.post('/', putPropertyid, requirePropertyId, WOController.create)
 

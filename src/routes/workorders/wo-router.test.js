@@ -3,25 +3,29 @@ const jwt = require('../../lib/jwt')
 const app = require('../../server.js') // Link to your server file
 const {Db, Models} = require('../../test-utils')
 
+const {omit} = require('ramda')
+
 const request = supertest(app)
 
 //#region setup variables
 
 const routeAPI = '/api/workorders'
 
-const defaultTenant = Models.createTenant({
-  residenceId: 1,
-  landlordId: 1,
-  email: 'tenant@gmail.com',
-})
-
 //#endregion
 
 const testFixture = async () => {
   const [landlord] = await Db.insertUsers(Models.createLandlord())
-  const [property] = await Db.insertProperties(Models.createProperty())
+  const [property] = await Db.insertProperties(
+    Models.createProperty({landlordId: landlord.id}),
+  )
 
-  const [tenant] = await Db.insertUsers(defaultTenant)
+  const [tenant] = await Db.insertUsers(
+    Models.createTenant({
+      residenceId: property.id,
+      landlordId: landlord.id,
+      email: 'tenant@gmail.com',
+    }),
+  )
 
   return {landlord, property, tenant}
 }
@@ -44,7 +48,7 @@ describe('Workorder Routes', () => {
     })
 
     it('should return 201 status when successful', async () => {
-      const {tenant} = await testFixture()
+      const {tenant, property} = await testFixture()
 
       const newEntry = Models.createWorkorder()
 
@@ -52,15 +56,15 @@ describe('Workorder Routes', () => {
       const results = await request
         .post(routeAPI)
         .send(newEntry)
-        .set('Authorization', 'Bearer ' + jwt.signToken(defaultTenant))
+        .set('Authorization', 'Bearer ' + jwt.signToken(tenant))
 
       // expected results
       expect(results.status).toBe(201)
       expect(results.body).toEqual({
         id: 1,
-        createdBy: tenant.id,
-        propertyId: tenant.residenceId,
-        ...newEntry,
+        createdBy: tenant,
+        property: property,
+        ...omit(['propertyId'], newEntry),
         startDate: new Date(newEntry.startDate).toISOString(),
       })
     })
@@ -79,9 +83,9 @@ describe('Workorder Routes', () => {
       expect(results.status).toBe(201)
       expect(results.body).toEqual({
         id: 1,
-        createdBy: landlord.id,
-        propertyId: property.id,
-        ...newEntry,
+        createdBy: landlord,
+        property: property,
+        ...omit(['propertyId'], newEntry),
         startDate: new Date(newEntry.startDate).toISOString(),
       })
     })
@@ -98,11 +102,11 @@ describe('Workorder Routes', () => {
     })
 
     it('should return 200 status', async () => {
-      await testFixture()
+      const {tenant} = await testFixture()
 
       const results = await request
         .get(routeAPI)
-        .set('Authorization', 'Bearer ' + jwt.signToken(defaultTenant))
+        .set('Authorization', 'Bearer ' + jwt.signToken(tenant))
 
       expect(results.status).toBe(200)
     })
@@ -198,7 +202,10 @@ describe('Workorder Routes', () => {
         )
 
         const [secondTenant] = await Db.insertUsers(
-          Models.createTenant({residenceId: property2.id}),
+          Models.createTenant({
+            residenceId: property2.id,
+            email: 'testtenant@gmail.com',
+          }),
         )
 
         const workorder = await Models.createWorkorder({
@@ -239,7 +246,10 @@ describe('Workorder Routes', () => {
       const {tenant, property} = await testFixture()
 
       await Db.insertWorkorders([
-        Models.createWorkorder({createdBy: tenant.id, propertyId: property.id}),
+        Models.createWorkorder({
+          createdBy: tenant.id,
+          propertyId: property.id,
+        }),
       ])
 
       const results = await request
@@ -261,7 +271,9 @@ describe('Workorder Routes', () => {
         .set('Authorization', 'Bearer ' + jwt.signToken(tenant))
 
       expect(results.body).toEqual({
-        ...workorder,
+        property,
+        createdBy: tenant,
+        ...omit(['propertyId', 'createdBy'], workorder),
         startDate: new Date(workorder.startDate).toISOString(),
       })
     })
