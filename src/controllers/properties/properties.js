@@ -1,6 +1,21 @@
 const Property = require('../../models/property')
 const User = require('../../models/user')
 
+const loadProperty = async (req, res, next) => {
+  try {
+    const property = await Property.getProperty(req.property.id)
+
+    if (property) {
+      next()
+    } else {
+      res.status(404).json({message: 'Property not found'})
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).send('Internal server error')
+  }
+}
+
 const create = async (req, res) => {
   const input = req.body
 
@@ -103,4 +118,5 @@ module.exports = {
   getById,
   getAllTenantsById,
   updateById,
+  loadProperty,
 }
