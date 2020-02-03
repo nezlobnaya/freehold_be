@@ -2,188 +2,176 @@
 TODO: Still refactoring some things so they can be edited in this document.
   This will be the primary file to update the documents index page.
 */
-// const {users} = require('../../database/seedData.js')
-const seedData = require('../../database/seedData.js')
 
-// #region - User variables
+const { users, properties, tenanthistory, workorders } = require('./data.js')
 
-// Users
-// const usersModels = []
-// users.forEach((x, i) => {
-//   usersModels.push({id: i + 1, ...x})
-// })
+// #region
 
-// const landlordModel = {
-//   userId: 1,
-//   email: 'landlord@email.com',
-//   firstName: 'Firstname',
-//   lastName: 'Lastname',
-//   type: 'landlord',
-//   phone: '123-456-7890',
-// }
-// const devModel = {
-//   userId: 2,
-//   email: 'dev@email.com',
-//   type: 'dev',
-// }
-// const tenantModel = {
-//   userId: 3,
-//   email: 'tenant@email.com',
-//   type: 'tenant',
-// }
-const users = []
-seedData.users.forEach((x, i) => {
-  users.push({id: i + 1, ...x})
-})
+  // #region - User variables
 
-const registerInput = {
-  email: 'example@gmail.com',
-  password: 'badpassword',
-  type: 'landlord',
-}
-const registerReturn = {
-  token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-}
-const LoginInput = {
-  email: 'example@gmail.com',
-  password: 'badpassword',
-}
-const LoginReturn = {
-  token:
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-}
+  // Users
+  // const usersModels = []
+  // users.forEach((x, i) => {
+  //   usersModels.push({id: i + 1, ...x})
+  // })
 
-//#endregion
+  // const users = []
+  // seedData.users.forEach((x, i) => {
+  //   users.push({id: i + 1, ...x})
+  // })  
 
-// #region - Properties variables
+  // const registerInput = {
+  //   email: 'example@gmail.com',
+  //   password: 'badpassword',
+  //   type: 'landlord',
+  // }
+  // const registerReturn = {
+  //   token:
+  //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  // }
+  // const LoginInput = {
+  //   email: 'example@gmail.com',
+  //   password: 'badpassword',
+  // }
+  // const LoginReturn = {
+  //   token:
+  //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+  // }
 
-const properties = []
-seedData.properties.forEach((x, i) => {
-  properties.push({id: i + 1, ...x})
-})
+  //#endregion
 
-const addPropertyInput = {
-  name: 'Property Name',
-  street: '1 First St',
-  city: 'Salt Lake City',
-  state: 'Utah',
-  zip: '84101',
-  status: 'occupied',
-  landlordId: 1,
-}
-const addPropertyReturn = {
-  id: 3,
-  name: 'Property Name',
-  street: '1 First St',
-  city: 'Salt Lake City',
-  state: 'Utah',
-  zip: '84101',
-  status: 'occupied',
-  image: null,
-  landlordId: 1,
-}
-const updatePropertyInput = {
-  propertyName: 'Property Updated',
-  propertyStatus: 'vacant',
-}
-const updatePropertyReturn = {
-  id: 1,
-  name: 'Property Updated',
-  street: '1 First St',
-  city: 'Salt Lake City',
-  state: 'Utah',
-  zip: '84101',
-  status: 'vacant',
-  image: null,
-  landlordId: 1,
-}
+  // #region - Properties variables
 
-//#endregion
+  // const properties = []
+  // seedData.properties.forEach((x, i) => {
+  //   properties.push({id: i + 1, ...x})
+  // })
 
-// #region - Tenant History variables
+  // const addProperty = {
+  //   input: {
+  //     name: 'Property Name',
+  //     street: '1 First St',
+  //     city: 'Salt Lake City',
+  //     state: 'Utah',
+  //     zip: '84101',
+  //     status: 'occupied',
+  //     landlordId: 1,
+  //   },
+  //   return: {
+  //     id: 3,
+  //     name: 'Property Name',
+  //     street: '1 First St',
+  //     city: 'Salt Lake City',
+  //     state: 'Utah',
+  //     zip: '84101',
+  //     status: 'occupied',
+  //     image: null,
+  //     landlordId: 1,
+  //   }
+  // }
 
-const tenanthistory = []
-seedData.tenanthistory.forEach((x, i) => {
-  tenanthistory.push({id: i + 1, ...x})
-})
+  // const updatePropertyInput = {
+  //   propertyName: 'Property Updated',
+  //   propertyStatus: 'vacant',
+  // }
+  // const updatePropertyReturn = {
+  //   id: 1,
+  //   name: 'Property Updated',
+  //   street: '1 First St',
+  //   city: 'Salt Lake City',
+  //   state: 'Utah',
+  //   zip: '84101',
+  //   status: 'vacant',
+  //   image: null,
+  //   landlordId: 1,
+  // }
 
-const tenantHistory = {
-  id: 2,
-  tenantId: 3,
-  propertyId: 1,
-  startDate: '01/01/2010',
-  endDate: null,
-}
-const addTenantHistoryInput = {
-  tenantId: 5,
-  propertyId: 1,
-  historyStartdate: '12-31-2018',
-}
-const addTenantHistoryReturn = {
-  id: 9,
-  tenantId: 5,
-  propertyId: 1,
-  startDate: '12/31/2018',
-  endDate: null,
-}
-const updateTenantHistoryInput = {
-  endDate: '12-31-2010',
-}
-const updateTenantHistoryReturn = {
-  id: 2,
-  tenantId: 3,
-  propertyId: 1,
-  startDate: '01/01/2010',
-  endDate: '12/31/2010',
-}
+  //#endregion
 
-//#endregion
+  // #region - Tenant History variables
 
-// #region - Work Order variables
+  // const tenanthistory = []
+  // seedData.tenanthistory.forEach((x, i) => {
+  //   tenanthistory.push({id: i + 1, ...x})
+  // })
 
-const workorders = []
-seedData.workorders.forEach((x, i) => {
-  workorders.push({id: i + 1, ...x})
-})
+  // const tenantHistory = {
+  //   id: 2,
+  //   tenantId: 3,
+  //   propertyId: 1,
+  //   startDate: '01/01/2010',
+  //   endDate: null,
+  // }
+  // const addTenantHistoryInput = {
+  //   tenantId: 5,
+  //   propertyId: 1,
+  //   historyStartdate: '12-31-2018',
+  // }
+  // const addTenantHistoryReturn = {
+  //   id: 9,
+  //   tenantId: 5,
+  //   propertyId: 1,
+  //   startDate: '12/31/2018',
+  //   endDate: null,
+  // }
+  // const updateTenantHistoryInput = {
+  //   endDate: '12-31-2010',
+  // }
+  // const updateTenantHistoryReturn = {
+  //   id: 2,
+  //   tenantId: 3,
+  //   propertyId: 1,
+  //   startDate: '01/01/2010',
+  //   endDate: '12/31/2010',
+  // }
 
-const addWorkorderInput = {
-  title: 'Short Description',
-  description: 'Description of the issue.',
-  type: 'electrical',
-  startDate: '01-01-2020',
-  endDate: null,
-  propertyId: 1,
-}
-const addWorkorderReturn = {
-  id: 4,
-  title: 'Short Description',
-  description: 'Description of the issue.',
-  type: 'electrical',
-  startDate: '01-01-2020',
-  endDate: null,
-  propertyId: 1,
-  createdBy: 5,
-}
-const updateWorkorderInput = {
-  endDate: '01-20-2020',
-}
-const updateWorkorderReturn = {
-  id: 3,
-  title: 'Third Workorder',
-  description: 'Description of the issue.',
-  type: 'plumbing',
-  startDate: '01-16-2020',
-  endDate: '01-20-2020',
-  propertyId: 7,
-  createdBy: 5,
-}
+  //#endregion
 
-//#endregion
+  // #region - Work Order variables
 
-// #region - Work Order History variables
+  // const workorders = []
+  // seedData.workorders.forEach((x, i) => {
+  //   workorders.push({id: i + 1, ...x})
+  // })
 
-//#endregion
+  // const addWorkorderInput = {
+  //   title: 'Short Description',
+  //   description: 'Description of the issue.',
+  //   type: 'electrical',
+  //   startDate: '01-01-2020',
+  //   endDate: null,
+  //   propertyId: 1,
+  // }
+  // const addWorkorderReturn = {
+  //   id: 4,
+  //   title: 'Short Description',
+  //   description: 'Description of the issue.',
+  //   type: 'electrical',
+  //   startDate: '01-01-2020',
+  //   endDate: null,
+  //   propertyId: 1,
+  //   createdBy: 5,
+  // }
+  // const updateWorkorderInput = {
+  //   endDate: '01-20-2020',
+  // }
+  // const updateWorkorderReturn = {
+  //   id: 3,
+  //   title: 'Third Workorder',
+  //   description: 'Description of the issue.',
+  //   type: 'plumbing',
+  //   startDate: '01-16-2020',
+  //   endDate: '01-20-2020',
+  //   propertyId: 7,
+  //   createdBy: 5,
+  // }
+
+  //#endregion
+
+  // #region - Work Order History variables
+
+  //#endregion
+// #endregion
 
 function fromJSON(obj) {
   return JSON.stringify(obj, undefined, 2)
@@ -194,8 +182,7 @@ const docs = {
   address: 'https://pt6-propman.herokuapp.com', // website address
   changes: [
     // changes should be an array of strings, these strings will become list items
-    'Updateing User endpoints for Tenants',
-    'Adding Work Order Models, Endpoints, and Table Example',
+    'Work Order History added.',
   ],
   planning: [
     // planning should be an array of html strings, these strings will be joined with a line break between each.
@@ -317,19 +304,19 @@ const docs = {
   models: {
     User: {
       function: 'modelsUsers()',
-      examples: users,
+      examples: users.db,
     },
     Property: {
       function: 'modelsProperty()',
-      examples: properties,
+      examples: properties.db,
     },
     'Tenant History': {
       function: 'modelsTenantHistory()',
-      examples: tenantHistory,
+      examples: tenanthistory.db,
     },
     'Work Orders': {
       function: 'modelsWorkorders()',
-      examples: workorders,
+      examples: workorders.db,
     },
     // 'Work Order History': {
     //   function: "test()",
@@ -347,12 +334,12 @@ const docs = {
         endpoint: '/api/auth/register',
         type: 'POST',
         description: 'Register a new user',
-        expectedInput: registerInput,
+        expectedInput: users.register.input,
         sampleRequest: {
           axiosThen: 'token => console.log&lpar;token&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: registerReturn,
+        expectedReturn: users.register.return,
         expectedFailedReturn: '', // TODO: if Fails
       },
       Login: {
@@ -362,12 +349,12 @@ const docs = {
         endpoint: '/api/auth/login',
         type: 'POST',
         description: 'Login user',
-        expectedInput: LoginInput,
+        expectedInput: users.login.input,
         sampleRequest: {
           axiosThen: 'token => console.log&lpar;token&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: LoginReturn,
+        expectedReturn: users.login.return,
         expectedFailedReturn: '', // TODO: if Fails
       },
       // 'Update User': {
@@ -403,13 +390,13 @@ const docs = {
         endpoint: '/api/properties/',
         type: 'post',
         description: 'Adds a Property to the database.',
-        expectedInput: addPropertyInput,
+        expectedInput: properties.create.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: addPropertyReturn,
-        expectedFailedReturn: {message: 'Failed to create new property.'},
+        expectedReturn: properties.create.return,
+        expectedFailedReturn: { message: 'Failed to create new property.' },
       },
       Get: {
         header: 'Get a Property',
@@ -423,7 +410,7 @@ const docs = {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: properties[0],
+        expectedReturn: properties.db[0],
         expectedFailedReturn: {message: 'Failed to get results.'},
       },
       GetAll: {
@@ -438,7 +425,7 @@ const docs = {
           axiosThen: 'token => console.log&lpar;token&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: fromJSON(properties),
+        expectedReturn: fromJSON(properties.db),
         expectedFailedReturn: {message: 'Failed to get results.'},
       },
       GetAllUser: {
@@ -453,7 +440,7 @@ const docs = {
           axiosThen: 'token => console.log&lpar;token&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: fromJSON(properties),
+        expectedReturn: fromJSON(properties.db),
         expectedFailedReturn: {message: 'Failed to get results.'},
       },
       Update: {
@@ -463,12 +450,12 @@ const docs = {
         endpoint: '/api/properties/:id',
         type: 'put',
         description: 'Updates a Property based on property id.',
-        expectedInput: updatePropertyInput,
+        expectedInput: properties.update.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: updatePropertyReturn,
+        expectedReturn: properties.update.return,
         expectedFailedReturn: {message: 'Failed to update the property.'},
       },
       Delete: {
@@ -485,7 +472,7 @@ const docs = {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: properties[1],
+        expectedReturn: properties.db[1],
         expectedFailedReturn: {message: 'Failed to delete property.'},
       },
     },
@@ -497,12 +484,12 @@ const docs = {
         endpoint: '/api/history/',
         type: 'post',
         description: 'Add Entry for Tenant History',
-        expectedInput: addTenantHistoryInput,
+        expectedInput: tenanthistory.add.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: addTenantHistoryReturn,
+        expectedReturn: tenanthistory.add.return,
         expectedFailedReturn: {message: 'Failed to create new entry.'},
       },
       Get: {
@@ -512,12 +499,12 @@ const docs = {
         endpoint: '/api/history/:id',
         type: 'get',
         description: 'Get tenant history results for given id.',
-        expectedInput: '',
+        expectedInput: tenanthistory.get.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: tenantHistory,
+        expectedReturn: tenanthistory.get.return,
         expectedFailedReturn: {message: 'Failed to get results for given id.'},
       },
       GetByProperty: {
@@ -528,12 +515,12 @@ const docs = {
         type: 'get',
         description:
           'Get all tenant history results for property, by property id.',
-        expectedInput: '',
+        expectedInput: tenanthistory.getByProperty.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: [tenantHistory],
+        expectedReturn: tenanthistory.getByProperty.return,
         expectedFailedReturn: {
           message: 'Failed to get results for given property id.',
         },
@@ -545,12 +532,12 @@ const docs = {
         endpoint: '/api/history/tenant/:id',
         type: 'get',
         description: 'Get all tenant history results for tenant.',
-        expectedInput: '',
+        expectedInput: tenanthistory.getByTenant.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: [tenantHistory],
+        expectedReturn: tenanthistory.getByTenant.return,
         expectedFailedReturn: {
           message: 'Failed to get results for given tenant id.',
         },
@@ -562,12 +549,12 @@ const docs = {
         endpoint: '/api/history/:id',
         type: 'put',
         description: 'Update Entry for Tenant History by Id',
-        expectedInput: updateTenantHistoryInput,
+        expectedInput: tenanthistory.update.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: updateTenantHistoryReturn,
+        expectedReturn: tenanthistory.update.return,
         expectedFailedReturn: [
           {message: 'Could not find entry with given id.'},
           {message: 'Failed to update the entry.'},
@@ -580,12 +567,12 @@ const docs = {
         endpoint: '/api/history/:id',
         type: 'delete',
         description: 'Delete Entry for Tenant History by Id',
-        expectedInput: '',
+        expectedInput: tenanthistory.delete.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: tenantHistory,
+        expectedReturn: tenanthistory.delete.return,
         expectedFailedReturn: [
           {message: 'Could not delete entry.'},
           {message: 'Could not find entry with given id.'},
@@ -601,12 +588,12 @@ const docs = {
         endpoint: '/api/workorders/',
         type: 'post',
         description: 'Adds a Work order to the database.',
-        expectedInput: addWorkorderInput,
+        expectedInput: workorders.add.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: addWorkorderReturn,
+        expectedReturn: workorders.add.return,
         expectedFailedReturn: {message: 'Failed to create new work order.'},
       },
       Get: {
@@ -616,12 +603,12 @@ const docs = {
         endpoint: '/api/workorders/:id',
         type: 'get',
         description: 'Returns an object based on the Work Order id.',
-        expectedInput: '',
+        expectedInput: workorders.get.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: workorders[0],
+        expectedReturn: workorders.get.return,
         expectedFailedReturn: {message: 'Failed to get results.'},
       },
       GetAll: {
@@ -631,12 +618,12 @@ const docs = {
         endpoint: '/api/workorders/',
         type: 'GET',
         description: 'Returns an array of all Work Orders in the database.',
-        expectedInput: '',
+        expectedInput: workorders.getAll.input,
         sampleRequest: {
           axiosThen: 'token => console.log&lpar;token&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: fromJSON(workorders),
+        expectedReturn: workorders.getAll.return,
         expectedFailedReturn: {message: 'Failed to get results.'},
       },
       Update: {
@@ -646,12 +633,12 @@ const docs = {
         endpoint: '/api/workorders/:id',
         type: 'put',
         description: 'Updates a work order based on id.',
-        expectedInput: updateWorkorderInput,
+        expectedInput: workorders.update.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: updateWorkorderReturn,
+        expectedReturn: workorders.update.return,
         expectedFailedReturn: {message: 'Failed to update the workorder.'},
       },
       Delete: {
@@ -662,12 +649,12 @@ const docs = {
         type: 'delete',
         description:
           'Deletes a work order based on the id, and returns the work order information.',
-        expectedInput: '',
+        expectedInput: workorders.delete.input,
         sampleRequest: {
           axiosThen: 'response => console.log&lpar;response&rpar;',
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
-        expectedReturn: workorders[1],
+        expectedReturn: workorders.delete.return,
         expectedFailedReturn: {message: 'Failed to delete work order.'},
       },
     },
