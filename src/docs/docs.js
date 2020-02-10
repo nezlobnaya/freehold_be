@@ -5,174 +5,6 @@ TODO: Still refactoring some things so they can be edited in this document.
 
 const { users, properties, tenanthistory, workorders } = require('./data.js')
 
-// #region
-
-  // #region - User variables
-
-  // Users
-  // const usersModels = []
-  // users.forEach((x, i) => {
-  //   usersModels.push({id: i + 1, ...x})
-  // })
-
-  // const users = []
-  // seedData.users.forEach((x, i) => {
-  //   users.push({id: i + 1, ...x})
-  // })  
-
-  // const registerInput = {
-  //   email: 'example@gmail.com',
-  //   password: 'badpassword',
-  //   type: 'landlord',
-  // }
-  // const registerReturn = {
-  //   token:
-  //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-  // }
-  // const LoginInput = {
-  //   email: 'example@gmail.com',
-  //   password: 'badpassword',
-  // }
-  // const LoginReturn = {
-  //   token:
-  //     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
-  // }
-
-  //#endregion
-
-  // #region - Properties variables
-
-  // const properties = []
-  // seedData.properties.forEach((x, i) => {
-  //   properties.push({id: i + 1, ...x})
-  // })
-
-  // const addProperty = {
-  //   input: {
-  //     name: 'Property Name',
-  //     street: '1 First St',
-  //     city: 'Salt Lake City',
-  //     state: 'Utah',
-  //     zip: '84101',
-  //     status: 'occupied',
-  //     landlordId: 1,
-  //   },
-  //   return: {
-  //     id: 3,
-  //     name: 'Property Name',
-  //     street: '1 First St',
-  //     city: 'Salt Lake City',
-  //     state: 'Utah',
-  //     zip: '84101',
-  //     status: 'occupied',
-  //     image: null,
-  //     landlordId: 1,
-  //   }
-  // }
-
-  // const updatePropertyInput = {
-  //   propertyName: 'Property Updated',
-  //   propertyStatus: 'vacant',
-  // }
-  // const updatePropertyReturn = {
-  //   id: 1,
-  //   name: 'Property Updated',
-  //   street: '1 First St',
-  //   city: 'Salt Lake City',
-  //   state: 'Utah',
-  //   zip: '84101',
-  //   status: 'vacant',
-  //   image: null,
-  //   landlordId: 1,
-  // }
-
-  //#endregion
-
-  // #region - Tenant History variables
-
-  // const tenanthistory = []
-  // seedData.tenanthistory.forEach((x, i) => {
-  //   tenanthistory.push({id: i + 1, ...x})
-  // })
-
-  // const tenantHistory = {
-  //   id: 2,
-  //   tenantId: 3,
-  //   propertyId: 1,
-  //   startDate: '01/01/2010',
-  //   endDate: null,
-  // }
-  // const addTenantHistoryInput = {
-  //   tenantId: 5,
-  //   propertyId: 1,
-  //   historyStartdate: '12-31-2018',
-  // }
-  // const addTenantHistoryReturn = {
-  //   id: 9,
-  //   tenantId: 5,
-  //   propertyId: 1,
-  //   startDate: '12/31/2018',
-  //   endDate: null,
-  // }
-  // const updateTenantHistoryInput = {
-  //   endDate: '12-31-2010',
-  // }
-  // const updateTenantHistoryReturn = {
-  //   id: 2,
-  //   tenantId: 3,
-  //   propertyId: 1,
-  //   startDate: '01/01/2010',
-  //   endDate: '12/31/2010',
-  // }
-
-  //#endregion
-
-  // #region - Work Order variables
-
-  // const workorders = []
-  // seedData.workorders.forEach((x, i) => {
-  //   workorders.push({id: i + 1, ...x})
-  // })
-
-  // const addWorkorderInput = {
-  //   title: 'Short Description',
-  //   description: 'Description of the issue.',
-  //   type: 'electrical',
-  //   startDate: '01-01-2020',
-  //   endDate: null,
-  //   propertyId: 1,
-  // }
-  // const addWorkorderReturn = {
-  //   id: 4,
-  //   title: 'Short Description',
-  //   description: 'Description of the issue.',
-  //   type: 'electrical',
-  //   startDate: '01-01-2020',
-  //   endDate: null,
-  //   propertyId: 1,
-  //   createdBy: 5,
-  // }
-  // const updateWorkorderInput = {
-  //   endDate: '01-20-2020',
-  // }
-  // const updateWorkorderReturn = {
-  //   id: 3,
-  //   title: 'Third Workorder',
-  //   description: 'Description of the issue.',
-  //   type: 'plumbing',
-  //   startDate: '01-16-2020',
-  //   endDate: '01-20-2020',
-  //   propertyId: 7,
-  //   createdBy: 5,
-  // }
-
-  //#endregion
-
-  // #region - Work Order History variables
-
-  //#endregion
-// #endregion
-
 function fromJSON(obj) {
   return JSON.stringify(obj, undefined, 2)
 }
@@ -180,8 +12,7 @@ function fromJSON(obj) {
 const docs = {
   header: 'Property Manager Backend',
   address: 'https://pt6-propman.herokuapp.com', // website address
-  changes: [
-    // changes should be an array of strings, these strings will become list items
+  changes: [ // changes should be an array of strings, these strings will become list items
     'Work Order History added.',
   ],
   planning: [
@@ -215,26 +46,28 @@ const docs = {
   menu: {
     planning: {
       tag: 'h1',
-      onclick: "{showContent('planning')}",
+      section: 'planning',
+      onclick: 'showContent',
       content: 'Planning',
     },
     developmentBE: {
       tag: 'h1',
-      onclick: "{showContent('developmentBE')}",
+      section: 'developmentBE',
+      onclick: 'showContent',
       content: 'Development Back End',
       subSections: [
         {
           section: 'models',
           tag: 'h2',
           class: 'moreInfo',
-          onclick: "{showContent('models')}",
+          onclick: 'showContent',
           content: '<button>v</button> Models',
         },
         {
           section: 'endpoints',
           tag: 'h2',
           class: 'moreInfo',
-          onclick: "{showContent('endpoints')}",
+          onclick: 'showContent',
           event: 'displayEndpoints',
           content: '<button>v</button> Endpoints',
           subHeaders: [
@@ -242,7 +75,7 @@ const docs = {
               section: 'userEndpoints',
               tag: 'h3',
               class: 'moreInfo',
-              onclick: "{showContent('userEndpoints')}",
+              onclick: 'showContent',
               docs: 'docs.endpoints.User',
               content: 'User Endpoints',
             },
@@ -250,7 +83,7 @@ const docs = {
               section: 'propertyEndpoints',
               tag: 'h3',
               class: 'moreInfo',
-              onclick: "{showContent('propertyEndpoints')}",
+              onclick: 'showContent',
               docs: 'docs.endpoints.Property',
               content: 'Property Endpoints',
             },
@@ -258,7 +91,7 @@ const docs = {
               section: 'tenantHistoryEndpoints',
               tag: 'h3',
               class: 'moreInfo',
-              onclick: "{showContent('tenantHistoryEndpoints')}",
+              onclick: 'showContent',
               docs: 'docs.endpoints.TenantHistory',
               content: 'Tenant History Endpoints',
             },
@@ -266,7 +99,7 @@ const docs = {
               section: 'workorderEndpoints',
               tag: 'h3',
               class: 'moreInfo',
-              onclick: "{showContent('workorderEndpoints')}",
+              onclick: 'showContent',
               docs: 'docs.endpoints.Workorder',
               content: 'Work Order Endpoints',
             },
@@ -274,7 +107,7 @@ const docs = {
               section: 'sampleEndpoints',
               tag: 'h3',
               class: 'moreInfo',
-              onclick: "{showContent('sampleEndpoints')}",
+              onclick: 'showContent',
               docs: 'docs.endpoints.Sample',
               content: 'Sample Endpoints',
             },
@@ -284,7 +117,7 @@ const docs = {
           section: 'database',
           tag: 'h2',
           class: 'moreInfo',
-          onclick: "{showContent('database')}",
+          onclick: 'showContent',
           event: 'displayDatabase',
           content: '<button>v</button> Database Structures',
           subHeaders: [
@@ -292,7 +125,7 @@ const docs = {
               section: 'tables',
               tag: 'h3',
               class: 'moreInfo',
-              onclick: "{showContent('tables')}",
+              onclick: 'showContent',
               docs: 'docs.database.tables',
               content: 'Tables',
             },
@@ -700,7 +533,7 @@ const docs = {
           id: 'integer -> increment number assigned by database',
           email: 'string, not Null, unique',
           type:
-            'string, not Null -> (expects one of these:) landlord, tenant, dev',
+            'enum, not Null -> (expects one of these:) landlord, tenant, dev',
           firstName: 'string',
           lastName: 'string',
           phone: 'string',
