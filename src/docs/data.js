@@ -37,6 +37,9 @@ const data = {
         email: 'example@gmail.com',
         password: 'badpassword',
         type: 'landlord',
+        firstName: 'optional',
+        lastName: 'optional',
+        phone: '123-456-7890'
       },
       return: {
         token:
