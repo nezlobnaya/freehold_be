@@ -3,6 +3,7 @@ const menu = docs.menu
 
 function displayMenu(item) {
   let display = ''
+  let onclick = ''
 
   // tag
   if (item.tag) {
@@ -15,7 +16,17 @@ function displayMenu(item) {
 
     // onclick
     if (item.onclick) {
-      display = display + 'onclick="' + item.onclick + '" '
+      if (item.onclick === 'showContent') {
+        if (item.section) {
+          onclick = 'onclick="{showContent(\'' + item.section + '\')}" '
+        } else {
+          onclick = 'onclick="{showContent(\'planning\')}" '
+        } 
+      } else {
+        onclick = 'onclick="' + item.onclick + '" '
+      }
+
+      display = display + onclick
     }
 
     display = display + '>'
@@ -150,9 +161,7 @@ function displaySubSections(section) {
 }
 
 function outputMenu(thisMenu) {
-  let output = ''
-  let menuItems = {},
-    subSection = {}
+  let output = '', menuItems = {}, subSection = {}
 
   // Check menu exists and is an object
   if (thisMenu && typeof thisMenu === 'object') {
