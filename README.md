@@ -1,5 +1,9 @@
 # API Documentation
 
+[![Maintainability](https://api.codeclimate.com/v1/badges/d16b8cd63a2307a5a0a2/maintainability)](https://codeclimate.com/github/Lambda-School-Labs/property-manager-be/maintainability)
+
+[![Test Coverage](https://api.codeclimate.com/v1/badges/d16b8cd63a2307a5a0a2/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/property-manager-be/test_coverage)
+
 #### Backend delpoyed at [🚫name service here](🚫add URL here) <br>
 
 ## Getting Started
@@ -17,7 +21,7 @@ To get the server running locally:
 
 - If you're on Windows:
 
-5. a. Open pgadmin  
+5. a. Open pgadmin
    b. Create database named `propman`
 
 6. Run `npm run res` (which runs `npx knex migrate:latest` and `npx knex seed:run` )
