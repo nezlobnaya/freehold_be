@@ -1,5 +1,5 @@
 {
-  "databaseurl": "https://propman-a6f09.firebaseio.com",
-  "projectid": "propman-a6f09",
-  "storagebucket": "propman-a6f09.appspot.com"
+  "databaseurl": "https://property-management-lambda.firebaseio.com",
+  "projectid": "property-management-lambda",
+  "storagebucket": "property-management-lambda.appspot.com"
 }
