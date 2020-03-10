@@ -9,8 +9,8 @@ const ifLandlordCreateUser = async (req, res, next) => {
 
   try {
     const user = await User.create({email, type})
-
     /* eslint-disable-next-line */
+    console.log(user)
     req.user = user
 
     next()
