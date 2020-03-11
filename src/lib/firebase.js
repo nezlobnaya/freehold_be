@@ -1,6 +1,6 @@
 const firebase = require('firebase')
 const fireAdmin = require('firebase-admin')
-const serviceAcc = require('../../property-management-lambda-firebase-adminsdk-ilwrc-eec7b3f120.json')
+const serviceAcc = require('../../property-management-lambda-firebase-adminsdk-6qyu6-6dddc0e160.json')
 
 function getEnv(key, fallback) {
   if (fallback) {

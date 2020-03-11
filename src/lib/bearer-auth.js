@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const {fireAdmin} = require('../lib/firebase')
 
 const bearerAuth = async (req, res, next) => {
   // We get the authorization header and default to an empty string
@@ -14,9 +14,21 @@ const bearerAuth = async (req, res, next) => {
    * */
   if (type === 'Bearer') {
     try {
-      const token = jwt.decode(payload)
+      //verify token with firebase
+      const token = await fireAdmin.auth().verifyIdToken(payload)
 
-      const user = await User.findByEmail(token.sub, token.type)
+      //if token.landord === true
+      //type === landlord
+      //else
+      //type === tenant
+      let type
+      if (token.landlord) {
+        type = 'landlord'
+      } else {
+        type = 'tenant'
+      }
+
+      const user = await User.findByEmail(token.email, type)
 
       /* eslint-disable-next-line */
       req.user = user
