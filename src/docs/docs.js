@@ -3,7 +3,7 @@ TODO: Still refactoring some things so they can be edited in this document.
   This will be the primary file to update the documents index page.
 */
 
-const { users, properties, tenanthistory, workorders } = require('./data.js')
+const {users, properties, tenanthistory, workorders} = require('./data.js')
 
 function fromJSON(obj) {
   return JSON.stringify(obj, undefined, 2)
@@ -12,7 +12,8 @@ function fromJSON(obj) {
 const docs = {
   header: 'Property Manager Backend',
   address: 'https://pt6-propman.herokuapp.com', // website address
-  changes: [ // changes should be an array of strings, these strings will become list items
+  changes: [
+    // changes should be an array of strings, these strings will become list items
     'Work Order History added.',
   ],
   planning: [
@@ -229,7 +230,7 @@ const docs = {
           axiosCatch: 'err => console.error&lpar;err&rpar;',
         },
         expectedReturn: properties.create.return,
-        expectedFailedReturn: { message: 'Failed to create new property.' },
+        expectedFailedReturn: {message: 'Failed to create new property.'},
       },
       Get: {
         header: 'Get a Property',

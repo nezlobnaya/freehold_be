@@ -21,7 +21,7 @@ function displayMenu(item) {
           onclick = 'onclick="{showContent(\'' + item.section + '\')}" '
         } else {
           onclick = 'onclick="{showContent(\'planning\')}" '
-        } 
+        }
       } else {
         onclick = 'onclick="' + item.onclick + '" '
       }
@@ -161,7 +161,9 @@ function displaySubSections(section) {
 }
 
 function outputMenu(thisMenu) {
-  let output = '', menuItems = {}, subSection = {}
+  let output = '',
+    menuItems = {},
+    subSection = {}
 
   // Check menu exists and is an object
   if (thisMenu && typeof thisMenu === 'object') {
