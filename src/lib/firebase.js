@@ -21,7 +21,7 @@ const serviceAcc = {
   type: getEnv('FIREBASE_TYPE'),
   project_id: getEnv('FIREBASE_PROJECT_ID'),
   private_key_id: getEnv('FIREBASE_PRIVATE_KEY_ID'),
-  private_key: getEnv('FIREBASE_PRIVATE_KEY'),
+  private_key: getEnv('FIREBASE_PRIVATE_KEY').replace(/\\n/g, '\n'),
   client_email: getEnv('FIREBASE_CLIENT_EMAIL'),
   client_id: getEnv('FIREBASE_CLIENT_ID'),
   auth_uri: getEnv('FIREBASE_AUTH_URI'),
