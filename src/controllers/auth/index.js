@@ -1,9 +1,10 @@
 const R = require('ramda')
 const User = require('../../models/user')
-const {firebase, fireAdmin} = require('../../lib/firebase')
+const jtoken = require('jsonwebtoken')
+const {fireAdmin} = require('../../lib/firebase')
 
 async function createUser(req, res) {
-  const {email, password, type} = req.body
+  const {email, uid, type} = req.body
 
   try {
     //set landlord claim to false on default
@@ -14,23 +15,11 @@ async function createUser(req, res) {
       claimObject.landlord = true
     }
 
-    // Create the user
-    const {user} = await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-
-    if (!user) {
-      return res.status(400).json({message: 'Account not created'})
-    }
-
     //get uid from the user variable above, set custom claim
-    await fireAdmin.auth().setCustomUserClaims(user.uid, claimObject)
-
-    //get current user's id token, refresh it due to newly added claims
-    const token = await firebase.auth().currentUser.getIdToken(true)
+    await fireAdmin.auth().setCustomUserClaims(uid, claimObject)
 
     res.status(201).json({
-      token,
+      uid,
       user: {
         type,
         email,
@@ -47,7 +36,7 @@ async function createUser(req, res) {
 }
 
 async function login(req, res) {
-  const {email, password} = req.body
+  const {email, token} = req.body
 
   try {
     /*
@@ -56,16 +45,18 @@ async function login(req, res) {
      * global firebase application instance that can be retrieved with
      * firebase.auth().currentUser
      * */
-    await firebase.auth().signInWithEmailAndPassword(email, password)
+    const decodedToken = await jtoken.decode(token)
 
-    //gets user's token from firebase
-    const token = await firebase.auth().currentUser.getIdToken()
+    let type = 'tenant'
+    if (decodedToken.landlord === true) {
+      type = 'landlord'
+    }
 
     const foundUser = await User.findByEmail(email)
 
-    const user = R.pick(['email', 'firstName', 'lastName'], foundUser)
+    const user = R.pick(['email'], foundUser)
 
-    res.status(200).json({token, user})
+    res.status(200).json({token, user, type: type})
   } catch (err) {
     console.log(err)
     res.status(401).json({
