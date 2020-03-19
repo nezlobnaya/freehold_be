@@ -55,8 +55,7 @@ async function login(req, res) {
     const foundUser = await User.findByEmail(email)
 
     const user = R.pick(['email'], foundUser)
-
-    res.status(200).json({token, user, type: type})
+    res.status(200).json({token, user, type})
   } catch (err) {
     console.log(err)
     res.status(401).json({
