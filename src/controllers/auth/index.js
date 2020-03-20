@@ -1,6 +1,10 @@
 const R = require('ramda')
 const User = require('../../models/user')
 const {firebase, fireAdmin} = require('../../lib/firebase')
+const sgMail = require('@sendgrid/mail')
+require('dotenv').config()
+
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 async function createUser(req, res) {
   const {email, password, type} = req.body
@@ -18,6 +22,18 @@ async function createUser(req, res) {
     const {user} = await firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
+
+    const msg = {
+      to: user.email,
+      from: 'labspt.propman@gmail.com',
+      subject: 'Thank you for Registering at FreeHold!',
+      text: `Thank you for registering!`,
+      html: `Welcome ${user.email}, <br />We are glad you joined the Freehold family!<br /><strong> Sincerely, FreeHold team </strong`,
+    }
+
+    if (user) {
+      sgMail.send(msg).then(() => {}, console.error)
+    }
 
     if (!user) {
       return res.status(400).json({message: 'Account not created'})
