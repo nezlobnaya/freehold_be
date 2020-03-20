@@ -4,16 +4,12 @@ const formatStandard = date => (date ? format(date, 'MM/dd/yyyy') : null)
 
 const createUser = input => {
   return {
-    firstName: 'Matt',
-    lastName: 'Hagner',
-    email: 'test@gmail.com',
-    type: 'landlord',
-    phone: '1238675309',
+    landlord: true,
     ...input,
   }
 }
 
-const createLandlord = input => createUser({type: 'landlord', ...input})
+const createLandlord = input => createUser({landlord: true, ...input})
 const createTenant = input => createUser({type: 'tenant', ...input})
 
 const createProperty = input => {

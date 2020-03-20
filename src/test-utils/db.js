@@ -18,11 +18,11 @@ const destroyConn = async () => {
   await db.destroy()
 }
 
-const insertResourceIntoTable = tableName => resource =>
-  db
-    .from(tableName)
+const insertResourceIntoTable = tableName => resource => {
+  db.from(tableName)
     .insert(resource)
     .returning('*')
+}
 
 // Users
 const insertUsers = insertResourceIntoTable('users as u')
