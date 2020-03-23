@@ -1,7 +1,11 @@
 const R = require('ramda')
 const User = require('../../models/user')
-const jtoken = require('jsonwebtoken')
 const {fireAdmin} = require('../../lib/firebase')
+const sgMail = require('@sendgrid/mail')
+require('dotenv').config()
+const jtoken = require('jsonwebtoken')
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+
 
 async function createUser(req, res) {
   const {email, uid, type} = req.body
@@ -14,9 +18,19 @@ async function createUser(req, res) {
     if (type === 'landlord') {
       claimObject.landlord = true
     }
-
-    //get uid from the user variable above, set custom claim
+    
+    //get uid from req.body object above, set custom claim
     await fireAdmin.auth().setCustomUserClaims(uid, claimObject)
+
+    const msg = {
+      to: email,
+      from: 'labspt.propman@gmail.com',
+      subject: 'Thank you for Registering at FreeHold!',
+      text: `Thank you for registering!`,
+      html: `Welcome ${email}, <br />We are glad you joined the Freehold family!<br /><strong> Sincerely, FreeHold team </strong`,
+    }
+
+    sgMail.send(msg).then(() => {}, console.error)
 
     res.status(201).json({
       uid,
