@@ -8,6 +8,8 @@ exports.up = function(knex) {
       .integer('user_id')
       .references('id')
       .inTable('user')
+    tbl.date('lease_start').notNullable()
+    tbl.date('lease_end').notNullable()
   })
 }
 

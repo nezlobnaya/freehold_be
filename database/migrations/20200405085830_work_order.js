@@ -9,6 +9,7 @@ exports.up = function(knex) {
     tbl.string('description').notNullable()
     tbl.string('type').notNullable()
     tbl.string('status').notNullable()
+    tbl.string('comment')
     tbl
       .timestamp('start_date')
       .defaultTo(knex.fn.now())
