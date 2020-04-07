@@ -50,7 +50,6 @@ router.post('/', canAddTenant, async (req, res) => {
     })
 
     if (tenant) {
-
       const msg = {
         to: req.body.email,
         from: 'labspt.propman@gmail.com',
@@ -58,7 +57,7 @@ router.post('/', canAddTenant, async (req, res) => {
         text: `You have been added to  property.Please go to freehold.com to register!`,
         html: `Welcome ${req.body.firstName} ${req.body.lastName}, <br />We are glad you joined the Freehold family!<br /><strong> Please go to freehold.dev to register! Sincerely, FreeHold team </strong`,
       }
-  
+
       sgMail.send(msg).then(() => {}, console.error)
 
       return res.status(201).json(tenant)
