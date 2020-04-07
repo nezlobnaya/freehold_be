@@ -20,8 +20,10 @@ const checkAccessToWorkorder = async (req, res, next) => {
 
   try {
     const property = await Property.getProperty(id)
+    console.log('PROPERTY', property)
 
-    if (req.user.type === 'landlord' && req.user.id !== property.landLordId) {
+    if (req.user.type === 'landlord' && req.user.id !== property.landlordId) {
+      console.log('USER', req.user.id === property.landlordId)
       return res
         .status(401)
         .json('You are not authorized to access that work order')
