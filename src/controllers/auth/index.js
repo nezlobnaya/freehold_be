@@ -6,7 +6,6 @@ require('dotenv').config()
 const jtoken = require('jsonwebtoken')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-
 async function createUser(req, res) {
   const {email, uid, type} = req.body
 
@@ -18,7 +17,7 @@ async function createUser(req, res) {
     if (type === 'landlord') {
       claimObject.landlord = true
     }
-    
+
     //get uid from req.body object above, set custom claim
     await fireAdmin.auth().setCustomUserClaims(uid, claimObject)
 
