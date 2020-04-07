@@ -1,7 +1,7 @@
 const express = require('express')
 const Property = require('../../models/property')
 const User = require('../../models/user')
-
+const sgMail = require('@sendgrid/mail')
 const bearerAuth = require('../../lib/bearer-auth')
 const requireAuth = require('../../lib/require-auth')
 const {requireLandlord} = require('../../middleware')
@@ -9,6 +9,7 @@ const {requireLandlord} = require('../../middleware')
 const router = express.Router()
 
 router.use(bearerAuth, requireAuth)
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const canAddTenant = (req, res, next) => {
   // Sets the default user to an empty object to avoid `property is not a valid
@@ -43,11 +44,23 @@ router.post('/', canAddTenant, async (req, res) => {
 
     const tenant = await User.createTenant({
       ...req.body,
+      email: req.body.email,
       landlordId: req.user.id,
       type: 'tenant',
     })
 
     if (tenant) {
+
+      const msg = {
+        to: req.body.email,
+        from: 'labspt.propman@gmail.com',
+        subject: 'You have been added to a property!',
+        text: `You have been added to  property.Please go to freehold.com to register!`,
+        html: `Welcome ${req.body.firstName} ${req.body.lastName}, <br />We are glad you joined the Freehold family!<br /><strong> Please go to freehold.dev to register! Sincerely, FreeHold team </strong`,
+      }
+  
+      sgMail.send(msg).then(() => {}, console.error)
+
       return res.status(201).json(tenant)
     } else {
       res.status(400).json({message: 'Something unexpected happened'})
