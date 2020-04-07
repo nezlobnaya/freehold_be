@@ -40,7 +40,6 @@ async function createUser(req, res) {
       },
     })
   } catch (err) {
-    console.log('Error registering:', err)
     if (err.code === 'auth/email-already-in-use') {
       return res.status(400).json({message: 'Email is already used'})
     }
