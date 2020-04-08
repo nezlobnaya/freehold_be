@@ -2,3 +2,5 @@ exclude_patterns:
   - '**/__mocks__/'
   - '**/database/migrations/'
   - '**/database/seeds/'
+  - '**/temp/'
+  - '**/*.test.js'

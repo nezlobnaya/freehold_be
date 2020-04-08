@@ -6,7 +6,7 @@ function isValidEmail(email) {
 }
 
 const validateAuthInput = (requireType = false) => (req, res, next) => {
-  const {email, password, type} = req.body
+  const {email, type} = req.body
 
   let errors = {}
 
@@ -14,12 +14,6 @@ const validateAuthInput = (requireType = false) => (req, res, next) => {
     errors.email = 'Email is required'
   } else if (!isValidEmail(email)) {
     errors.email = 'The email supplied is not valid'
-  }
-
-  if (!password) {
-    errors.password = 'Password is required'
-  } else if (password.length < 8) {
-    errors.password = 'The password must be 8 characters long'
   }
 
   // Refactor this out at some point
