@@ -1,4 +1,3 @@
-const firebase = require('firebase')
 const fireAdmin = require('firebase-admin')
 
 function getEnv(key, fallback) {
@@ -8,14 +7,6 @@ function getEnv(key, fallback) {
 
   return process.env[key]
 }
-
-firebase.initializeApp({
-  apiKey: getEnv('FIREBASE_API_KEY'),
-  authDomain: getEnv('FIREBASE_AUTH_DOMAIN'),
-  databaseUrl: getEnv('FIREBASE_DATABASE_URL'),
-  storageBucket: getEnv('FIREBASE_STORAGE_BUCKET'),
-  messagingSenderId: getEnv('FIREBASE_MESSAGING_SENDER_ID'),
-})
 
 const serviceAcc = {
   type: getEnv('FIREBASE_TYPE'),
@@ -42,4 +33,4 @@ fireAdmin.initializeApp({
   measurementId: getEnv('FIREBASE_MEASUREMENT_ID'),
 })
 
-module.exports = {firebase, fireAdmin}
+module.exports = fireAdmin
