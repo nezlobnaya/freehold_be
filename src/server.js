@@ -3,7 +3,7 @@ const cors = require('cors')
 const helmet = require('helmet')
 const morgan = require('morgan')
 
-const docs = require('./docs/index.js')
+// const docs = require('./docs/index.js')
 
 // Require Routers
 const authRouter = require('./routes/auth/')
@@ -42,11 +42,11 @@ app.use('/api/users', usersRouter)
 // Base Route
 app.get('/', (_req, res) => {
   res.setHeader('Content-Type', 'text/html')
-  res.send(docs)
+  res.send('<h1>FreeHold Backend</h1>')
 })
 
 // Redirect any other route
-app.get('/*', function(_req, res) {
+app.get('/*', function (_req, res) {
   res.redirect('/')
 })
 
