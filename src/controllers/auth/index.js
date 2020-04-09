@@ -1,6 +1,6 @@
 const R = require('ramda')
 const User = require('../../models/user')
-const {fireAdmin} = require('../../lib/firebase')
+const fireAdmin = require('../../lib/firebase')
 const sgMail = require('@sendgrid/mail')
 require('dotenv').config()
 const jtoken = require('jsonwebtoken')

@@ -1,5 +1,5 @@
 const User = require('../models/user')
-const {fireAdmin} = require('../lib/firebase')
+const fireAdmin = require('../lib/firebase')
 
 const bearerAuth = async (req, res, next) => {
   // We get the authorization header and default to an empty string

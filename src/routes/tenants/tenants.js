@@ -55,7 +55,7 @@ router.post('/', canAddTenant, async (req, res) => {
         from: 'labspt.propman@gmail.com',
         subject: 'You have been added to a property!',
         text: `You have been added to  property.Please go to freehold.com to register!`,
-        html: `Welcome ${req.body.firstName} ${req.body.lastName}, <br />We are glad you joined the Freehold family!<br /><strong> Please go to freehold.dev to register! Sincerely, FreeHold team </strong`,
+        html: `Welcome ${req.body.firstName} ${req.body.lastName}, <br />We are glad you joined the Freehold family!<br /><strong> Please go to <a href="https://freehold.dev"> freehold.dev </a> to register! Sincerely, FreeHold team </strong>`,
       }
 
       sgMail.send(msg).then(() => {}, console.error)
