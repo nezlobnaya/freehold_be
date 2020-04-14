@@ -1,21 +1,21 @@
-// // Workorder Controllers
-// const Workorders = require('../../models/workorders')
+// Workorder Controllers
+const Workorders = require('../../models/workorders/workorders')
 
-// const create = async (req, res) => {
-//   const input = req.body
-
-//   try {
-//     const results = await Workorders.add(input, req.property.id, req.user.id)
-//     if (results) {
-//       res.status(201).json(results)
-//     } else {
-//       res.sendStatus(400)
-//     }
-//   } catch (err) {
-//     console.error(err)
-//     res.status(500).json({error: 'Internal server error'})
-//   }
-// }
+const create = async (req, res) => {
+  const input = req.body
+  console.log(Workorders)
+  try {
+    const results = await Workorders.add(input)
+    if (results) {
+      res.status(201).json(results)
+    } else {
+      res.sendStatus(400)
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({error: 'Internal server error'})
+  }
+}
 
 // const readAllByUser = async (req, res) => {
 //   try {
@@ -35,22 +35,22 @@
 //   }
 // }
 
-// const readById = async (req, res) => {
-//   const {id} = req.params
+const readById = async (req, res) => {
+  const {id} = req.params
 
-//   try {
-//     const results = await Workorders.getById(id)
+  try {
+    const results = await Workorders.getById(id)
 
-//     if (results) {
-//       res.status(200).json(results)
-//     } else {
-//       res.status(404).json({error: 'No workorder found with that id'})
-//     }
-//   } catch (err) {
-//     console.error(err)
-//     res.status(500).json({error: 'Internal server error'})
-//   }
-// }
+    if (results) {
+      res.status(200).json(results)
+    } else {
+      res.status(404).json({error: 'No workorder found with that id'})
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({error: 'Internal server error'})
+  }
+}
 
 // const updateById = async (req, res) => {
 //   const {id} = req.params
@@ -87,10 +87,10 @@
 //   }
 // }
 
-// module.exports = {
-//   create,
-//   readAllByUser,
-//   readById,
-//   updateById,
-//   remove,
-// }
+module.exports = {
+  create,
+  //   readAllByUser,
+  readById,
+  //   updateById,
+  //   remove,
+}

@@ -9,8 +9,8 @@ const morgan = require('morgan')
 const authRouter = require('./routes/auth/')
 const usersRouter = require('./routes/users')
 const propertyRouter = require('./routes/properties/property-router.js')
+const workorderRouter = require('./routes/workorders/wo-router.js')
 // const tenantHistoryRouter = require('./routes/history/tenantHistory-router.js')
-// const workorderRouter = require('./routes/workorders/wo-router.js')
 // const tenantsRouter = require('./routes/tenants')
 
 // Auth Middleware
@@ -35,8 +35,8 @@ app.get('/protected', bearerAuth, requireAuth, (req, res) => {
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/properties', propertyRouter)
+app.use('/api/workorders', workorderRouter)
 // app.use('/api/history', tenantHistoryRouter)
-// app.use('/api/workorders', workorderRouter)
 // app.use('/api/tenants', tenantsRouter)
 
 // Base Route
