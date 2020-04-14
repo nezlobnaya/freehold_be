@@ -7,7 +7,8 @@ const jtoken = require('jsonwebtoken')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 async function createUser(req, res) {
-  const {email, uid, type} = req.body
+  console.log(req.user)
+  const {email, id: uid, type} = req.user
 
   try {
     //set landlord claim to false on default

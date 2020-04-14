@@ -1,24 +1,21 @@
 const db = require('../../../database/db')
 
-const table = 'users as u'
+const table = 'user'
 
-const landlordReturning = [
-  'id',
-  'firstName',
-  'lastName',
-  'type',
-  'phone',
-  'email',
-]
+const landlordReturning = ['id', 'landlord']
 
 const tenantReturning = '*'
 
-async function create(input, returning = landlordReturning) {
-  const [user] = await db
-    .from(table)
-    .insert(input)
-    .returning(returning)
+async function create(input) {
+  console.log('input = ', input)
+  const [user] = await db(table)
+    .insert({id: input.id, landlord: input.landlord})
+    .returning('*')
 
+  console.log(user)
+  user.email = input.email
+  user.type = 'landlord'
+  console.log(user)
   return user || null
 }
 
@@ -36,10 +33,7 @@ async function findByEmail(email, type) {
 }
 
 async function findById(id, returning = landlordReturning) {
-  const [user] = await db
-    .from(table)
-    .select(returning)
-    .where({id})
+  const [user] = await db.from(table).select(returning).where({id})
 
   return user || null
 }
@@ -59,17 +53,11 @@ async function updateByEmail(email, update, returning = landlordReturning) {
 }
 
 function getAllTenantsByPropertyId(id) {
-  return db
-    .from(table)
-    .select('*')
-    .where({residenceId: id})
+  return db.from(table).select('*').where({residenceId: id})
 }
 
 function getAllTenantsByLandlordId(id) {
-  return db
-    .from(table)
-    .select('*')
-    .where({landlordId: id})
+  return db.from(table).select('*').where({landlordId: id})
 }
 
 async function canAccessTenant(landlordId, tenantId) {

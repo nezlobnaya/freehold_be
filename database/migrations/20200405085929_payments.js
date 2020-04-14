@@ -1,18 +1,9 @@
-exports.up = function(knex) {
+exports.up = function (knex) {
   return knex.schema.createTable('payments', tbl => {
-    tbl
-      .increments('id')
-      .unsigned()
-      .primary()
+    tbl.increments('id').unsigned().primary()
 
-    tbl
-      .integer('unit_id')
-      .references('id')
-      .inTable('unit')
-    tbl
-      .integer('user_id')
-      .references('id')
-      .inTable('user')
+    tbl.integer('unit_id').references('id').inTable('unit')
+    tbl.string('user_id').references('id').inTable('user')
     tbl.integer('type').notNullable()
     tbl.integer('amount').notNullable()
     tbl.date('payment_date').notNullable()
@@ -21,6 +12,6 @@ exports.up = function(knex) {
   })
 }
 
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema.dropTableIfExists('payments')
 }

@@ -29,10 +29,7 @@ async function addProperty(input, userId) {
 
 // getProperty() - return results for a property by id
 async function getProperty(id) {
-  const [property] = await db
-    .from('properties')
-    .select('*')
-    .where({id})
+  const [property] = await db.from('properties').select('*').where({id})
 
   return property || null
 }
@@ -83,9 +80,7 @@ async function updateProperty(changes, id) {
 //#region - Delete
 
 async function deleteProperty(id) {
-  const results = await db('properties')
-    .where({id})
-    .del()
+  const results = await db('properties').where({id}).del()
 
   return results === 1 ? {deleted: true} : {deleted: false}
 }
