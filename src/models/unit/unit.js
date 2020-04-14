@@ -1,56 +1,31 @@
 const db = require('../../../database/db')
 
 module.exports = {
-  // Create
-  addProperty,
-  // Read
-  getProperty,
-  getAllProperties,
+  addUnit,
+  getUnitById,
+  getAllUnits,
   getPropertiesByUser,
-  // Update
-  updateProperty,
-  // Delete
+  updateUnit,
   deleteProperty,
 }
 
-//#region - CREATE
+// addUnit(input) - inserts input to properties and return results for a property by id inserted
+async function addUnit(input) {
+  const results = await db('unit').insert(input).returning('*')
 
-// addProperty(input) - inserts input to properties and return results for a property by id inserted
-async function addProperty(input, userId) {
-  const results = await db('properties')
-    .returning('id')
-    .insert({...input, landlordId: userId})
-  return getProperty(results[0])
+  return results[0]
 }
 
-//#endregion
+// getUnitById() - return results for a property by id
+async function getUnitById(id) {
+  const unit = await db('unit').where({id}).first('*')
 
-//#region - READ
-
-// getProperty() - return results for a property by id
-async function getProperty(id) {
-  const [property] = await db.from('properties').select('*').where({id})
-
-  return property || null
+  return unit
 }
 
-// getAllProperties() - return all properties
-function getAllProperties() {
-  return db('properties as p')
-    .join('users as u', 'u.id', 'p.landlordId')
-    .select(
-      'p.id',
-      'name',
-      'p.street',
-      'p.city',
-      'p.state',
-      'p.zip',
-      'p.image',
-      'status',
-      'u.firstName',
-      'u.lastName',
-      'u.email',
-    )
+// getAllUnits() - return all properties
+function getAllUnits() {
+  return db('unit').select('*')
 }
 
 // getPropertiesByUser - return all properties for a specific user by the user's email
@@ -61,16 +36,8 @@ async function getPropertiesByUser(landlordId) {
     .select('*')
 }
 
-//#endregion - Get
-
-//#region - Update
-
-async function updateProperty(changes, id) {
-  const [property] = await db
-    .from('properties')
-    .update(changes)
-    .where({id})
-    .returning('*')
+async function updateUnit(changes, id) {
+  const [property] = await db('unit').where({id}).update(changes).returning('*')
 
   return property ? {updated: true, property} : {updated: false}
 }

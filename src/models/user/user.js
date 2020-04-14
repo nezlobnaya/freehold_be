@@ -19,10 +19,6 @@ async function create(input) {
   return user || null
 }
 
-function createTenant(input) {
-  return create(input, '*')
-}
-
 async function findByEmail(email, type) {
   const [user] = await db
     .from(table)
@@ -79,7 +75,6 @@ async function updateTenantById(id, update) {
 module.exports = {
   canAccessTenant,
   create,
-  createTenant,
   findByEmail,
   findById,
   findTenantById,
