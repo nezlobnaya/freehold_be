@@ -1,25 +1,10 @@
 // const Property = require('../property')
 // const User = require('../user')
 // // Work Order Models
-// const db = require('../../../database/db')
+const db = require('../../../database/db')
 // const {omit, map, pipeP} = require('ramda')
 
 // const table = 'workorders as w'
-
-// module.exports = {
-//   // Create
-//   add,
-//   // Read
-//   get,
-//   getBy,
-//   getById,
-//   getByLandlordId,
-//   getAllByPropertyId,
-//   // Update
-//   update,
-//   // Delete
-//   remove,
-// }
 
 // async function getDetails(workorder) {
 //   try {
@@ -37,15 +22,11 @@
 
 // //#region - CREATE
 
-// async function add(input, propertyId, userId) {
-//   const workorders = await db(table)
-//     .returning('*')
-//     .insert({...input, propertyId: propertyId, createdBy: userId})
+const add = async input => {
+  const workorder = await db('work_order').insert(input).returning('*')
 
-//   const [workorder] = await getAllDetails(workorders)
-
-//   return workorder || null
-// }
+  return workorder || null
+}
 
 // //#endregion
 
@@ -57,16 +38,13 @@
 //   return results || null
 // }
 
-// async function getById(id) {
-//   const results = await db
-//     .from(table)
-//     .select('*')
-//     .where({id})
+async function getById(id) {
+  const results = await db('work_order').where({id}).select('*')
 
-//   const [workorder] = await getAllDetails(results)
+  //   const [workorder] = await getAllDetails(results)
 
-//   return workorder || null
-// }
+  return results || null
+}
 
 // function getAllByPropertyId(propertyId) {
 //   return getBy({propertyId})
@@ -121,3 +99,13 @@
 // }
 
 // //#endregion
+module.exports = {
+  add,
+  //   get,
+  //   getBy,
+  getById,
+  //   getByLandlordId,
+  //   getAllByPropertyId,
+  //   update,
+  //   remove,
+}

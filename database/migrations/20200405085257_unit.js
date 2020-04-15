@@ -1,15 +1,9 @@
-exports.up = function(knex) {
+exports.up = function (knex) {
   return knex.schema.createTable('unit', tbl => {
-    tbl
-      .increments('id')
-      .unsigned()
-      .primary()
+    tbl.increments('id').unsigned().primary()
 
     tbl.string('name').notNullable()
-    tbl
-      .string('street_address')
-      .notNullable()
-      .unique()
+    tbl.string('street_address').notNullable().unique()
     tbl.string('city').notNullable()
     tbl.string('state').notNullable()
     tbl.string('zip').notNullable()
@@ -18,6 +12,6 @@ exports.up = function(knex) {
   })
 }
 
-exports.down = function(knex) {
+exports.down = function (knex) {
   return knex.schema.dropTableIfExists('unit')
 }
