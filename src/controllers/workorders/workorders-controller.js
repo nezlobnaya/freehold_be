@@ -1,5 +1,5 @@
 // Workorder Controllers
-const Workorders = require('../../models/workorders/workorders')
+const Workorders = require('../../models/workorders/workorders-model')
 
 const create = async (req, res) => {
   const input = req.body
@@ -52,23 +52,23 @@ const readById = async (req, res) => {
   }
 }
 
-// const updateById = async (req, res) => {
-//   const {id} = req.params
-//   const changes = req.body
+const updateById = async (req, res) => {
+  const {id} = req.params
+  const changes = req.body
 
-//   try {
-//     const updateResults = await Workorders.update(changes, id)
+  try {
+    const updateResults = await Workorders.update(changes, id)
 
-//     if (updateResults.updated) {
-//       res.status(200).json(updateResults.results)
-//     } else {
-//       res.status(404).json({message: 'No workorder found with that id'})
-//     }
-//   } catch (err) {
-//     console.error(err)
-//     res.status(500).json({error: 'Internal server error'})
-//   }
-// }
+    if (updateResults) {
+      res.status(200).json(updateResults)
+    } else {
+      res.status(404).json({message: 'No workorder found with that id'})
+    }
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({error: 'Internal server error'})
+  }
+}
 
 // const remove = async (req, res) => {
 //   const {id} = req.params
@@ -91,6 +91,6 @@ module.exports = {
   create,
   //   readAllByUser,
   readById,
-  //   updateById,
+  updateById,
   //   remove,
 }

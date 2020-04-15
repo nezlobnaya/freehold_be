@@ -74,17 +74,16 @@ async function getById(id) {
 
 // //#region - Update
 
-// async function update(changes, id) {
-//   const updates = await db
-//     .from(table)
-//     .update(changes)
-//     .where({id})
-//     .returning('*')
+async function update(changes, id) {
+  const [updates] = await db('work_order')
+    .where({id})
+    .update(changes)
+    .returning('*')
 
-//   const [workorder] = await Promise.all(getAllDetails(updates))
-
-//   return updates ? {updated: true, results: workorder} : {updated: false}
-// }
+  // const [workorder] = await Promise.all(getAllDetails(updates))
+  // return updates ? {updated: true, results: workorder} : {updated: false}
+  return updates
+}
 
 // //#endregion
 
@@ -106,6 +105,6 @@ module.exports = {
   getById,
   //   getByLandlordId,
   //   getAllByPropertyId,
-  //   update,
+  update,
   //   remove,
 }
