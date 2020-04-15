@@ -8,8 +8,9 @@ const morgan = require('morgan')
 // Require Routers
 const authRouter = require('./routes/auth/')
 const usersRouter = require('./routes/users')
-const propertyRouter = require('./routes/properties/property-router.js')
+const unitRouter = require('./routes/unit/unit-router')
 const workorderRouter = require('./routes/workorders/wo-router.js')
+const mediaRouter = require('./routes/media/media-router')
 // const tenantHistoryRouter = require('./routes/history/tenantHistory-router.js')
 // const tenantsRouter = require('./routes/tenants')
 
@@ -34,8 +35,9 @@ app.get('/protected', bearerAuth, requireAuth, (req, res) => {
 // Routes
 app.use('/api/auth', authRouter)
 app.use('/api/users', usersRouter)
-app.use('/api/properties', propertyRouter)
+app.use('/api/properties', unitRouter)
 app.use('/api/workorders', workorderRouter)
+app.use('/api/media', mediaRouter)
 // app.use('/api/history', tenantHistoryRouter)
 // app.use('/api/tenants', tenantsRouter)
 

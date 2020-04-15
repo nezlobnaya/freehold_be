@@ -1,5 +1,5 @@
 const express = require('express')
-const WOController = require('../../controllers/workorders/workorders.js')
+const WOController = require('../../controllers/workorders/workorders-controller.js')
 // const Workorder = require('../../models/workorders')
 
 // const Property = require('../../models/property')
@@ -99,22 +99,13 @@ router.get(
   WOController.readById,
 )
 
-//#endregion
-//#region - UPDATE
-
-// router.put(
-//   '/:id',
-//   validateById,
-//   checkAccessToWorkorder,
-//   WOController.updateById,
-// )
-
-//#endregion
-
-//#region - DELETE
+router.put(
+  '/:id',
+  // validateById,
+  // checkAccessToWorkorder,
+  WOController.updateById,
+)
 
 // router.delete('/:id', validateById, checkAccessToWorkorder, WOController.remove)
-
-//#endregion
 
 module.exports = router

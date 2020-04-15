@@ -1,3 +1,3 @@
-const Unit = require('./unit')
+const Unit = require('./unit-model')
 
 module.exports = Unit
