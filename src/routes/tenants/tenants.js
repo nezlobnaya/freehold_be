@@ -2,13 +2,14 @@ const express = require('express')
 const Property = require('../../models/property')
 const User = require('../../models/user')
 const sgMail = require('@sendgrid/mail')
-const bearerAuth = require('../../lib/bearer-auth')
+// const bearerAuth = require('../../lib/bearer-auth')
+const restricted = require('../../middleware/restricted')
 const requireAuth = require('../../lib/require-auth')
 const {requireLandlord} = require('../../middleware')
 
 const router = express.Router()
 
-router.use(bearerAuth, requireAuth)
+router.use(restricted, requireAuth)
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const canAddTenant = (req, res, next) => {

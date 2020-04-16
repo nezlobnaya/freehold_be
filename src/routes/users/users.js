@@ -1,7 +1,8 @@
 const express = require('express')
 const Users = require('../../controllers/users/')
 
-const bearerAuth = require('../../lib/bearer-auth')
+// const bearerAuth = require('../../lib/bearer-auth')
+const restricted = require('../../middleware/restricted')
 const requireAuth = require('../../lib/require-auth')
 
 const router = express.Router()
@@ -14,11 +15,11 @@ const validateUserUpdateInput = (req, res, next) => {
   next()
 }
 
-router.get('/me', bearerAuth, requireAuth, Users.getCurrent)
+router.get('/me', restricted, requireAuth, Users.getCurrent)
 
 router.put(
   '/me',
-  bearerAuth,
+  restricted,
   requireAuth,
   validateUserUpdateInput,
   Users.updateCurrent,
