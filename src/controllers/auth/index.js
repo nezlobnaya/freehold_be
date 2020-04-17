@@ -1,14 +1,12 @@
-const R = require('ramda')
 const User = require('../../models/user')
 const fireAdmin = require('../../lib/firebase')
 const sgMail = require('@sendgrid/mail')
 require('dotenv').config()
-const jtoken = require('jsonwebtoken')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 async function createUser(req, res) {
-  console.log(req.user)
-  const {email, id: uid, type} = req.user
+  // console.log(req.body)
+  const {email, uid, type} = req.body
 
   try {
     //set landlord claim to false on default
@@ -50,8 +48,8 @@ async function createUser(req, res) {
 }
 
 async function login(req, res) {
-  const {email, token} = req.body
-
+  const { decodedToken, token } = req
+console.log(decodedToken, token)
   try {
     /*
      * Firebase auth does some magical stuff here.
@@ -59,17 +57,16 @@ async function login(req, res) {
      * global firebase application instance that can be retrieved with
      * firebase.auth().currentUser
      * */
-    const decodedToken = await jtoken.decode(token)
+    
 
     let type = 'tenant'
     if (decodedToken.landlord === true) {
       type = 'landlord'
     }
 
-    const foundUser = await User.findByEmail(email)
+    const foundUser = await User.findById(decodedToken.user_id)
 
-    const user = R.pick(['email'], foundUser)
-    res.status(200).json({token, user, type})
+    res.status(200).json({token, foundUser, type})
   } catch (err) {
     console.log(err)
     res.status(401).json({

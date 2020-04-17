@@ -3,7 +3,7 @@ const Workorders = require('../../models/workorders/workorders-model')
 
 const create = async (req, res) => {
   const input = req.body
-  console.log(Workorders)
+  // console.log(Workorders)
   try {
     const results = await Workorders.add(input)
     if (results) {

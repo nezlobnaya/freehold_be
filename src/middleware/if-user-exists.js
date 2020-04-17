@@ -1,11 +1,11 @@
-const UserModel = require('../models/user/user')
+const User = require('../models/user/user')
 
 const checkIfUserExists = async (req, res, next) => {
   try {
-    const {user_id: id} = req.token
-    const userExists = await UserModel.findById(id)
+    const {uid} = req.body
+    const userExists = await User.findById(uid)
+
     if (!userExists) {
-      res.status(200).json({message: 'no user with this id exists'})
       next()
     } else {
       res.status(400).json({message: 'user already exists'})
