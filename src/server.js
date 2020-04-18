@@ -11,8 +11,8 @@ const usersRouter = require('./routes/users')
 const unitRouter = require('./routes/unit/unit-router')
 const workorderRouter = require('./routes/workorders/wo-router.js')
 const mediaRouter = require('./routes/media/media-router')
-// const tenantHistoryRouter = require('./routes/history/tenantHistory-router.js')
-// const tenantsRouter = require('./routes/tenants')
+const paymentsRouter = require('./routes/payments/payments-router')
+const messageRouter = require('./routes/message/message-router')
 
 // Auth Middleware
 const bearerAuth = require('./lib/bearer-auth')
@@ -38,8 +38,8 @@ app.use('/api/users', usersRouter)
 app.use('/api/properties', unitRouter)
 app.use('/api/workorders', workorderRouter)
 app.use('/api/media', mediaRouter)
-// app.use('/api/history', tenantHistoryRouter)
-// app.use('/api/tenants', tenantsRouter)
+app.use('/api/payments', paymentsRouter)
+app.use('/api/message', messageRouter)
 
 // Base Route
 app.get('/', (_req, res) => {

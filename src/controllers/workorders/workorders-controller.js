@@ -1,9 +1,8 @@
 // Workorder Controllers
 const Workorders = require('../../models/workorders/workorders-model')
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   const input = req.body
-  console.log(Workorders)
   try {
     const results = await Workorders.add(input)
     if (results) {
@@ -12,8 +11,7 @@ const create = async (req, res) => {
       res.sendStatus(400)
     }
   } catch (err) {
-    console.error(err)
-    res.status(500).json({error: 'Internal server error'})
+    next(err)
   }
 }
 
@@ -35,7 +33,7 @@ const create = async (req, res) => {
 //   }
 // }
 
-const readById = async (req, res) => {
+const readById = async (req, res, next) => {
   const {id} = req.params
 
   try {
@@ -47,12 +45,11 @@ const readById = async (req, res) => {
       res.status(404).json({error: 'No workorder found with that id'})
     }
   } catch (err) {
-    console.error(err)
-    res.status(500).json({error: 'Internal server error'})
+    next(err)
   }
 }
 
-const updateById = async (req, res) => {
+const updateById = async (req, res, next) => {
   const {id} = req.params
   const changes = req.body
 
@@ -65,8 +62,7 @@ const updateById = async (req, res) => {
       res.status(404).json({message: 'No workorder found with that id'})
     }
   } catch (err) {
-    console.error(err)
-    res.status(500).json({error: 'Internal server error'})
+    next(err)
   }
 }
 

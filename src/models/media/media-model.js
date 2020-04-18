@@ -10,7 +10,24 @@ const getMediaById = async id => {
   return media
 }
 
+const updateMedia = async (changes, id) => {
+  const [updatedMedia] = await db('media')
+    .where({id})
+    .update(changes)
+    .returning('*')
+
+  return updatedMedia
+}
+
+const findByIdAndDelete = async id => {
+  const deleted = await db('media').where({id}).del()
+
+  return deleted
+}
+
 module.exports = {
   addMedia,
   getMediaById,
+  updateMedia,
+  findByIdAndDelete,
 }

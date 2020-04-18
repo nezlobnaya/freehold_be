@@ -7,7 +7,6 @@ const jtoken = require('jsonwebtoken')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 async function createUser(req, res) {
-  console.log(req.user)
   const {email, id: uid, type} = req.user
 
   try {
