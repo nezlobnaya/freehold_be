@@ -1,9 +1,6 @@
 const express = require('express')
 const Users = require('../../controllers/users/')
-
-// const bearerAuth = require('../../lib/bearer-auth')
 const restricted = require('../../middleware/restricted')
-// const requireAuth = require('../../lib/require-auth')
 
 const router = express.Router()
 

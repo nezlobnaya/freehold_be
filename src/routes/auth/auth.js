@@ -10,7 +10,7 @@ const checkIfUserExists = require('../../middleware/if-user-exists')
 const Auth = require('../../controllers/auth/')
 
 const router = express.Router()
-// console.log(typeof restricted)
+
 router.post(
   '/register',
   validateAuthInput(true),

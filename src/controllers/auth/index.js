@@ -5,7 +5,6 @@ require('dotenv').config()
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 async function createUser(req, res) {
-  // console.log(req.body)
   const {email, uid, type} = req.body
 
   try {
@@ -48,8 +47,8 @@ async function createUser(req, res) {
 }
 
 async function login(req, res) {
-  const { decodedToken, token } = req
-console.log(decodedToken, token)
+  const {decodedToken, token} = req
+  console.log(decodedToken, token)
   try {
     /*
      * Firebase auth does some magical stuff here.
@@ -57,7 +56,6 @@ console.log(decodedToken, token)
      * global firebase application instance that can be retrieved with
      * firebase.auth().currentUser
      * */
-    
 
     let type = 'tenant'
     if (decodedToken.landlord === true) {

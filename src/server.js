@@ -15,7 +15,7 @@ const mediaRouter = require('./routes/media/media-router')
 // const tenantsRouter = require('./routes/tenants')
 
 // Auth Middleware
-// const bearerAuth = require('./lib/bearer-auth')
+
 const restricted = require('./middleware/restricted')
 
 const requireAuth = require('./lib/require-auth')
