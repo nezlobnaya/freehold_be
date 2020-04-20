@@ -68,8 +68,11 @@
       "**/*.{js,jsx}",
       "!**/node_modules/**",
       "!**/vendor/**",
-      "!**/__tests__/**",
-      "!**/__mocks__/**"
+      "!**/database/**",
+      "!**/tests/**",
+      "!**/spec/**",
+      "!**/*.spec.{js,jsx}",
+      "!**/coverage/**"
     ]
   }
 }

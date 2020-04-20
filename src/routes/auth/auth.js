@@ -21,6 +21,6 @@ router.post(
   Auth.createUser,
 )
 
-router.post('/login', validateAuthInput(), Auth.login)
+router.post('/login', validateAuthInput(), restricted, Auth.login)
 
 module.exports = router

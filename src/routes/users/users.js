@@ -1,25 +1,23 @@
 const express = require('express')
 const Users = require('../../controllers/users/')
-
-const bearerAuth = require('../../lib/bearer-auth')
-const requireAuth = require('../../lib/require-auth')
+const restricted = require('../../middleware/restricted')
 
 const router = express.Router()
 
 const validateUserUpdateInput = (req, res, next) => {
-  if (req.body.email || req.body.email === '' || req.body.email === null) {
+  if (req.body.uid || req.body.uid === '' || req.body.uid === null) {
     return res.status(400).json({message: 'Cannot update email at this time'})
   }
 
   next()
 }
 
-router.get('/me', bearerAuth, requireAuth, Users.getCurrent)
+router.get('/me', restricted, Users.getCurrent)
 
 router.put(
   '/me',
-  bearerAuth,
-  requireAuth,
+  restricted,
+  // requireAuth,
   validateUserUpdateInput,
   Users.updateCurrent,
 )

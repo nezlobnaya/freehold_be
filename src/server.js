@@ -15,7 +15,9 @@ const paymentsRouter = require('./routes/payments/payments-router')
 const messageRouter = require('./routes/message/message-router')
 
 // Auth Middleware
-const bearerAuth = require('./lib/bearer-auth')
+
+const restricted = require('./middleware/restricted')
+
 const requireAuth = require('./lib/require-auth')
 
 const app = express()
@@ -28,7 +30,7 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('tiny'))
 }
 
-app.get('/protected', bearerAuth, requireAuth, (req, res) => {
+app.get('/protected', restricted, requireAuth, (req, res) => {
   res.send(`Yay! your email is ${req.user}`)
 })
 

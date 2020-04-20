@@ -1,10 +1,11 @@
 // Workorder Controllers
-const Workorders = require('../../models/workorders/workorders-model')
+const WorkOrders = require('../../models/workorders/workorders-model')
 
 const create = async (req, res, next) => {
   const input = req.body
+
   try {
-    const results = await Workorders.add(input)
+    const results = await WorkOrders.add(input)
     if (results) {
       res.status(201).json(results)
     } else {
@@ -37,7 +38,7 @@ const readById = async (req, res, next) => {
   const {id} = req.params
 
   try {
-    const results = await Workorders.getById(id)
+    const results = await WorkOrders.getById(id)
 
     if (results) {
       res.status(200).json(results)
@@ -54,7 +55,7 @@ const updateById = async (req, res, next) => {
   const changes = req.body
 
   try {
-    const updateResults = await Workorders.update(changes, id)
+    const updateResults = await WorkOrders.update(changes, id)
 
     if (updateResults) {
       res.status(200).json(updateResults)
@@ -66,27 +67,8 @@ const updateById = async (req, res, next) => {
   }
 }
 
-// const remove = async (req, res) => {
-//   const {id} = req.params
-
-//   try {
-//     // check that property exists
-//     const {deleted} = await Workorders.remove(id)
-
-//     if (deleted) {
-//       res.status(200).json(req.property)
-//     } else {
-//       res.status(400).json({message: 'Could not delete workorder.'})
-//     }
-//   } catch (err) {
-//     res.status(500).json({message: 'Failed to delete workorder.'})
-//   }
-// }
-
 module.exports = {
   create,
-  //   readAllByUser,
   readById,
   updateById,
-  //   remove,
 }

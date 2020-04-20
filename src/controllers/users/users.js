@@ -2,23 +2,18 @@ const User = require('../../models/user')
 
 async function getCurrent(req, res) {
   try {
-    const user = await User.findById(req.user.id)
-
-    let returnValue = {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      type: user.type,
-    }
+    const {decodedToken} = req
+    const user = await User.findById(decodedToken.user_id)
+    console.log(user)
 
     if (!user) {
       return res.sendStatus(404)
     } else {
-      return res.status(200).json(returnValue)
+      return res.status(200).json(user)
     }
   } catch (err) {
     console.error(err)
 
-    // TODO: Come back and change this
     res.status(500).json({message: 'Internal Server Error'})
   }
 }
