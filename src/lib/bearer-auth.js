@@ -17,10 +17,6 @@ const bearerAuth = async (req, res, next) => {
       //verify token with firebase
       const token = await fireAdmin.auth().verifyIdToken(payload)
 
-      //if token.landord === true
-      //type === landlord
-      //else
-      //type === tenant
       let type
       if (token.landlord) {
         type = 'landlord'

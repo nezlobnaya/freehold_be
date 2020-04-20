@@ -1,18 +1,14 @@
 const User = require('../models/user')
 
 const ifLandlordCreateUser = async (req, res, next) => {
-  const {email, type} = req.body
-  const {user_id: id} = req.token
-  console.log('id', id)
+  const {uid, type} = req.body
 
   if (type !== 'landlord') {
     return next()
   }
 
   try {
-    const user = await User.create({email, landlord: true, id})
-    /* eslint-disable-next-line */
-    req.user = user
+    await User.create({id: uid, landlord: true})
 
     next()
   } catch (err) {
