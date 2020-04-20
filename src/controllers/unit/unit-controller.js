@@ -2,9 +2,11 @@ const Unit = require('../../models/unit')
 
 const create = async (req, res, next) => {
   try {
-    const unit = await Unit.addUnit(req.body)
+    const {name, street_address, city, state, zip, occupied, rent} = req.body
+    const unitData = {name, street_address, city, state, zip, occupied, rent}
+    const unit = await Unit.addUnit(unitData)
 
-    res.status(200).json(unit)
+    res.status(201).json(unit)
   } catch (err) {
     next(err)
   }
@@ -14,7 +16,12 @@ const getById = async (req, res, next) => {
   try {
     const unitId = parseInt(req.params.id)
     const unit = await Unit.getUnitById(unitId)
-    res.status(200).json(unit)
+
+    if (!unit) {
+      res.status(404).json({message: 'unit not found'})
+    } else {
+      res.status(200).json(unit)
+    }
   } catch (err) {
     next(err)
   }
@@ -33,7 +40,12 @@ const update = async (req, res, next) => {
   try {
     const unitId = parseInt(req.params.id)
     const updatedUnit = await Unit.updateUnit(req.body, unitId)
-    res.status(200).json(updatedUnit)
+
+    if (!updatedUnit) {
+      res.status(404).json({message: 'unit not found'})
+    } else {
+      res.status(200).json(updatedUnit)
+    }
   } catch (err) {
     next(err)
   }

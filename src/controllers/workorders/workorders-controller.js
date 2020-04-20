@@ -1,7 +1,7 @@
 // Workorder Controllers
 const WorkOrders = require('../../models/workorders/workorders-model')
 
-const create = async (req, res) => {
+const create = async (req, res, next) => {
   const input = req.body
 
   try {
@@ -12,12 +12,29 @@ const create = async (req, res) => {
       res.sendStatus(400)
     }
   } catch (err) {
-    console.error(err)
-    res.status(500).json({error: 'Internal server error'})
+    next(err)
   }
 }
 
-const readById = async (req, res) => {
+// const readAllByUser = async (req, res) => {
+//   try {
+//     if (req.user.type === 'tenant') {
+//       const workOrders = await Workorders.getAllByPropertyId(
+//         req.user.residenceId,
+//       )
+
+//       res.status(200).json(workOrders)
+//     } else {
+//       const workOrders = await Workorders.getByLandlordId(req.user.id)
+//       res.status(200).json(workOrders)
+//     }
+//   } catch (err) {
+//     console.error(err)
+//     res.status(500).json({error: 'Internal server error'})
+//   }
+// }
+
+const readById = async (req, res, next) => {
   const {id} = req.params
 
   try {
@@ -29,12 +46,11 @@ const readById = async (req, res) => {
       res.status(404).json({error: 'No workorder found with that id'})
     }
   } catch (err) {
-    console.error(err)
-    res.status(500).json({error: 'Internal server error'})
+    next(err)
   }
 }
 
-const updateById = async (req, res) => {
+const updateById = async (req, res, next) => {
   const {id} = req.params
   const changes = req.body
 
@@ -47,8 +63,7 @@ const updateById = async (req, res) => {
       res.status(404).json({message: 'No workorder found with that id'})
     }
   } catch (err) {
-    console.error(err)
-    res.status(500).json({error: 'Internal server error'})
+    next(err)
   }
 }
 
