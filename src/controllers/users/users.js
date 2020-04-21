@@ -4,7 +4,6 @@ async function getCurrent(req, res) {
   try {
     const {decodedToken} = req
     const user = await User.findById(decodedToken.user_id)
-    console.log(user)
 
     if (!user) {
       return res.sendStatus(404)
