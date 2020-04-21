@@ -6,12 +6,9 @@ const User = require('../models/user')
  * authorized (invited) to sign up
  * */
 const ifTenantCheckIfAuthorized = async (req, res, next) => {
- 
   try {
-   
     if (req.body.type === 'tenant') {
       const tenant = await User.findById(req.body.uid)
-
 
       if (!tenant) {
         res.status(401).json({
@@ -20,14 +17,12 @@ const ifTenantCheckIfAuthorized = async (req, res, next) => {
         })
       } else {
         req.user = tenant
-  
-      next()
+
+        next()
       }
-  
     }
     next()
     /* eslint-disable-next-line */
-    
   } catch (err) {
     console.error(err)
     res.status(500).json({message: 'Something unexpected happened'})

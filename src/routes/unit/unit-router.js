@@ -1,7 +1,6 @@
 const express = require('express')
 const PropertyController = require('../../controllers/unit/unit-controller')
 // const Property = require('../../models/property')
-// const bearerAuth = require('../../lib/bearer-auth')
 // const requireAuth = require('../../lib/require-auth')
 // const {requireLandlord} = require('../../middleware')
 
@@ -9,7 +8,7 @@ const PropertyController = require('../../controllers/unit/unit-controller')
 
 const router = express.Router()
 
-// router.use(bearerAuth, requireAuth)
+// router.use(requireAuth)
 
 // const checkPropertyExists = async (req, res, next) => {
 //   try {
@@ -84,7 +83,6 @@ const router = express.Router()
 //   }
 // }
 
-// Must be placed after bearerAuth/requireAuth and validatePropertyId
 // const canModifyProperty = (propertyIdKey = 'id') => async (req, res, next) => {
 //   try {
 //     const property = await Properties.getProperty(req.params[propertyIdKey])
