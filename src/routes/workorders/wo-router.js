@@ -4,7 +4,6 @@ const WOController = require('../../controllers/workorders/workorders-controller
 
 // const Property = require('../../models/property')
 
-// const bearerAuth = require('../../lib/bearer-auth')
 // const requireAuth = require('../../lib/require-auth')
 
 const router = express.Router()
@@ -58,8 +57,6 @@ const router = express.Router()
 
 //   next()
 // }
-
-// router.use(bearerAuth, requireAuth)
 
 // const validateById = async (req, res, next) => {
 //   const {id} = req.params
