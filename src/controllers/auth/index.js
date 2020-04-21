@@ -22,9 +22,8 @@ async function createUser(req, res) {
     const msg = {
       to: email,
       from: 'labspt.propman@gmail.com',
-      subject: 'Thank you for Registering at FreeHold!',
-      text: `Thank you for registering!`,
-      html: `Welcome ${email}, <br />We are glad you joined the Freehold family!<br /><strong> Sincerely, FreeHold team </strong`,
+      subject: `Thank you, ${email} for Registering at FreeHold!`,
+      template_id: process.env.SENDGRID_WELCOME_ID,
     }
 
     sgMail.send(msg).then(() => {}, console.error)
@@ -48,7 +47,7 @@ async function createUser(req, res) {
 
 async function login(req, res) {
   const {decodedToken, token} = req
-  console.log(decodedToken, token)
+  console.log('In the login function', decodedToken, token)
   try {
     /*
      * Firebase auth does some magical stuff here.

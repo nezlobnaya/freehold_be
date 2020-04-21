@@ -18,8 +18,6 @@ const messageRouter = require('./routes/message/message-router')
 
 const restricted = require('./middleware/restricted')
 
-const requireAuth = require('./lib/require-auth')
-
 const app = express()
 
 app.use(helmet())
@@ -30,7 +28,7 @@ if (process.env.NODE_ENV !== 'test') {
   app.use(morgan('tiny'))
 }
 
-app.get('/protected', restricted, requireAuth, (req, res) => {
+app.get('/protected', restricted, (req, res) => {
   res.send(`Yay! your email is ${req.user}`)
 })
 
