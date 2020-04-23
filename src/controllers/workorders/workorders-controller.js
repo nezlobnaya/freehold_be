@@ -16,23 +16,16 @@ const create = async (req, res, next) => {
   }
 }
 
-// const readAllByUser = async (req, res) => {
-//   try {
-//     if (req.user.type === 'tenant') {
-//       const workOrders = await Workorders.getAllByPropertyId(
-//         req.user.residenceId,
-//       )
+const readAllByUser = async (req, res) => {
+  try {
+    const workOrders = await WorkOrders.getAll()
 
-//       res.status(200).json(workOrders)
-//     } else {
-//       const workOrders = await Workorders.getByLandlordId(req.user.id)
-//       res.status(200).json(workOrders)
-//     }
-//   } catch (err) {
-//     console.error(err)
-//     res.status(500).json({error: 'Internal server error'})
-//   }
-// }
+    res.status(200).json(workOrders)
+  } catch (err) {
+    console.error(err)
+    res.status(500).json({error: 'Internal server error'})
+  }
+}
 
 const readById = async (req, res, next) => {
   const {id} = req.params
@@ -54,8 +47,11 @@ const updateById = async (req, res, next) => {
   const {id} = req.params
   const changes = req.body
 
+  console.log(changes, 'Changes')
+
   try {
-    const updateResults = await WorkOrders.update(changes, id)
+    const updateResults = await WorkOrders.update(id, changes)
+    console.log(updateResults, 'Updated Results')
 
     if (updateResults) {
       res.status(200).json(updateResults)
@@ -69,6 +65,7 @@ const updateById = async (req, res, next) => {
 
 module.exports = {
   create,
+  readAllByUser,
   readById,
   updateById,
 }

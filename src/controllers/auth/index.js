@@ -47,7 +47,7 @@ async function createUser(req, res) {
 
 async function login(req, res) {
   const {decodedToken, token} = req
-  console.log('In the login function', decodedToken, token)
+
   try {
     /*
      * Firebase auth does some magical stuff here.
