@@ -50,16 +50,11 @@ async function getById(id) {
 //   return getBy({propertyId})
 // }
 
-// async function getByLandlordId(id) {
-//   const results = await db
-//     .from(table)
-//     .join('properties as p', 'p.id', 'w.propertyId')
-//     .join('users as u', 'u.id', 'p.landlordId')
-//     .select('w.*')
-//     .where({'p.landlordId': id})
-
-//   return results || null
-// }
+async function getAll() {
+  const results = await db('work_order').select('*')
+  console.log(results)
+  return results || null
+}
 
 // async function getBy(query) {
 //   const results = await db
@@ -74,15 +69,8 @@ async function getById(id) {
 
 // //#region - Update
 
-async function update(changes, id) {
-  const [updates] = await db('work_order')
-    .where({id})
-    .update(changes)
-    .returning('*')
-
-  // const [workorder] = await Promise.all(getAllDetails(updates))
-  // return updates ? {updated: true, results: workorder} : {updated: false}
-  return updates
+function update(id, changes) {
+  return db('work_order').where({id}).update(changes).returning('*')
 }
 
 // //#endregion
@@ -102,8 +90,8 @@ module.exports = {
   add,
   //   get,
   //   getBy,
+  getAll,
   getById,
-  //   getByLandlordId,
   //   getAllByPropertyId,
   update,
   //   remove,
