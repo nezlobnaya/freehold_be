@@ -96,6 +96,14 @@ router.get(
   WOController.readById,
 )
 
+router.get(
+  '/',
+  // validateById,
+  // putPropertyid,
+  // checkAccessToWorkorder,
+  WOController.readAllByUser,
+)
+
 router.put(
   '/:id',
   // validateById,
