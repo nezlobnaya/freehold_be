@@ -6,25 +6,23 @@ const User = require('../models/user')
  * authorized (invited) to sign up
  * */
 const ifTenantCheckIfAuthorized = async (req, res, next) => {
-  if (req.body.type !== 'tenant') {
-    next()
-    return
-  }
-
   try {
-    const tenant = await User.findByEmail(req.body.email)
+    if (req.body.type === 'tenant') {
+      const tenant = await User.findById(req.body.uid)
 
-    if (!tenant) {
-      return res.status(401).json({
-        message:
-          'You must have an invitation from a landlord to join as a tenant',
-      })
+      if (!tenant) {
+        res.status(401).json({
+          message:
+            'You must have an invitation from a landlord to join as a tenant',
+        })
+      } else {
+        req.user = tenant
+
+        next()
+      }
     }
-
-    /* eslint-disable-next-line */
-    req.user = tenant
-
     next()
+    /* eslint-disable-next-line */
   } catch (err) {
     console.error(err)
     res.status(500).json({message: 'Something unexpected happened'})
