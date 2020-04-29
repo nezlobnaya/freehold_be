@@ -56,64 +56,174 @@ To get the server running locally:
 
 ## 2️⃣ Endpoints
 
-🚫This is a placeholder, replace the endpoints, access controll, and descriptioin to match your project
-
-<!--
-#### Organization Routes
-
-| Method | Endpoint                | Access Control | Description                                  |
-| ------ | ----------------------- | -------------- | -------------------------------------------- |
-| GET    | `/organizations/:orgId` | all users      | Returns the information for an organization. |
-| PUT    | `/organizatoins/:orgId` | owners         | Modify an existing organization.             |
-| DELETE | `/organizations/:orgId` | owners         | Delete an organization.                      |
-
 #### Auth Routes
 
-| Method | Endpoint                | Access Control      | Description               |
-| ------ | ----------------------- | ------------------- | ------------------------- |
-| POST   | `/api/auth/register`    | all users           | Registers a new landlord  |
-| POST   | `/api/auth/login`       | owners, supervisors | Logs in an existing user  |
--->
+| Method | Endpoint             | Access Control     | Description                                                         |
+| ------ | -------------------- | ------------------ | ------------------------------------------------------------------- |
+| POST   | `/api/auth/register` | all users          | Registers a new landlord                                            |
+| POST   | `/api/auth/login`    | landlords, tenants | Logs in an existing user. Tenants require invitation from landlord. |
+
+#### Property Routes
+
+| Method | Endpoint              | Access Control     | Description                     |
+| ------ | --------------------- | ------------------ | ------------------------------- |
+| POST   | `/api/properties/`    | landlords          | Adds a property to the database |
+| GET    | `/api/properties/:id` | landlords, tenants | Returns a specific property     |
+| GET    | `/api/properties/`    |                    | Returns all properties.         |
+| PUT    | `/api/properties/:id` | landlords          | Modify an existing property.    |
+
+#### Work Order Routes
+
+| Method | Endpoint              | Access Control     | Description                       |
+| ------ | --------------------- | ------------------ | --------------------------------- |
+| POST   | `/api/workorders/`    | landlords, tenants | Adds a work order to the database |
+| GET    | `/api/workorders/:id` | landlords, tenants | Returns a specific work order     |
+| PUT    | `/api/workorders/:id` | landlords, tenants | Updates an existing work order    |
+
+#### Media Routes
+
+| Method | Endpoint         | Access Control     | Description                      |
+| ------ | ---------------- | ------------------ | -------------------------------- |
+| POST   | `/api/media/`    | landlords, tenants | Adds media info to database      |
+| GET    | `/api/media/:id` | landlords, tenants | Returns a specified media's info |
+| PUT    | `/api/media/:id` | landlords, tenants | Updates specified media          |
+| DELETE | `/api/media/:id` | landlords, tenants | Deletes specified media info     |
+
+#### Message Routes
+
+| Method | Endpoint                        | Access Control     | Description                                                 |
+| ------ | ------------------------------- | ------------------ | ----------------------------------------------------------- |
+| POST   | `/api/message/`                 | landlords, tenants | Adds a message to the database                              |
+| GET    | `/api/message/:id`              | landlords, tenants | Gets a specific message                                     |
+| GET    | `/api/message/conversation/:id` | landlords, tenants | Gets all message associated with the specified conversation |
+
+#### Payments Routes
+
+| Method | Endpoint            | Access Control     | Description                      |
+| ------ | ------------------- | ------------------ | -------------------------------- |
+| POST   | `/api/payments/`    | landlords, tenants | Adds payment info to database    |
+| GET    | `/api/payments/:id` | landlords, tenants | Gets the specified payments info |
 
 # Data Model
 
-🚫This is just an example. Replace this with your data model
-
-<!--
-#### 2️⃣ ORGANIZATIONS
+#### user
 
 ---
 
 ```
 {
-  id: UUID
-  name: STRING
-  industry: STRING
-  paid: BOOLEAN
-  customer_id: STRING
-  subscription_id: STRING
+  id: STRING,
+  landlord: BOOLEAN
 }
 ```
 
-#### USERS
+#### unit
 
 ---
 
 ```
 {
-  id: UUID
-  organization_id: UUID foreign key in ORGANIZATIONS table
-  first_name: STRING
-  last_name: STRING
-  role: STRING [ 'owner', 'supervisor', 'employee' ]
-  email: STRING
-  phone: STRING
-  cal_visit: BOOLEAN
-  emp_visit: BOOLEAN
-  emailpref: BOOLEAN
-  phonepref: BOOLEAN
+  id: UUID,
+  name: STRING,
+  street_address: STRING,
+  city: STRING,
+  state: STRING,
+  zip: STRING,
+  occupied: INTEGER,
+  rent: INTEGER
 }
-``` -->
+```
+
+#### user_unit
+
+---
+
+```
+{
+  unit_id: FOREIGN KEY REFERENCES id IN unit TABLE,
+  user_id: FOREIGN KEY REFERENCES id IN user TABLE,
+  lease_start: DATE,
+  lease_end: DATE
+}
+```
+
+#### work_order
+
+---
+
+```
+{
+  id: UUID,
+  name: STRING,
+  description: STRING,
+  type: STRING,
+  status: STRING,
+  comment: STRING,
+  start_date: TIMESTAMP,
+  end_date: TIMESTAMP,
+  unit_id: FOREIGN KEY REFERENCES id IN unit TABLE,
+  user_id: FOREIGN KEY REFERENCES id IN user TABLE,
+  in_house: BOOLEAN
+}
+```
+
+#### media
+
+---
+
+```
+{
+  id: UUID,
+  type: STRING,
+  link: STRING,
+  format: STRING,
+  title: STRING,
+  timestamp: TIMESTAMP,
+  work_order_id: FOREIGN KEY REFERENCES id IN work_order TABLE,
+  unit_id: FOREIGN KEY REFERENCES id IN unit TABLE,
+  user_id: FOREIGN KEY REFERENCES id IN user TABLE,
+}
+```
+
+#### payments
+
+---
+
+```
+{
+  id: UUID,
+  unit_id: FOREIGN KEY REFERENCES id IN unit TABLE,
+  user_id: FOREIGN KEY REFERENCES id IN user TABLE,
+  type: INTEGER,
+  amount: INTEGER,
+  payment_date: DATE,
+  late: BOOLEAN,
+  due_date: INTEGER
+}
+```
+
+#### message
+
+---
+
+```
+{
+  id: UUID,
+  conversation_id: INTEGER,
+  message: STRING
+}
+```
+
+#### user_message
+
+---
+
+```
+{
+  user_id: FOREIGN KEY REFERENCES id IN user TABLE,
+  message_id: FOREIGN KEY REFERENCES id IN message TABLE
+}
+```
 
 ## 2️⃣ Actions
 
