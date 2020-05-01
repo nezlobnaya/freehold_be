@@ -65,6 +65,7 @@ const fakeUsers = [
 const fakeUnits = []
 const fakeWorkOrders = []
 const fakeMedia = []
+const fakePayments = []
 
 const createRandomNum = max => {
   return Math.floor(Math.random() * max) + 1
@@ -95,7 +96,7 @@ const createFakeWorkOrder = () => ({
   start_date: faker.date.recent(),
   end_date: faker.date.recent(),
   unit_id: createRandomNum(10),
-  user_id: fakeUsers[createRandomNum(15)]['id'],
+  user_id: fakeUsers[createRandomNum(14)]['id'],
   in_house: true,
 })
 
@@ -106,16 +107,28 @@ const createFakeMedia = () => ({
   title: faker.random.word(),
   work_order_id: createRandomNum(10),
   unit_id: createRandomNum(10),
-  user_id: fakeUsers[createRandomNum(15)]['id'],
+  user_id: fakeUsers[createRandomNum(14)]['id'],
+})
+
+const createFakePayments = () => ({
+  unit_id: createRandomNum(10),
+  user_id: fakeUsers[createRandomNum(14)]['id'],
+  type: createRandomNum(10),
+  amount: createRandomNum(2000),
+  payment_date: faker.date.recent(),
+  late: false,
+  due_date: createRandomNum(30),
 })
 
 createFakes(fakeUnits, createFakeUnit, 10)
 createFakes(fakeWorkOrders, createFakeWorkOrder, 10)
 createFakes(fakeMedia, createFakeMedia, 12)
+createFakes(fakePayments, createFakePayments, 20)
 
 module.exports = {
   fakeUsers,
   fakeUnits,
   fakeWorkOrders,
   fakeMedia,
+  fakePayments,
 }
