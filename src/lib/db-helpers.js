@@ -66,6 +66,7 @@ const fakeUnits = []
 const fakeWorkOrders = []
 const fakeMedia = []
 const fakePayments = []
+const fakeUserUnits = []
 
 const createRandomNum = max => {
   return Math.floor(Math.random() * max) + 1
@@ -120,10 +121,18 @@ const createFakePayments = () => ({
   due_date: createRandomNum(30),
 })
 
+const createFakeUserUnits = () => ({
+  unit_id: createRandomNum(10),
+  user_id: fakeUsers[createRandomNum(14)]['id'],
+  lease_start: faker.date.recent(),
+  lease_end: faker.date.recent(),
+})
+
 createFakes(fakeUnits, createFakeUnit, 10)
 createFakes(fakeWorkOrders, createFakeWorkOrder, 10)
 createFakes(fakeMedia, createFakeMedia, 12)
 createFakes(fakePayments, createFakePayments, 20)
+createFakes(fakeUserUnits, createFakeUserUnits, 15)
 
 module.exports = {
   fakeUsers,
@@ -131,4 +140,5 @@ module.exports = {
   fakeWorkOrders,
   fakeMedia,
   fakePayments,
+  fakeUserUnits,
 }
