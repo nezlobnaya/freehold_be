@@ -64,9 +64,16 @@ const fakeUsers = [
 ]
 const fakeUnits = []
 const fakeWorkOrders = []
+const fakeMedia = []
 
 const createRandomNum = max => {
   return Math.floor(Math.random() * max) + 1
+}
+
+const createFakes = (typeArray, typeFunction, numberOfFakes) => {
+  for (let i = 0; i < numberOfFakes; i++) {
+    typeArray.push(typeFunction())
+  }
 }
 
 const createFakeUnit = () => ({
@@ -78,12 +85,6 @@ const createFakeUnit = () => ({
   occupied: createRandomNum(4),
   rent: faker.random.number(2000),
 })
-
-const createFakes = (typeArray, typeFunction, numberOfFakes) => {
-  for (let i = 0; i < numberOfFakes; i++) {
-    typeArray.push(typeFunction())
-  }
-}
 
 const createFakeWorkOrder = () => ({
   name: faker.random.word(),
@@ -98,11 +99,23 @@ const createFakeWorkOrder = () => ({
   in_house: true,
 })
 
+const createFakeMedia = () => ({
+  type: faker.random.word(),
+  link: faker.internet.url(),
+  format: faker.system.fileType(),
+  title: faker.random.word(),
+  work_order_id: createRandomNum(10),
+  unit_id: createRandomNum(10),
+  user_id: fakeUsers[createRandomNum(15)]['id'],
+})
+
 createFakes(fakeUnits, createFakeUnit, 10)
 createFakes(fakeWorkOrders, createFakeWorkOrder, 10)
+createFakes(fakeMedia, createFakeMedia, 12)
 
 module.exports = {
   fakeUsers,
   fakeUnits,
   fakeWorkOrders,
+  fakeMedia,
 }
