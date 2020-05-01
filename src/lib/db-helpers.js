@@ -63,10 +63,12 @@ const fakeUsers = [
   },
 ]
 const fakeUnits = []
+const fakeMessages = []
 const fakeWorkOrders = []
 const fakeMedia = []
 const fakePayments = []
 const fakeUserUnits = []
+const fakeUserMessages = []
 
 const createRandomNum = max => {
   return Math.floor(Math.random() * max) + 1
@@ -88,10 +90,15 @@ const createFakeUnit = () => ({
   rent: faker.random.number(2000),
 })
 
+const createFakeMessages = () => ({
+  conversation_id: createRandomNum(5),
+  message: faker.company.catchPhrase(),
+})
+
 const createFakeWorkOrder = () => ({
-  name: faker.random.word(),
-  description: faker.random.words(),
-  type: faker.random.word(),
+  name: faker.company.bsNoun(),
+  description: faker.company.catchPhrase(),
+  type: faker.company.bsBuzz(),
   status: faker.random.word(),
   comment: faker.random.words(),
   start_date: faker.date.recent(),
@@ -102,10 +109,10 @@ const createFakeWorkOrder = () => ({
 })
 
 const createFakeMedia = () => ({
-  type: faker.random.word(),
+  type: faker.company.bs(),
   link: faker.internet.url(),
   format: faker.system.fileType(),
-  title: faker.random.word(),
+  title: faker.company.bsNoun(),
   work_order_id: createRandomNum(10),
   unit_id: createRandomNum(10),
   user_id: fakeUsers[createRandomNum(14)]['id'],
@@ -128,17 +135,26 @@ const createFakeUserUnits = () => ({
   lease_end: faker.date.recent(),
 })
 
+const createFakeUserMessages = () => ({
+  user_id: fakeUsers[createRandomNum(14)]['id'],
+  message_id: createRandomNum(20),
+})
+
 createFakes(fakeUnits, createFakeUnit, 10)
+createFakes(fakeMessages, createFakeMessages, 20)
 createFakes(fakeWorkOrders, createFakeWorkOrder, 10)
 createFakes(fakeMedia, createFakeMedia, 12)
 createFakes(fakePayments, createFakePayments, 20)
 createFakes(fakeUserUnits, createFakeUserUnits, 15)
+createFakes(fakeUserMessages, createFakeUserMessages, 20)
 
 module.exports = {
   fakeUsers,
   fakeUnits,
+  fakeMessages,
   fakeWorkOrders,
   fakeMedia,
   fakePayments,
   fakeUserUnits,
+  fakeUserMessages,
 }
