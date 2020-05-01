@@ -1,35 +1,5 @@
 const faker = require('faker')
 
-// const createRandomNum = () => {
-//   return Math.floor(Math.random() * 6) + 1
-// }
-
-const createFakeUnit = () => ({
-  name: faker.company.companyName(),
-  street_address: faker.address.streetAddress(),
-  city: faker.address.city(),
-  state: faker.address.state(),
-  zip: faker.address.zipCode(),
-  occupied: faker.random.number(),
-  rent: faker.random.number(),
-})
-
-const fakeUnits = []
-const numberOfUnits = 10
-for (let i = 0; i < numberOfUnits; i++) {
-  fakeUnits.push(createFakeUnit())
-}
-
-const createFakeWorkOrder = () => ({
-  name: faker.random.word(),
-  description: faker.random.words(),
-  type: faker.random.word(),
-  status: faker.random.status(),
-  comment: faker.random.words(),
-  start_date: faker.date.recent(),
-  end_date: faker.date.recent(),
-})
-
 const fakeUsers = [
   {
     id: 'Je1JoLNS6Ee4o8qHjfH7bmRocya3',
@@ -92,9 +62,47 @@ const fakeUsers = [
     landlord: false,
   },
 ]
+const fakeUnits = []
+const fakeWorkOrders = []
+
+const createRandomNum = max => {
+  return Math.floor(Math.random() * max) + 1
+}
+
+const createFakeUnit = () => ({
+  name: faker.company.companyName(),
+  street_address: faker.address.streetAddress(),
+  city: faker.address.city(),
+  state: faker.address.state(),
+  zip: faker.address.zipCode(),
+  occupied: createRandomNum(4),
+  rent: faker.random.number(2000),
+})
+
+const createFakes = (typeArray, typeFunction, numberOfFakes) => {
+  for (let i = 0; i < numberOfFakes; i++) {
+    typeArray.push(typeFunction())
+  }
+}
+
+const createFakeWorkOrder = () => ({
+  name: faker.random.word(),
+  description: faker.random.words(),
+  type: faker.random.word(),
+  status: faker.random.word(),
+  comment: faker.random.words(),
+  start_date: faker.date.recent(),
+  end_date: faker.date.recent(),
+  unit_id: createRandomNum(10),
+  user_id: fakeUsers[createRandomNum(15)]['id'],
+  in_house: true,
+})
+
+createFakes(fakeUnits, createFakeUnit, 10)
+createFakes(fakeWorkOrders, createFakeWorkOrder, 10)
 
 module.exports = {
   fakeUsers,
   fakeUnits,
-  createFakeWorkOrder,
+  fakeWorkOrders,
 }
