@@ -1,13 +1,11 @@
+const {fakeUserMessages} = require('../../src/lib/db-helpers')
+
 exports.seed = function (knex) {
   // Deletes ALL existing entries
-  return knex('table_name')
+  return knex('user_message')
     .del()
     .then(function () {
       // Inserts seed entries
-      return knex('table_name').insert([
-        {id: 1, colName: 'rowValue1'},
-        {id: 2, colName: 'rowValue2'},
-        {id: 3, colName: 'rowValue3'},
-      ])
+      return knex('user_message').insert(fakeUserMessages)
     })
 }
