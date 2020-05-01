@@ -1,4 +1,4 @@
-const fakeUnits = require('../../src/lib/db-helpers')
+const {fakeUnits} = require('../../src/lib/db-helpers')
 
 exports.seed = async function (knex) {
   // Deletes ALL existing entries

@@ -1,35 +1,5 @@
 const faker = require('faker')
 
-// const createRandomNum = () => {
-//   return Math.floor(Math.random() * 6) + 1
-// }
-
-const createFakeUnit = () => ({
-  name: faker.company.companyName(),
-  street_address: faker.address.streetAddress(),
-  city: faker.address.city(),
-  state: faker.address.state(),
-  zip: faker.address.zipCode(),
-  occupied: faker.random.number(),
-  rent: faker.random.number(),
-})
-
-const fakeUnits = []
-const numberOfUnits = 10
-for (let i = 0; i < numberOfUnits; i++) {
-  fakeUnits.push(createFakeUnit())
-}
-
-const createFakeWorkOrder = () => ({
-  name: faker.random.word(),
-  description: faker.random.words(),
-  type: faker.random.word(),
-  status: faker.random.status(),
-  comment: faker.random.words(),
-  start_date: faker.date.recent(),
-  end_date: faker.date.recent(),
-})
-
 const fakeUsers = [
   {
     id: 'Je1JoLNS6Ee4o8qHjfH7bmRocya3',
@@ -92,9 +62,99 @@ const fakeUsers = [
     landlord: false,
   },
 ]
+const fakeUnits = []
+const fakeMessages = []
+const fakeWorkOrders = []
+const fakeMedia = []
+const fakePayments = []
+const fakeUserUnits = []
+const fakeUserMessages = []
+
+const createRandomNum = max => {
+  return Math.floor(Math.random() * max) + 1
+}
+
+const createFakes = (typeArray, typeFunction, numberOfFakes) => {
+  for (let i = 0; i < numberOfFakes; i++) {
+    typeArray.push(typeFunction())
+  }
+}
+
+const createFakeUnit = () => ({
+  name: faker.company.companyName(),
+  street_address: faker.address.streetAddress(),
+  city: faker.address.city(),
+  state: faker.address.state(),
+  zip: faker.address.zipCode(),
+  occupied: createRandomNum(4),
+  rent: faker.random.number(2000),
+})
+
+const createFakeMessages = () => ({
+  conversation_id: createRandomNum(5),
+  message: faker.company.catchPhrase(),
+})
+
+const createFakeWorkOrder = () => ({
+  name: faker.company.bsNoun(),
+  description: faker.company.catchPhrase(),
+  type: faker.company.bsBuzz(),
+  status: faker.random.word(),
+  comment: faker.random.words(),
+  start_date: faker.date.recent(),
+  end_date: faker.date.recent(),
+  unit_id: createRandomNum(10),
+  user_id: fakeUsers[createRandomNum(14)]['id'],
+  in_house: true,
+})
+
+const createFakeMedia = () => ({
+  type: faker.company.bs(),
+  link: faker.internet.url(),
+  format: faker.system.fileType(),
+  title: faker.company.bsNoun(),
+  work_order_id: createRandomNum(10),
+  unit_id: createRandomNum(10),
+  user_id: fakeUsers[createRandomNum(14)]['id'],
+})
+
+const createFakePayments = () => ({
+  unit_id: createRandomNum(10),
+  user_id: fakeUsers[createRandomNum(14)]['id'],
+  type: createRandomNum(10),
+  amount: createRandomNum(2000),
+  payment_date: faker.date.recent(),
+  late: false,
+  due_date: createRandomNum(30),
+})
+
+const createFakeUserUnits = () => ({
+  unit_id: createRandomNum(10),
+  user_id: fakeUsers[createRandomNum(14)]['id'],
+  lease_start: faker.date.recent(),
+  lease_end: faker.date.recent(),
+})
+
+const createFakeUserMessages = () => ({
+  user_id: fakeUsers[createRandomNum(14)]['id'],
+  message_id: createRandomNum(20),
+})
+
+createFakes(fakeUnits, createFakeUnit, 10)
+createFakes(fakeMessages, createFakeMessages, 20)
+createFakes(fakeWorkOrders, createFakeWorkOrder, 10)
+createFakes(fakeMedia, createFakeMedia, 12)
+createFakes(fakePayments, createFakePayments, 20)
+createFakes(fakeUserUnits, createFakeUserUnits, 15)
+createFakes(fakeUserMessages, createFakeUserMessages, 20)
 
 module.exports = {
   fakeUsers,
   fakeUnits,
-  createFakeWorkOrder,
+  fakeMessages,
+  fakeWorkOrders,
+  fakeMedia,
+  fakePayments,
+  fakeUserUnits,
+  fakeUserMessages,
 }
