@@ -1,5 +1,6 @@
 // Workorder Controllers
 const WorkOrders = require('../../models/workorders/workorders-model')
+const fireAdmin = require('../../lib/firebase')
 
 const create = async (req, res, next) => {
   const input = req.body
@@ -19,7 +20,6 @@ const create = async (req, res, next) => {
 const readAllByUser = async (req, res) => {
   try {
     const workOrders = await WorkOrders.getAll()
-
     res.status(200).json(workOrders)
   } catch (err) {
     console.error(err)

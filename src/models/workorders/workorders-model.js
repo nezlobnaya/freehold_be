@@ -2,6 +2,7 @@
 // const User = require('../user')
 // // Work Order Models
 const db = require('../../../database/db')
+const fireAdmin = require('../../lib/firebase')
 // const {omit, map, pipeP} = require('ramda')
 
 // const table = 'workorders as w'
@@ -52,7 +53,12 @@ async function getById(id) {
 
 async function getAll() {
   const results = await db('work_order').select('*')
-  console.log(results)
+  for (let workOrder of results) {
+    const user = await fireAdmin.auth().getUser(workOrder.user_id)
+    workOrder.displayName = user.displayName
+    workOrder.phoneNumber = user.phoneNumber
+    workOrder.email = user.email
+  }
   return results || null
 }
 

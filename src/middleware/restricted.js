@@ -1,9 +1,8 @@
 const fireAdmin = require('firebase-admin')
 
 const restricted = async (req, res, next) => {
+  const {authorization} = req.headers
   try {
-    const {authorization} = req.headers
-
     if (authorization) {
       const verified = await fireAdmin.auth().verifyIdToken(authorization)
       req.decodedToken = verified
