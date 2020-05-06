@@ -9,6 +9,16 @@ const mockMessage = {
   conversation_id: 1,
   message: 'first message',
 }
+const mockConversation = [
+  {
+    conversation_id: 1,
+    message: 'first message',
+  },
+  {
+    conversation_id: 1,
+    message: 'second message',
+  },
+]
 const mockMessageId = 1
 const mockConversationId = 1
 beforeEach(() => {
@@ -58,6 +68,16 @@ describe('MessageController.getMessage', () => {
     expect(MessageModel.getById).toHaveBeenCalledWith(req.params.id)
   })
 
+  it('should return status 200 and json data', async () => {
+    req.params.id = mockMessageId
+    MessageModel.getById.mockReturnValue(mockMessage)
+
+    await MessageController.getMessage(req, res, next)
+    expect(res.statusCode).toBe(200)
+    expect(res._isEndCalled()).toBeTruthy()
+    expect(res._getJSONData()).toStrictEqual(mockMessage)
+  })
+
   it('should handle errors', async () => {
     const errorMessage = {message: 'cannot get message'}
     const rejectedPromise = Promise.reject(errorMessage)
@@ -84,6 +104,16 @@ describe('MessageController.getConversation', () => {
     req.params.id = mockConversationId
     await MessageController.getConversation(req, res, next)
     expect(MessageModel.getConversationById).toHaveBeenCalledWith(req.params.id)
+  })
+
+  it('should return status 200 and json data', async () => {
+    req.params.id = mockConversationId
+    MessageModel.getConversationById.mockReturnValue(mockConversation)
+
+    await MessageController.getConversation(req, res, next)
+    expect(res.statusCode).toBe(200)
+    expect(res._isEndCalled()).toBeTruthy()
+    expect(res._getJSONData()).toStrictEqual(mockConversation)
   })
 
   it('should handle errors', async () => {
