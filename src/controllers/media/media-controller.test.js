@@ -143,4 +143,13 @@ describe('MediaController.findAnddelete', () => {
     expect(res._getJSONData()).toStrictEqual(mockMedia)
     expect(res._isEndCalled()).toBeTruthy()
   })
+
+  it('should handle errors', async () => {
+    const errorMessage = {message: 'cannot delete media'}
+    const rejectedPromise = Promise.reject(errorMessage)
+
+    MediaModel.findByIdAndDelete.mockReturnValue(rejectedPromise)
+    await MediaController.deleteMedia(req, res, next)
+    expect(next).toHaveBeenCalledWith(errorMessage)
+  })
 })
