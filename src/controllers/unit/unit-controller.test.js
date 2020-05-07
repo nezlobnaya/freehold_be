@@ -5,16 +5,8 @@ const httpMocks = require('node-mocks-http')
 jest.mock('../../models/unit/unit-model')
 
 let req, res, next
-const mockUnit = {
-  name: 'unit',
-  street_address: '951 St',
-  city: 'virtual',
-  state: 'space',
-  zip: '12345',
-  occupied: 1,
-  rent: 1000,
-}
-const unitId = 1
+const {mockUnit, unitId} = require('../../test-utils/mock-data')
+
 beforeEach(() => {
   req = httpMocks.createRequest()
   res = httpMocks.createResponse()

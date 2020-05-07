@@ -5,13 +5,8 @@ const httpMocks = require('node-mocks-http')
 jest.mock('../../models/user/user-model')
 
 let req, res, next, updated
-const mockUser = {
-  landlord: true,
-  email: 'email@email.com',
-}
-const decodedToken = {
-  user_id: 'j1k23lia9',
-}
+const {mockUser, decodedToken} = require('../../test-utils/mock-data')
+
 beforeEach(() => {
   req = httpMocks.createRequest()
   res = httpMocks.createResponse()
