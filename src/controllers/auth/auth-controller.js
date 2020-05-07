@@ -50,7 +50,6 @@ async function login(req, res) {
 
   try {
     /*
-     * Firebase auth does some magical stuff here.
      * If the users login info is correct, it sets the current user on the
      * global firebase application instance that can be retrieved with
      * firebase.auth().currentUser
