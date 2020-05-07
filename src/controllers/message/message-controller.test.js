@@ -5,22 +5,13 @@ const httpMocks = require('node-mocks-http')
 jest.mock('../../models/message/message-model')
 
 let req, res, next
-const mockMessage = {
-  conversation_id: 1,
-  message: 'first message',
-}
-const mockConversation = [
-  {
-    conversation_id: 1,
-    message: 'first message',
-  },
-  {
-    conversation_id: 1,
-    message: 'second message',
-  },
-]
-const mockMessageId = 1
-const mockConversationId = 1
+const {
+  mockMessage,
+  mockConversation,
+  mockMessageId,
+  mockConversationId,
+} = require('../../test-utils/mock-data')
+
 beforeEach(() => {
   req = httpMocks.createRequest()
   res = httpMocks.createResponse()

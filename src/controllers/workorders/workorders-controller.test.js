@@ -5,19 +5,7 @@ const httpMocks = require('node-mocks-http')
 jest.mock('../../models/workorders/workorders-model')
 
 let req, res, next
-const mockWorkOrder = {
-  name: 'first work order',
-  description: 'doing stuff',
-  type: 'plumbing',
-  status: 'pending',
-  comment: 'comment',
-  start_date: '1943-03-09T01:00:00Z',
-  end_date: '1943-03-09T01:00:00Z',
-  unit_id: '1',
-  user_id: 'Je1JoLNS6Ee4o8qHjfH7bmRocyD3',
-  in_house: true,
-}
-const mockWorkOrderId = 1
+const {mockWorkOrder, mockWorkOrderId} = require('../../test-utils/mock-data')
 
 beforeEach(() => {
   req = httpMocks.createRequest()
