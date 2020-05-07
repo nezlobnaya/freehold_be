@@ -7,7 +7,7 @@ const {
 const restricted = require('../../middleware/restricted')
 const checkIfUserExists = require('../../middleware/if-user-exists')
 
-const Auth = require('../../controllers/auth/')
+const Auth = require('../../controllers/auth/auth-controller')
 
 const router = express.Router()
 

@@ -1,13 +1,15 @@
+const faker = require('faker')
+
 // mock media data
 const mockMedia = {
   type: 'picture',
-  link: 'www.anotherpictureofstuff.com',
+  link: faker.internet.url(),
   format: 'jpeg',
   title: 'stain 2',
   timestamp: '1944-03-08 21:00:00-04',
   work_order_id: 1,
   unit_id: 1,
-  user_id: 'Je1JoLNS6Ee4o8qHjfH7bmRocyD3',
+  user_id: 'Je1JoLNS6Ee4o8qHjfH7bmRocyd3',
 }
 const mockMediaId = 1
 
