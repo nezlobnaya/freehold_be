@@ -2,9 +2,11 @@ const Media = require('../../models/media/media-model')
 
 const create = async (req, res, next) => {
   try {
-    const media = await Media.addMedia(req.body)
+    const input = req.body
+    const media = await Media.addMedia(input)
     res.status(200).json(media)
   } catch (err) {
+    console.log(err)
     next(err)
   }
 }

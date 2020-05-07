@@ -5,17 +5,7 @@ const httpMocks = require('node-mocks-http')
 jest.mock('../../models/media/media-model')
 
 let req, res, next
-const mockMedia = {
-  type: 'picture',
-  link: 'www.anotherpictureofstuff.com',
-  format: 'jpeg',
-  title: 'stain 2',
-  timestamp: '1944-03-08 21:00:00-04',
-  work_order_id: 1,
-  unit_id: 1,
-  user_id: 'Je1JoLNS6Ee4o8qHjfH7bmRocyD3',
-}
-const mockMediaId = 1
+const {mockMedia, mockMediaId} = require('../../test-utils/mock-data')
 
 beforeEach(() => {
   req = httpMocks.createRequest()
@@ -142,5 +132,14 @@ describe('MediaController.findAnddelete', () => {
     expect(res.statusCode).toBe(200)
     expect(res._getJSONData()).toStrictEqual(mockMedia)
     expect(res._isEndCalled()).toBeTruthy()
+  })
+
+  it('should handle errors', async () => {
+    const errorMessage = {message: 'cannot delete media'}
+    const rejectedPromise = Promise.reject(errorMessage)
+
+    MediaModel.findByIdAndDelete.mockReturnValue(rejectedPromise)
+    await MediaController.deleteMedia(req, res, next)
+    expect(next).toHaveBeenCalledWith(errorMessage)
   })
 })

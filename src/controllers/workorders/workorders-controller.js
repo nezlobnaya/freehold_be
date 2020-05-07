@@ -16,14 +16,13 @@ const create = async (req, res, next) => {
   }
 }
 
-const readAllByUser = async (req, res) => {
+const readAllByUser = async (req, res, next) => {
   try {
     const workOrders = await WorkOrders.getAll()
 
     res.status(200).json(workOrders)
   } catch (err) {
-    console.error(err)
-    res.status(500).json({error: 'Internal server error'})
+    next(err)
   }
 }
 
@@ -47,11 +46,8 @@ const updateById = async (req, res, next) => {
   const {id} = req.params
   const changes = req.body
 
-  console.log(changes, 'Changes')
-
   try {
     const updateResults = await WorkOrders.update(id, changes)
-    console.log(updateResults, 'Updated Results')
 
     if (updateResults) {
       res.status(200).json(updateResults)

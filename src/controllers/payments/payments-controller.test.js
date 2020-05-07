@@ -5,16 +5,7 @@ const httpMocks = require('node-mocks-http')
 jest.mock('../../models/payments/payments-model')
 
 let req, res, next
-const mockPayment = {
-  unit_id: 1,
-  user_id: 'Je1JoLNS6Ee4o8qHjfH7bmRocyD3',
-  type: 1,
-  amount: 1000,
-  payment_date: '2020-4-18',
-  late: false,
-  due_date: 15,
-}
-const mockPaymentId = 1
+const {mockPayment, mockPaymentId} = require('../../test-utils/mock-data')
 
 beforeEach(() => {
   req = httpMocks.createRequest()
