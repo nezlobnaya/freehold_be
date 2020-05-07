@@ -1,6 +1,6 @@
 const User = require('../../models/user')
 
-async function getCurrent(req, res) {
+async function getCurrent(req, res, next) {
   try {
     const {decodedToken} = req
     const user = await User.findById(decodedToken.user_id)
@@ -11,13 +11,11 @@ async function getCurrent(req, res) {
       return res.status(200).json(user)
     }
   } catch (err) {
-    console.error(err)
-
-    res.status(500).json({message: 'Internal Server Error'})
+    next(err)
   }
 }
 
-async function updateCurrent(req, res) {
+async function updateCurrent(req, res, next) {
   try {
     const {updated, user} = await User.updateByEmail(req.user.email, req.body)
 
@@ -27,9 +25,7 @@ async function updateCurrent(req, res) {
       return res.status(200).json(user)
     }
   } catch (err) {
-    console.error(err)
-
-    res.status(500).json({message: 'Internal Server Error'})
+    next(err)
   }
 }
 
