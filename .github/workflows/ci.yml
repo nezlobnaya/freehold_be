@@ -16,6 +16,7 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CodeClimateReporterId }}
           FIREBASE_TYPE: ${{ secrets.FirebaseType }}
+          FIREBASE_PROJECT_ID: ${{ secrets.FirebaseProjectId }}
           FIREBASE_PRIVATE_KEY_ID: ${{ secrets.FirebasePrivateKeyId }}
           FIREBASE_PRIVATE_KEY: ${{ secrets.FirebasePrivateKey }}
           FIREBASE_CLIENT_EMAIL: ${{ secrets.FirebaseClientEmail }}
