@@ -15,6 +15,15 @@ jobs:
       - uses: paambaati/codeclimate-action@v2.4.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CodeClimateReporterId }}
+          FIREBASE_TYPE: ${{ secrets.FirebaseType }}
+          FIREBASE_PRIVATE_KEY_ID: ${{ secrets.FirebasePrivateKeyId }}
+          FIREBASE_PRIVATE_KEY: ${{ secrets.FirebasePrivateKey }}
+          FIREBASE_CLIENT_EMAIL: ${{ secrets.FirebaseClientEmail }}
+          FIREBASE_CLIENT_ID: ${{ secrets.FirebaseClientId }}
+          FIREBASE_AUTH_URI: ${{ secrets.FirebaseAuthUri }}
+          FIREBASE_TOKEN_URI: ${{ secrets.FirebaseTokenUri }}
+          FIREBASE_AUTH_CERT_URL: ${{ secrets.AuthCertUrl }}
+          FIREBASE_CLIENT_CERT_URL: ${{ secrets.ClientCertUrl }}
         with:
           coverageCommand: npm run coverage
           debug: true
