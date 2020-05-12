@@ -52,10 +52,13 @@ async function getById(id) {
 // }
 
 async function getAll(decodedToken) {
-  console.log(decodedToken)
   const results = await db('work_order')
     .select('*')
     .where({user_id: decodedToken.user_id})
+  for (const workOrders of results) {
+    const getDisplayName = await fireAdmin.auth().getUser(workOrders.user_id)
+    workOrders.user_id = getDisplayName.displayName || getDisplayName.email
+  }
   return results || null
 }
 
