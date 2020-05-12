@@ -48,8 +48,13 @@ async function updateByEmail(email, update, returning = landlordReturning) {
   return user ? {updated: true, user} : {updated: false}
 }
 
-function getAllTenantsByPropertyId(id) {
-  return db.from(table).select('*').where({residenceId: id})
+async function getTenantsByUnit(id) {
+  const tenants = await db
+    .from('user_unit')
+    .select('*')
+    .where({unit_id: id})
+
+  return tenants
 }
 
 async function getTenantsByLandlord(id) {
@@ -85,6 +90,6 @@ module.exports = {
   findTenantById,
   updateByEmail,
   updateTenantById,
-  getAllTenantsByPropertyId,
+  getTenantsByUnit,
   getTenantsByLandlord,
 }
