@@ -52,8 +52,13 @@ function getAllTenantsByPropertyId(id) {
   return db.from(table).select('*').where({residenceId: id})
 }
 
-function getAllTenantsByLandlordId(id) {
-  return db.from(table).select('*').where({landlordId: id})
+async function getTenantsByLandlord(id) {
+  const tenants = await db
+    .from('user_unit')
+    .select('*')
+    .where({user_id: id})
+
+  return tenants
 }
 
 async function canAccessTenant(landlordId, tenantId) {
@@ -81,5 +86,5 @@ module.exports = {
   updateByEmail,
   updateTenantById,
   getAllTenantsByPropertyId,
-  getAllTenantsByLandlordId,
+  getTenantsByLandlord,
 }

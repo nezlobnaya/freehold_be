@@ -13,7 +13,6 @@ const validateUserUpdateInput = (req, res, next) => {
 }
 
 router.get('/me', restricted, Users.getCurrent)
-
 router.put('/me', restricted, validateUserUpdateInput, Users.updateCurrent)
 
 module.exports = router
