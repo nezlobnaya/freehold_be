@@ -51,14 +51,11 @@ async function getById(id) {
 //   return getBy({propertyId})
 // }
 
-async function getAll() {
-  const results = await db('work_order').select('*')
-  for (let workOrder of results) {
-    const user = await fireAdmin.auth().getUser(workOrder.user_id)
-    workOrder.displayName = user.displayName
-    workOrder.phoneNumber = user.phoneNumber
-    workOrder.email = user.email
-  }
+async function getAll(decodedToken) {
+  console.log(decodedToken)
+  const results = await db('work_order')
+    .select('*')
+    .where({user_id: decodedToken.user_id})
   return results || null
 }
 
