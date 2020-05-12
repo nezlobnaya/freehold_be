@@ -24,8 +24,8 @@ async function getUnitById(id) {
 }
 
 // getAllUnits() - return all properties
-function getAllUnits(decodedToken) {
-  db('unit').select('*')
+function getAllUnits() {
+  return db('unit').select('*')
 }
 
 // getPropertiesByUser - return all properties for a specific user by the user's email
