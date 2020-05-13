@@ -49,19 +49,13 @@ async function updateByEmail(email, update, returning = landlordReturning) {
 }
 
 async function getTenantsByUnit(id) {
-  const tenants = await db
-    .from('user_unit')
-    .select('*')
-    .where({unit_id: id})
+  const tenants = await db.from('user_unit').select('*').where({unit_id: id})
 
   return tenants
 }
 
 async function getTenantsByLandlord(id) {
-  const tenants = await db
-    .from('user_unit')
-    .select('*')
-    .where({user_id: id})
+  const tenants = await db.from('user_unit').select('*').where({user_id: id})
 
   return tenants
 }
