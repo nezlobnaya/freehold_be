@@ -13,6 +13,7 @@ const workorderRouter = require('./routes/workorders/wo-router.js')
 const mediaRouter = require('./routes/media/media-router')
 const paymentsRouter = require('./routes/payments/payments-router')
 const messageRouter = require('./routes/message/message-router')
+const tenantRouter = require('./routes/tenant/tenant-router')
 
 // Auth Middleware
 
@@ -40,6 +41,7 @@ app.use('/api/workorders', workorderRouter)
 app.use('/api/media', mediaRouter)
 app.use('/api/payments', paymentsRouter)
 app.use('/api/message', messageRouter)
+app.use('/api/tenant', tenantRouter)
 
 // Base Route
 app.get('/', (_req, res) => {

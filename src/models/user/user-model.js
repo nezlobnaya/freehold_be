@@ -48,12 +48,22 @@ async function updateByEmail(email, update, returning = landlordReturning) {
   return user ? {updated: true, user} : {updated: false}
 }
 
-function getAllTenantsByPropertyId(id) {
-  return db.from(table).select('*').where({residenceId: id})
+async function getTenantsByUnit(id) {
+  const tenants = await db
+    .from('user_unit')
+    .select('*')
+    .where({unit_id: id})
+
+  return tenants
 }
 
-function getAllTenantsByLandlordId(id) {
-  return db.from(table).select('*').where({landlordId: id})
+async function getTenantsByLandlord(id) {
+  const tenants = await db
+    .from('user_unit')
+    .select('*')
+    .where({user_id: id})
+
+  return tenants
 }
 
 async function canAccessTenant(landlordId, tenantId) {
@@ -80,6 +90,6 @@ module.exports = {
   findTenantById,
   updateByEmail,
   updateTenantById,
-  getAllTenantsByPropertyId,
-  getAllTenantsByLandlordId,
+  getTenantsByUnit,
+  getTenantsByLandlord,
 }
