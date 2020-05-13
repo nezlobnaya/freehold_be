@@ -67,6 +67,7 @@ function getTenantsByLandlord(id) {
     .where({landlord_id: id})
     .select(
       'user.id',
+      'unit.id as unit_id',
       'user.landlord',
       'user.landlord_id',
       'unit.name',

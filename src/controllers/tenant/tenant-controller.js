@@ -5,16 +5,15 @@ const getByLandlord = async (req, res, next) => {
   const {decodedToken} = req
   try {
     const tenants = await UserModel.getTenantsByLandlord(decodedToken.user_id)
-    // const tenantsWithUserInfo = await Promise.all(
-    //   tenants.map(async tenantInfo => {
-    //     const tenantData = await fireAdmin.auth().getUser(tenantInfo.id)
-    //     tenantInfo.displayName = tenantData.displayName
-    //     tenantInfo.email = tenantData.email
-    //     tenantInfo.phoneNumber = tenantData.phoneNumber
-    //     return tenantInfo
-    //   }),
-    // )
-    tenantsWithUserInfo = tenants
+    const tenantsWithUserInfo = await Promise.all(
+      tenants.map(async tenantInfo => {
+        const tenantData = await fireAdmin.auth().getUser(tenantInfo.id)
+        tenantInfo.displayName = tenantData.displayName
+        tenantInfo.email = tenantData.email
+        tenantInfo.phoneNumber = tenantData.phoneNumber
+        return tenantInfo
+      }),
+    )
 
     if (!tenantsWithUserInfo) {
       res.status(404).json({message: 'couldnt find tenants'})
