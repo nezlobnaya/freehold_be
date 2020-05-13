@@ -1,4 +1,4 @@
-const User = require('../models/user/user')
+const User = require('../models/user/user-model')
 
 const checkIfUserExists = async (req, res, next) => {
   try {

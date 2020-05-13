@@ -13,6 +13,7 @@ const workorderRouter = require('./routes/workorders/wo-router.js')
 const mediaRouter = require('./routes/media/media-router')
 const paymentsRouter = require('./routes/payments/payments-router')
 const messageRouter = require('./routes/message/message-router')
+const tenantRouter = require('./routes/tenant/tenant-router')
 
 // Auth Middleware
 

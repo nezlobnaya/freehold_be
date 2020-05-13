@@ -1,9 +1,49 @@
-describe('work order controller test', () => {
-  it('should work', () => {
-    expect('test').toBe('test')
+const AuthController = require('./auth-controller')
+const UserModel = require('../../models/user/user-model')
+// const firebase = require('../../lib/firebase')
+const httpMocks = require('node-mocks-http')
+
+jest.mock('../../models/user/user-model')
+
+let req, res, token
+const decodedToken = {landlord: true, user_id: 'jkl1234'}
+
+beforeEach(() => {
+  res = httpMocks.createResponse()
+  req = httpMocks.createRequest()
+})
+
+describe('AuthController.createUser', () => {
+  it('should be a function', () => {
+    expect(typeof AuthController.createUser).toBe('function')
   })
 })
 
+describe('AuthController.login', () => {
+  it('should be a function', () => {
+    expect(typeof AuthController.login).toBe('function')
+  })
+
+  it('should call User.findById', async () => {
+    req.decodedToken = decodedToken
+    req.token = token
+    await AuthController.login(req, res)
+    expect(UserModel.findById).toHaveBeenCalledWith(req.decodedToken.user_id)
+  })
+
+  it('should handle errors', async () => {
+    const errorMessage = {error: 'Invalid credentials'}
+    const rejectedPromise = Promise.reject(errorMessage)
+    UserModel.findById.mockReturnValue(rejectedPromise)
+
+    req.decodedToken = decodedToken
+    req.token = token
+    await AuthController.login(req, res)
+    expect(res.statusCode).toBe(401)
+    expect(res._isEndCalled()).toBeTruthy()
+    expect(res._getJSONData()).toStrictEqual(errorMessage)
+  })
+})
 // const {createUser, login} = require('./')
 // const {Express, Db, Models} = require('../../test-utils')
 // const firebase = require('../../lib/firebase')

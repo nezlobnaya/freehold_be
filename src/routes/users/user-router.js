@@ -1,5 +1,5 @@
 const express = require('express')
-const Users = require('../../controllers/users/')
+const Users = require('../../controllers/user/user-controller')
 const restricted = require('../../middleware/restricted')
 
 const router = express.Router()
@@ -13,7 +13,6 @@ const validateUserUpdateInput = (req, res, next) => {
 }
 
 router.get('/me', restricted, Users.getCurrent)
-
 router.put('/me', restricted, validateUserUpdateInput, Users.updateCurrent)
 
 module.exports = router

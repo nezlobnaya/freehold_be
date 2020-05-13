@@ -3,6 +3,7 @@ exports.up = function (knex) {
     tbl.string('id').unsigned().primary()
 
     tbl.boolean('landlord').notNullable()
+    tbl.string('landlord_id')
   })
 }
 
