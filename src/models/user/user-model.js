@@ -7,16 +7,21 @@ const landlordReturning = ['id', 'landlord']
 const tenantReturning = '*'
 
 async function create(input) {
-  console.log('input = ', input)
-  const [user] = await db(table)
-    .insert({id: input.id, landlord: input.landlord})
-    .returning('*')
-
-  console.log(user)
-  user.email = input.email
-  user.type = 'landlord'
-  console.log(user)
-  return user || null
+  let user = null
+  if (!input.landlord_id) {
+    user = await db(table)
+      .insert({id: input.id, landlord: input.landlord})
+      .returning('*')
+  } else {
+    user = await db(table)
+      .insert({
+        id: input.id,
+        landlord: input.landlord,
+        landlord_id: input.landlord_id,
+      })
+      .returning('*')
+  }
+  return user
 }
 
 async function findByEmail(email, type) {
@@ -49,19 +54,13 @@ async function updateByEmail(email, update, returning = landlordReturning) {
 }
 
 async function getTenantsByUnit(id) {
-  const tenants = await db
-    .from('user_unit')
-    .select('*')
-    .where({unit_id: id})
+  const tenants = await db.from('user_unit').select('*').where({unit_id: id})
 
   return tenants
 }
 
 async function getTenantsByLandlord(id) {
-  const tenants = await db
-    .from('user_unit')
-    .select('*')
-    .where({user_id: id})
+  const tenants = await db.from('user').select('*').where({landlord_id: id})
 
   return tenants
 }

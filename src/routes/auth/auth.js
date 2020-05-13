@@ -16,7 +16,7 @@ router.post(
   checkIfUserExists,
   ifTenantCheckIfAuthorized,
   ifLandlordCreateUser,
-  Auth.createUser,
+  Auth.createLandlordUser,
 )
 
 router.post('/login', validateAuthInput(), Auth.login)

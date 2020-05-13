@@ -55,11 +55,13 @@ async function getAll(decodedToken) {
   const results = await db('work_order')
     .select('*')
     .where({user_id: decodedToken.user_id})
-  for (const workOrders of results) {
-    const getDisplayName = await fireAdmin.auth().getUser(workOrders.user_id)
-    workOrders.user_id = getDisplayName.displayName || getDisplayName.email
-  }
-  return results || null
+  const workordersWithUserInfo = Promise.all(
+    results.map(async workOrders => {
+      const getDisplayName = await fireAdmin.auth().getUser(workOrders.user_id)
+      workOrders.user_id = getDisplayName.displayName || getDisplayName.email
+    }),
+  )
+  return workordersWithUserInfo || null
 }
 
 // async function getBy(query) {
