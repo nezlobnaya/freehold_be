@@ -1,13 +1,25 @@
 const UserModel = require('../../models/user')
+const fireAdmin = require('../../lib/firebase')
 
 const getByLandlord = async (req, res, next) => {
   const {decodedToken} = req
   try {
     const tenants = await UserModel.getTenantsByLandlord(decodedToken.user_id)
-    if (!tenants) {
+    // const tenantsWithUserInfo = await Promise.all(
+    //   tenants.map(async tenantInfo => {
+    //     const tenantData = await fireAdmin.auth().getUser(tenantInfo.id)
+    //     tenantInfo.displayName = tenantData.displayName
+    //     tenantInfo.email = tenantData.email
+    //     tenantInfo.phoneNumber = tenantData.phoneNumber
+    //     return tenantInfo
+    //   }),
+    // )
+    tenantsWithUserInfo = tenants
+
+    if (!tenantsWithUserInfo) {
       res.status(404).json({message: 'couldnt find tenants'})
     } else {
-      res.status(200).json(tenants)
+      res.status(200).json(tenantsWithUserInfo)
     }
   } catch (err) {
     next(err)

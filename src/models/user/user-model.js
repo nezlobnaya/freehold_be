@@ -59,10 +59,24 @@ async function getTenantsByUnit(id) {
   return tenants
 }
 
-async function getTenantsByLandlord(id) {
-  const tenants = await db.from('user').select('*').where({landlord_id: id})
-
-  return tenants
+function getTenantsByLandlord(id) {
+  return db
+    .from('user')
+    .leftJoin('user_unit', 'user_unit.user_id', '=', 'user.id')
+    .leftJoin('unit', 'unit.id', '=', 'user_unit.unit_id')
+    .where({landlord_id: id})
+    .select(
+      'user.id',
+      'user.landlord',
+      'user.landlord_id',
+      'unit.name',
+      'unit.street_address',
+      'unit.city',
+      'unit.state',
+      'unit.zip',
+      'unit.occupied',
+      'unit.rent',
+    )
 }
 
 async function canAccessTenant(landlordId, tenantId) {
