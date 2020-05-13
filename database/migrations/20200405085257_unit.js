@@ -7,7 +7,7 @@ exports.up = function (knex) {
     tbl.string('city').notNullable()
     tbl.string('state').notNullable()
     tbl.string('zip').notNullable()
-    tbl.integer('occupied').notNullable()
+    tbl.integer('occupied').notNullable().defaultTo(0)
     tbl.integer('rent').notNullable()
   })
 }
