@@ -15,6 +15,21 @@ async function getCurrent(req, res, next) {
   }
 }
 
+async function getCurrentTenant(req, res, next) {
+  try {
+    const { id } = req.params
+    const user = await User.findTenantById(id)
+
+    if (!user) {
+      return res.sendStatus(404)
+    } else {
+      return res.status(200).json(user)
+    }
+  } catch (err) {
+    next(err)
+  }
+}
+
 async function updateCurrent(req, res, next) {
   try {
     const {updated, user} = await User.updateByEmail(req.user.email, req.body)
@@ -44,5 +59,6 @@ async function connectTenantToUnit(req, res, next) {
 module.exports = {
   connectTenantToUnit,
   getCurrent,
+  getCurrentTenant,
   updateCurrent,
 }

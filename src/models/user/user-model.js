@@ -40,8 +40,9 @@ async function findById(id, returning = landlordReturning) {
   return user || null
 }
 
-function findTenantById(id) {
-  return findById(id, '*')
+async function findTenantById(id) {
+  const user = await fireAdmin.auth().getUser(id)
+  return user || null
 }
 
 async function updateByEmail(email, update, returning = landlordReturning) {
