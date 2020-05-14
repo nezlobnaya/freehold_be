@@ -55,7 +55,7 @@ async function updateByEmail(email, update, returning = landlordReturning) {
   return user ? {updated: true, user} : {updated: false}
 }
 
-async function getTenantsByUnit(id, decodedToken) {
+async function getTenantsByUnit(id) {
   const tenants = await db
     .from('user_unit')
     .select('*')

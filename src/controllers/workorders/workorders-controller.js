@@ -16,7 +16,7 @@ const create = async (req, res, next) => {
   }
 }
 
-const readAllByUser = async (req, res) => {
+const readAllByUser = async (req, res, next) => {
   const {decodedToken} = req
   try {
     const workOrders = await WorkOrders.getAll(decodedToken)
