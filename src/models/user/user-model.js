@@ -1,4 +1,5 @@
 const db = require('../../../database/db')
+const fireAdmin = require('../../lib/firebase')
 
 const table = 'user'
 
@@ -53,15 +54,32 @@ async function updateByEmail(email, update, returning = landlordReturning) {
   return user ? {updated: true, user} : {updated: false}
 }
 
-async function getTenantsByUnit(id) {
-  const tenants = await db.from('user_unit').select('*').where({ unit_id: id })
-
-  return tenants
+async function getTenantsByUnit(id, decodedToken) {
+  const tenants = await db
+    .from('user_unit')
+    .select('*')
+    .join('user', 'user.id', '=', 'user_unit.user_id')
+    .where({unit_id: id})
+    .andWhere('user.landlord', false)
+  const tenantsWithUserInfo = await Promise.all(
+    tenants.map(async tenantInfo => {
+      const tenantData = await fireAdmin.auth().getUser(tenantInfo.user_id)
+      tenantInfo.displayName = tenantData.displayName
+      tenantInfo.email = tenantData.email
+      tenantInfo.phoneNumber = tenantData.phoneNumber
+      return tenantInfo
+    }),
+  )
+  return tenantsWithUserInfo
 }
 
-
 async function addTenantsToUnit(unit_id, user_id, lease_start, lease_end) {
-  const tenants = await db.from('user_unit').insert({ unit_id: unit_id, user_id: user_id, lease_start: lease_start, lease_end: lease_end })
+  const tenants = await db.from('user_unit').insert({
+    unit_id: unit_id,
+    user_id: user_id,
+    lease_start: lease_start,
+    lease_end: lease_end,
+  })
 
   return tenants
 }
@@ -77,7 +95,9 @@ function getTenantsByLandlord(id) {
       'unit.id as unit_id',
       'user.landlord',
       'user.landlord_id',
-      'unit.name',
+      'user_unit.lease_start',
+      'user_unit.lease_end',
+      'unit.name as unit_name',
       'unit.street_address',
       'unit.city',
       'unit.state',

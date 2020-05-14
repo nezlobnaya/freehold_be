@@ -10,10 +10,16 @@ module.exports = {
 }
 
 // addUnit(input) - inserts input to properties and return results for a property by id inserted
-async function addUnit(input) {
+async function addUnit(input, decodedToken) {
   const results = await db('unit').insert(input).returning('*')
-
-  return results[0]
+  const data = results[0]
+  if (data) {
+    await db('user_unit').insert({
+      unit_id: data.id,
+      user_id: decodedToken.user_id,
+    })
+  }
+  return data
 }
 
 // getUnitById() - return results for a property by id
@@ -24,8 +30,15 @@ async function getUnitById(id) {
 }
 
 // getAllUnits() - return all properties
-function getAllUnits() {
-  return db('unit').select('*')
+function getAllUnits(decodedToken) {
+  return db.raw(
+    `SELECT DISTINCT unit.id, unit.name, unit.street_address, unit.city, unit.state, unit.zip, unit.occupied, unit.rent
+    FROM public.user join
+    public.user_unit ON user_unit.user_id = public.user.id join
+    public.unit ON unit.id = public.user_unit.unit_id
+    where public.user.id = ?`,
+    [decodedToken.user_id],
+  )
 }
 
 // getPropertiesByUser - return all properties for a specific user by the user's email

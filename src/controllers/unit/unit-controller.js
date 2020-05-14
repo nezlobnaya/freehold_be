@@ -1,10 +1,19 @@
 const Unit = require('../../models/unit')
 
 const create = async (req, res, next) => {
+  const {decodedToken} = req
   try {
     const {name, street_address, city, state, zip, occupied, rent} = req.body
-    const unitData = {name, street_address, city, state, zip, occupied, rent}
-    const unit = await Unit.addUnit(unitData)
+    const unitData = {
+      name,
+      street_address,
+      city,
+      state,
+      zip,
+      occupied,
+      rent,
+    }
+    const unit = await Unit.addUnit(unitData, decodedToken)
 
     res.status(201).json(unit)
   } catch (err) {
@@ -28,9 +37,10 @@ const getById = async (req, res, next) => {
 }
 
 const getAll = async (req, res, next) => {
+  const {decodedToken} = req
   try {
-    const units = await Unit.getAllUnits()
-    res.status(200).json(units)
+    const units = await Unit.getAllUnits(decodedToken)
+    res.status(200).json(units.rows)
   } catch (err) {
     next(err)
   }

@@ -26,8 +26,12 @@ const getByLandlord = async (req, res, next) => {
 }
 
 const getByUnit = async (req, res, next) => {
+  const {decodedToken} = req
   try {
-    const tenants = await UserModel.getTenantsByUnit(req.params.id)
+    const tenants = await UserModel.getTenantsByUnit(
+      req.params.id,
+      decodedToken,
+    )
     if (!tenants) {
       res.status(404).json({message: 'unit not found'})
     } else {
