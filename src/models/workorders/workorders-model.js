@@ -55,10 +55,12 @@ async function getAll(decodedToken) {
   const results = await db('work_order')
     .select('*')
     .where({user_id: decodedToken.user_id})
-  const workordersWithUserInfo = Promise.all(
+  // console.log(results)
+  const workordersWithUserInfo = await Promise.all(
     results.map(async workOrders => {
       const getDisplayName = await fireAdmin.auth().getUser(workOrders.user_id)
       workOrders.user_id = getDisplayName.displayName || getDisplayName.email
+      return workOrders
     }),
   )
   return workordersWithUserInfo || null
