@@ -31,7 +31,7 @@ async function getUnitById(id) {
 }
 
 async function getUnitByAddress(address) {
-  const unit = await db('unit').where({street_address: address}).first('*')
+  const unit = await db('unit').where({street_address: address}).select('*')
   return unit
 }
 
