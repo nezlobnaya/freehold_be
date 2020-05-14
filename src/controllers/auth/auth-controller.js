@@ -82,6 +82,7 @@ async function createTenantUser(req, res, next) {
       displayName: `${firstName} ${lastName}`,
       disabled: false,
     })
+    await fireAdmin.auth().setCustomUserClaims(user.uid, {landlord: false})
     const msg = {
       to: email,
       from: 'labspt.propman@gmail.com',
