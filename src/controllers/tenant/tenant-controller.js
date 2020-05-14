@@ -48,7 +48,7 @@ const createTenant = async (req, res, next) => {
       landlord_id: decodedToken.user_id,
     })
     if (tenant) {
-      res.status(201).json(tenant)
+      next()
     }
   } catch (err) {
     next(err)

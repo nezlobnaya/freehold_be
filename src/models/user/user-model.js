@@ -54,7 +54,13 @@ async function updateByEmail(email, update, returning = landlordReturning) {
 }
 
 async function getTenantsByUnit(id) {
-  const tenants = await db.from('user_unit').select('*').where({unit_id: id})
+  const tenants = await db.from('user_unit').select('*').where({ unit_id: id })
+
+  return tenants
+}
+
+async function addTenantsToUnit(unit_id, user_id, lease_start, lease_end) {
+  const tenants = await db.from('user_unit').insert({ unit_id: unit_id, user_id: user_id, lease_start: lease_start, lease_end: lease_end })
 
   return tenants
 }
@@ -97,6 +103,7 @@ async function updateTenantById(id, update) {
 }
 
 module.exports = {
+  addTenantsToUnit,
   canAccessTenant,
   create,
   findByEmail,
