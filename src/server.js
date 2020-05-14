@@ -34,15 +34,16 @@ app.get('/protected', restricted, (req, res) => {
 })
 
 // Routes
-app.use('/api/auth', authRouter)
-app.use('/api/users', usersRouter)
-app.use('/api/properties', unitRouter)
-app.use('/api/workorders', workorderRouter)
-app.use('/api/media', mediaRouter)
-app.use('/api/payments', paymentsRouter)
-app.use('/api/message', messageRouter)
-app.use('/api/tenant', tenantRouter)
-
+//TODO
+//Not clean, im sorry
+app.use('/api/auth', restricted, authRouter)
+app.use('/api/users', restricted, usersRouter)
+app.use('/api/properties', restricted, unitRouter)
+app.use('/api/workorders', restricted, workorderRouter)
+app.use('/api/media', restricted, mediaRouter)
+app.use('/api/payments', restricted, paymentsRouter)
+app.use('/api/message', restricted, messageRouter)
+app.use('/api/tenant', restricted, tenantRouter)
 // Base Route
 app.get('/', (_req, res) => {
   res.setHeader('Content-Type', 'text/html')

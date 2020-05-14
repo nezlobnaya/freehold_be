@@ -2,6 +2,7 @@
 // const User = require('../user')
 // // Work Order Models
 const db = require('../../../database/db')
+const fireAdmin = require('../../lib/firebase')
 // const {omit, map, pipeP} = require('ramda')
 
 // const table = 'workorders as w'
@@ -50,10 +51,17 @@ async function getById(id) {
 //   return getBy({propertyId})
 // }
 
-async function getAll() {
-  const results = await db('work_order').select('*')
-  console.log(results)
-  return results || null
+async function getAll(decodedToken) {
+  const results = await db('work_order')
+    .select('*')
+    .where({user_id: decodedToken.user_id})
+  const workordersWithUserInfo = Promise.all(
+    results.map(async workOrders => {
+      const getDisplayName = await fireAdmin.auth().getUser(workOrders.user_id)
+      workOrders.user_id = getDisplayName.displayName || getDisplayName.email
+    }),
+  )
+  return workordersWithUserInfo || null
 }
 
 // async function getBy(query) {
