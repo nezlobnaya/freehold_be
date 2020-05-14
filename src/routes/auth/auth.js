@@ -4,7 +4,6 @@ const {
   ifLandlordCreateUser,
   ifTenantCheckIfAuthorized,
 } = require('../../middleware')
-const restricted = require('../../middleware/restricted')
 const checkIfUserExists = require('../../middleware/if-user-exists')
 
 const Auth = require('../../controllers/auth/auth-controller')
@@ -14,13 +13,12 @@ const router = express.Router()
 router.post(
   '/register',
   validateAuthInput(true),
-  restricted,
   checkIfUserExists,
   ifTenantCheckIfAuthorized,
   ifLandlordCreateUser,
-  Auth.createUser,
+  Auth.createLandlordUser,
 )
 
-router.post('/login', validateAuthInput(), restricted, Auth.login)
+router.post('/login', validateAuthInput(), Auth.login)
 
 module.exports = router

@@ -7,16 +7,21 @@ const landlordReturning = ['id', 'landlord']
 const tenantReturning = '*'
 
 async function create(input) {
-  console.log('input = ', input)
-  const [user] = await db(table)
-    .insert({id: input.id, landlord: input.landlord})
-    .returning('*')
-
-  console.log(user)
-  user.email = input.email
-  user.type = 'landlord'
-  console.log(user)
-  return user || null
+  let user = null
+  if (!input.landlord_id) {
+    user = await db(table)
+      .insert({id: input.id, landlord: input.landlord})
+      .returning('*')
+  } else {
+    user = await db(table)
+      .insert({
+        id: input.id,
+        landlord: input.landlord,
+        landlord_id: input.landlord_id,
+      })
+      .returning('*')
+  }
+  return user
 }
 
 async function findByEmail(email, type) {
@@ -49,15 +54,37 @@ async function updateByEmail(email, update, returning = landlordReturning) {
 }
 
 async function getTenantsByUnit(id) {
-  const tenants = await db.from('user_unit').select('*').where({unit_id: id})
+  const tenants = await db.from('user_unit').select('*').where({ unit_id: id })
 
   return tenants
 }
 
-async function getTenantsByLandlord(id) {
-  const tenants = await db.from('user_unit').select('*').where({user_id: id})
+
+async function addTenantsToUnit(unit_id, user_id, lease_start, lease_end) {
+  const tenants = await db.from('user_unit').insert({ unit_id: unit_id, user_id: user_id, lease_start: lease_start, lease_end: lease_end })
 
   return tenants
+}
+
+function getTenantsByLandlord(id) {
+  return db
+    .from('user')
+    .leftJoin('user_unit', 'user_unit.user_id', '=', 'user.id')
+    .leftJoin('unit', 'unit.id', '=', 'user_unit.unit_id')
+    .where({landlord_id: id})
+    .select(
+      'user.id',
+      'unit.id as unit_id',
+      'user.landlord',
+      'user.landlord_id',
+      'unit.name',
+      'unit.street_address',
+      'unit.city',
+      'unit.state',
+      'unit.zip',
+      'unit.occupied',
+      'unit.rent',
+    )
 }
 
 async function canAccessTenant(landlordId, tenantId) {
@@ -77,6 +104,7 @@ async function updateTenantById(id, update) {
 }
 
 module.exports = {
+  addTenantsToUnit,
   canAccessTenant,
   create,
   findByEmail,
