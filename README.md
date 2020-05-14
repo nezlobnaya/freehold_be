@@ -63,6 +63,14 @@ To get the server running locally:
 | POST   | `/api/auth/register` | all users          | Registers a new landlord                                            |
 | POST   | `/api/auth/login`    | landlords, tenants | Logs in an existing user. Tenants require invitation from landlord. |
 
+#### Tenant Routes
+
+| Method | Endpoint             | Access Control     | Description                                                         |
+| ------ | -------------------- | ------------------ | ------------------------------------------------------------------- |
+| GET   | `/api/tenant/bylandlord/:id` | landlord | Returns all tenants tied to the landlord |
+| GET   | `/api/tenant/byunit/:id`    | landlords | Returns all tenants tied to specified unit |
+
+
 #### Property Routes
 
 | Method | Endpoint              | Access Control     | Description                     |
@@ -113,7 +121,8 @@ To get the server running locally:
 ```
 {
   id: STRING,
-  landlord: BOOLEAN
+  landlord: BOOLEAN,
+  landlord_id: STRING
 }
 ```
 
@@ -160,7 +169,7 @@ To get the server running locally:
   status: STRING,
   comment: STRING,
   start_date: TIMESTAMP,
-  end_date: TIMESTAMP,
+  update_date: TIMESTAMP,
   unit_id: FOREIGN KEY REFERENCES id IN unit TABLE,
   user_id: FOREIGN KEY REFERENCES id IN user TABLE,
   in_house: BOOLEAN
@@ -174,9 +183,7 @@ To get the server running locally:
 ```
 {
   id: UUID,
-  type: STRING,
   link: STRING,
-  format: STRING,
   title: STRING,
   timestamp: TIMESTAMP,
   work_order_id: FOREIGN KEY REFERENCES id IN work_order TABLE,
@@ -194,7 +201,7 @@ To get the server running locally:
   id: UUID,
   unit_id: FOREIGN KEY REFERENCES id IN unit TABLE,
   user_id: FOREIGN KEY REFERENCES id IN user TABLE,
-  type: INTEGER,
+  type: STRING,
   amount: INTEGER,
   payment_date: DATE,
   late: BOOLEAN,
