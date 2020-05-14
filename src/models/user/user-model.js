@@ -59,6 +59,7 @@ async function getTenantsByUnit(id) {
   return tenants
 }
 
+
 async function addTenantsToUnit(unit_id, user_id, lease_start, lease_end) {
   const tenants = await db.from('user_unit').insert({ unit_id: unit_id, user_id: user_id, lease_start: lease_start, lease_end: lease_end })
 
