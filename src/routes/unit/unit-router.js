@@ -1,31 +1,13 @@
 const express = require('express')
 const PropertyController = require('../../controllers/unit/unit-controller')
-const Property = require('../../models/unit/unit-model')
+const ifNoPropertyNext = require('../../middleware/if-no-property-next')
+// const Property = require('../../models/unit/unit-model')
 // const requireAuth = require('../../lib/require-auth')
 // const {requireLandlord} = require('../../middleware')
 
 const router = express.Router()
 
 // router.use(requireAuth)
-
-const ifNoPropertyNext = async (req, res, next) => {
-  try {
-    console.log(req.body)
-    const {street_address} = req.body
-    const property = await Property.getUnitByAddress(street_address)
-
-    if (!property) {
-      next()
-    } else {
-      res.status(403).json({message: 'property already exists'})
-    }
-
-  } catch (err) {
-    console.error(err)
-
-    return res.status(500).send('Internal Server Error')
-  }
-}
 
 // const requireAccess = (req, res, next) => {
 //   const {user, property} = req

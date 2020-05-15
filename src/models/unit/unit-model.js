@@ -3,7 +3,7 @@ const db = require('../../../database/db')
 module.exports = {
   addUnit,
   getUnitById,
-  // getUnitByAddress,
+  getUnitByAddress,
   getAllUnits,
   getPropertiesByUser,
   updateUnit,
@@ -30,10 +30,10 @@ async function getUnitById(id) {
   return unit
 }
 
-// async function getUnitByAddress(address) {
-//   const unit = await db('unit').where({street_address: address}).select('*').first()
-//   return unit
-// }
+async function getUnitByAddress(address) {
+  const unit = await db('unit').where({street_address: address}).select('*').first()
+  return unit
+}
 
 // getAllUnits() - return all properties
 function getAllUnits(decodedToken) {

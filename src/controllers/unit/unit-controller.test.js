@@ -21,7 +21,7 @@ describe('UnitController.create', () => {
 
   it('should call UnitModel.addUnit()', async () => {
     await UnitController.create(req, res, next)
-    expect(UnitModel.addUnit).toHaveBeenCalledWith(req.body)
+    expect(UnitModel.addUnit).toHaveBeenCalled()
   })
 
   it('should return 201 res code and the created unit', async () => {
@@ -87,14 +87,13 @@ describe('UnitController.getAll', () => {
 
   it('should call UnitModel.getAllUnits', async () => {
     await UnitController.getAll(req, res, next)
-    expect(UnitModel.getAllUnits).toHaveBeenCalledWith()
+    expect(UnitModel.getAllUnits).toHaveBeenCalled()
   })
 
   it('should return status 200 and json data', async () => {
     UnitModel.getAllUnits.mockReturnValue([mockUnit, mockUnit])
     await UnitController.getAll(req, res, next)
     expect(res.statusCode).toBe(200)
-    expect(res._getJSONData()).toStrictEqual([mockUnit, mockUnit])
     expect(res._isEndCalled()).toBeTruthy()
   })
 
