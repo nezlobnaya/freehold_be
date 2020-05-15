@@ -13,9 +13,15 @@ beforeEach(() => {
   req = httpMocks.createRequest()
 })
 
-describe('AuthController.createUser', () => {
+describe('AuthController.createLandlordUser', () => {
   it('should be a function', () => {
-    expect(typeof AuthController.createUser).toBe('function')
+    expect(typeof AuthController.createLandlordUser).toBe('function')
+  })
+})
+
+describe('AuthController.createTenantUser', () => {
+  it('should be a function', () => {
+    expect(typeof AuthController.createTenantUser).toBe('function')
   })
 })
 

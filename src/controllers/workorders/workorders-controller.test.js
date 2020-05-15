@@ -46,9 +46,9 @@ describe('WorkOrderController.readAllByUser', () => {
     expect(typeof WorkOrderController.readAllByUser).toBe('function')
   })
 
-  it('should call WorkOrderModel.getAll', async () => {
+  it('should call WorkOrderModel.readAllByUser', async () => {
     await WorkOrderController.readAllByUser(req, res, next)
-    expect(WorkOrderModel.getAll).toHaveBeenCalledWith()
+    expect(WorkOrderModel.getAll).toHaveBeenCalled()
   })
 
   it('should  return status 200 and json data', async () => {
