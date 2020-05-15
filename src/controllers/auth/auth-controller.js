@@ -4,7 +4,7 @@ const sgMail = require('@sendgrid/mail')
 require('dotenv').config()
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
-async function createUser(req, res) {
+async function createLandlordUser(req, res) {
   const {email, uid, type} = req.body
 
   try {
@@ -71,7 +71,34 @@ async function login(req, res) {
   }
 }
 
+async function createTenantUser(req, res, next) {
+  try {
+    const {firstName, lastName, phone, email, password} = req.body
+    const user = await fireAdmin.auth().createUser({
+      email,
+      emailVerified: false,
+      phoneNumber: phone,
+      password,
+      displayName: `${firstName} ${lastName}`,
+      disabled: false,
+    })
+    await fireAdmin.auth().setCustomUserClaims(user.uid, {landlord: false})
+    const msg = {
+      to: email,
+      from: 'labspt.propman@gmail.com',
+      subject: `Welcome, Your tenant account has been created.`,
+      template_id: process.env.SENDGRID_WELCOME_ID,
+    }
+    sgMail.send(msg).then(() => {}, console.error)
+    req.uid = user.uid
+    next()
+  } catch (err) {
+    next(err)
+  }
+}
+
 module.exports = {
-  createUser,
+  createTenantUser,
+  createLandlordUser,
   login,
 }

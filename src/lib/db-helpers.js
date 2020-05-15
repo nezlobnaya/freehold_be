@@ -102,16 +102,14 @@ const createFakeWorkOrder = () => ({
   status: faker.random.word(),
   comment: faker.random.words(),
   start_date: faker.date.recent(),
-  end_date: faker.date.recent(),
+  update_date: faker.date.recent(),
   unit_id: createRandomNum(10),
   user_id: fakeUsers[createRandomNum(14)]['id'],
   in_house: true,
 })
 
 const createFakeMedia = () => ({
-  type: faker.company.bs(),
   link: faker.internet.url(),
-  format: faker.system.fileType(),
   title: faker.company.bsNoun(),
   work_order_id: createRandomNum(10),
   unit_id: createRandomNum(10),
@@ -121,7 +119,7 @@ const createFakeMedia = () => ({
 const createFakePayments = () => ({
   unit_id: createRandomNum(10),
   user_id: fakeUsers[createRandomNum(14)]['id'],
-  type: createRandomNum(10),
+  type: faker.random.word(),
   amount: createRandomNum(2000),
   payment_date: faker.date.recent(),
   late: false,

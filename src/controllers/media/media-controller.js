@@ -6,7 +6,6 @@ const create = async (req, res, next) => {
     const media = await Media.addMedia(input)
     res.status(200).json(media)
   } catch (err) {
-    console.log(err)
     next(err)
   }
 }

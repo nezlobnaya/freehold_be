@@ -4,7 +4,7 @@ exports.up = function (knex) {
 
     tbl.integer('unit_id').references('id').inTable('unit')
     tbl.string('user_id').references('id').inTable('user')
-    tbl.integer('type').notNullable()
+    tbl.string('type').notNullable()
     tbl.integer('amount').notNullable()
     tbl.date('payment_date').notNullable()
     tbl.boolean('late').notNullable()
