@@ -15,9 +15,9 @@ const ifNoPropertyNext = async (req, res, next) => {
     const property = await Property.getUnitByAddress(street_address)
 
     if (!property) {
-      next(req.body)
+      next()
     } else {
-      return res.status(403).json({message: 'property already exists'})
+      res.status(403).json({message: 'property already exists'})
     }
 
   } catch (err) {
