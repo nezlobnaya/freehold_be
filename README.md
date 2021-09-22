@@ -4,7 +4,7 @@
 
 [![Test Coverage](https://api.codeclimate.com/v1/badges/d16b8cd63a2307a5a0a2/test_coverage)](https://codeclimate.com/github/Lambda-School-Labs/property-manager-be/test_coverage)
 
-#### Backend delpoyed at [Heroku](https://labspt-propman.herokuapp.com/) <br>
+#### Backend deployed at [Heroku](https://labspt-propman.herokuapp.com/) <br>
 
 ## Getting Started
 
